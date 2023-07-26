@@ -3,9 +3,13 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="edit">edit</string>
-    <string name="address">\n\n</string>
-    <string name="aadhar">\t\t\t\t</string>
+    <string name="address"></string>
+    <string name="aadhar"></string>
     <string name="email_id" />
     <string name="mob_no" />
     <string name="name" />
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
+    <string name="open_drawer">open</string>
+    <string name="close_drawer">close</string>
 </resources>
