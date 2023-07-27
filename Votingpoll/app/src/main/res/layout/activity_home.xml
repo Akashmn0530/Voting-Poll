@@ -23,17 +23,19 @@
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#FF7986CB"
+                android:background="#673AB7"
                 app:title="VOTE POLLING"
                 app:titleTextColor="@color/white"
                 android:id="@+id/toolbar" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
+
         <FrameLayout
+            android:id="@+id/fragmentContainer1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/layFL" />
+            android:layout_weight="1" />
 
     </LinearLayout>
 
@@ -45,6 +47,7 @@
         android:textColor="#FF283593"
         android:textStyle="bold|italic"
         android:textSize="20sp"
+        android:id="@+id/welcomeTxt"
         tools:ignore="MissingConstraints" />
 
 

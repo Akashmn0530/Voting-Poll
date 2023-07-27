@@ -44,13 +44,15 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
         holder.mobile.setText("Mobile: " + serverData.getAuMobile());
         holder.aadhar.setText("Aadhar: " + serverData.getAuAadhaar());
         holder.address.setText("Address: " + serverData.getAuAddress());
+        holder.voteCount.setText("Vote count: "+serverData.getVoteCount());
+        holder.voteStatus.setText("Vote status:"+serverData.getVote());
     }
     @Override
     public int getItemCount() {
         return listdata.size();
     }
     class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView fullname, email, mobile, address, aadhar;
+        private TextView fullname, email, mobile, address, aadhar, voteStatus, voteCount;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -59,6 +61,8 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
             mobile = itemView.findViewById(R.id.rv_mobile);
             address = itemView.findViewById(R.id.rv_address);
             aadhar = itemView.findViewById(R.id.rv_aadhar);
+            voteCount = itemView.findViewById(R.id.rv_count);
+            voteStatus = itemView.findViewById(R.id.rv_vote);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

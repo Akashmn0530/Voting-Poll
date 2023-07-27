@@ -10,7 +10,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/profile_image"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:layout_width="96dp"
         android:layout_height="96dp"
         android:src="@drawable/hand"
@@ -20,22 +20,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="100dp">
+        android:paddingTop="50dp">
 
         <TextView
-            android:layout_width="100dp"
+            android:layout_width="105dp"
             android:layout_height="wrap_content"
             android:paddingLeft="20sp"
+            android:text="Name : "
             android:textColor="#000000"
-            android:text="@string/name"
             android:textSize="20sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <EditText
+            android:layout_width="233dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
             android:paddingLeft="50dp"
+            android:textAlignment="center"
             android:id="@+id/pname"
             android:text="Name"
+            android:textColor="#000000"
             android:textSize="20sp"/>
 
     </LinearLayout>
@@ -46,18 +49,21 @@
         android:paddingTop="20dp">
 
         <TextView
-            android:layout_width="100dp"
+            android:layout_width="107dp"
             android:layout_height="wrap_content"
             android:paddingLeft="20sp"
-            android:text="@string/mob_no"
+            android:text="Mobile : "
             android:textSize="20sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <EditText
+            android:layout_width="233dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
             android:paddingLeft="50dp"
+            android:textAlignment="center"
             android:id="@+id/pmobile"
             android:text="Mobile no."
+            android:textColor="#000000"
             android:textSize="20sp"/>
 
     </LinearLayout>
@@ -69,19 +75,22 @@
         android:paddingTop="20dp">
 
         <TextView
-            android:layout_width="100dp"
+            android:layout_width="107dp"
             android:layout_height="wrap_content"
             android:paddingLeft="20sp"
-            android:text="@string/email_id"
+            android:text="Email : "
             android:textSize="20sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="50dp"
-            android:text="Email"
+        <EditText
             android:id="@+id/pEmail"
-            android:textSize="20sp"/>
+            android:layout_width="233dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:paddingLeft="50dp"
+            android:textAlignment="center"
+            android:text="Email"
+            android:textColor="#000000"
+            android:textSize="20sp" />
 
     </LinearLayout>
     <LinearLayout
@@ -91,17 +100,20 @@
         android:paddingTop="20dp">
 
         <TextView
-            android:layout_width="100dp"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:paddingLeft="20sp"
-            android:text="@string/aadhar"
+            android:text="Aadhar : "
             android:textSize="20sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <EditText
+            android:layout_width="233dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
             android:paddingLeft="50dp"
+            android:textAlignment="center"
             android:text="Aadhar"
+            android:textColor="#000000"
             android:id="@+id/pAadhar"
             android:textSize="20sp"/>
 
@@ -115,17 +127,20 @@
         android:paddingTop="20dp">
 
         <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:paddingLeft="20sp"
-            android:text="@string/address"
-            android:textSize="20sp" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="20sp"
+            android:text="Address : "
+            android:textSize="20sp" />
+
+        <EditText
+            android:layout_width="233dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
             android:paddingLeft="50dp"
+            android:textAlignment="center"
             android:text="Address"
+            android:textColor="#000000"
             android:id="@+id/pAddress"
             android:textSize="20sp"/>
 

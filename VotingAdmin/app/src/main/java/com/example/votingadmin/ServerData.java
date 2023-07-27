@@ -11,6 +11,10 @@ public class ServerData {
     private String auAddress;
     private long auAadhaar;
 
+    private String vote = "Not voted";
+
+    private int voteCount = 0;
+
     public void setauAadhaar(long uAadhaar) {
         this.auAadhaar = uAadhaar;
     }
@@ -50,6 +54,22 @@ public class ServerData {
 
     public String getAuFullname() {
         return auFullname;
+    }
+
+    public String getVote() {
+        return vote;
+    }
+
+    public void setVote(String vote) {
+        this.vote = vote;
+    }
+
+    public int getVoteCount() {
+        return voteCount;
+    }
+
+    public void setVoteCount(int voteCount) {
+        this.voteCount = voteCount;
     }
 }
 

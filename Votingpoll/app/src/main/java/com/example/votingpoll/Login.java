@@ -103,7 +103,11 @@ public class Login extends AppCompatActivity {
                                                     "Login successful!!",
                                                     Toast.LENGTH_LONG)
                                             .show();
-
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("iEmail", email);
+                                    // set Fragmentclass Arguments
+                                    ProfileFragment fragobj = new ProfileFragment();
+                                    fragobj.setArguments(bundle);
                                     // hide the progress bar
                                     progressbar.setVisibility(View.GONE);
 
