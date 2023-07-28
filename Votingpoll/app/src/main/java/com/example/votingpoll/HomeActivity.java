@@ -22,6 +22,7 @@ public class HomeActivity extends AppCompatActivity {
     NavigationView vNV;
     Toolbar toolbar;
     TextView textView;
+    String e_mail;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -33,12 +34,17 @@ public class HomeActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         textView = findViewById(R.id.welcomeTxt);
         setSupportActionBar(toolbar);
-
+        Bundle bundle = getIntent().getExtras();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, layDL, toolbar, R.string.open_drawer, R.string.close_drawer);
 
         layDL.addDrawerListener(toggle);
         toggle.syncState();
-
+        Bundle extras = getIntent().getExtras();
+        if(extras == null) {
+            e_mail= null;
+        } else {
+            e_mail= extras.getString("email");
+        }
         if (savedInstanceState == null) {
             vNV.setCheckedItem(R.id.profile);
         }

@@ -69,7 +69,7 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
                     ServerData serverData = listdata.get(getAdapterPosition());
                     Intent intent = new Intent(context, EditUserActivity.class);
                     Log.d("Akash",serverData.getAuEmail());
-                    intent.putExtra("userId",serverData.getAuEmail());
+                    intent.putExtra("userId1",serverData);
                     context.startActivity(intent);
                 }
             });

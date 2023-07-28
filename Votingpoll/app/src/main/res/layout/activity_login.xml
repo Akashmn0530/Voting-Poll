@@ -72,7 +72,7 @@
             android:text="Forget Password"
             android:textSize="18dp"
             android:layout_marginTop="15dp"
-            android:textColor="#FFFBF6"
+            android:textColor="#FFFFFF"
             />
 
         <EditText

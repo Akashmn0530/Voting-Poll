@@ -1,12 +1,10 @@
-package com.example.votingadmin;
+package com.example.votingpoll;
 
 import android.content.Context;
 
-import java.io.Serializable;
 import java.util.List;
 
-public class ServerData implements Serializable {
-    private String auId;
+public class ServerData {
     private String auFullname;
     private String auEmail;
     private  long auMobile;
@@ -72,14 +70,6 @@ public class ServerData implements Serializable {
 
     public void setVoteCount(int voteCount) {
         this.voteCount = voteCount;
-    }
-
-    public String getAuId() {
-        return auId;
-    }
-
-    public void setAuId(String auId) {
-        this.auId = auId;
     }
 }
 

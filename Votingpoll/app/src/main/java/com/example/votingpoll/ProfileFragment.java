@@ -15,11 +15,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class ProfileFragment extends Fragment {
@@ -43,17 +52,12 @@ public class ProfileFragment extends Fragment {
         proEdit = getView().findViewById(R.id.pEdit);
         db = FirebaseFirestore.getInstance();
         // Getting Intent...
-        //String email = getArguments().getString("edttext");
+        Login login = new Login();
+        String email = login.getMyData();
+        //String email = getArguments().getString("iEmail");
 
-        //Calling fetchData method... fetch
-        //fetchTheData(email);
-
-        Log.d("Akash","setting data...");
-        proName.setText("Akash");
-        proMobile.setText("1234567890");
-        proEmail.setText("Akash@gmail.com");
-        proAadhar.setText("123456789098");
-        proAddress.setText("Mysuru");
+        //Calling fetchData method...
+        fetchTheData(email);
     }
 
     @Override
@@ -63,5 +67,30 @@ public class ProfileFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
-
+    void fetchTheData(String email){
+        DocumentReference docRef = db.collection("AddUser").document(email);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Toast.makeText(getActivity(), "Successfully getting the data...", Toast.LENGTH_SHORT).show();
+                        Log.d("Akash", "DocumentSnapshot data: " + document.getData());
+                        ServerData c = document.toObject(ServerData.class);
+                        Log.d("Akash","setting data...");
+                        proName.setText(c.getAuFullname());
+                        proMobile.setText(String.valueOf(c.getAuMobile()));
+                        proEmail.setText(c.getAuEmail());
+                        proAadhar.setText(String.valueOf(c.getAuAadhaar()));
+                        proAddress.setText(c.getAuAddress());
+                    } else {
+                        Log.d("Akash", "No such document");
+                    }
+                } else {
+                    Log.d("Akash", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
 }

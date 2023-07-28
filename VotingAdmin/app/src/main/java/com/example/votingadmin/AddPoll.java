@@ -24,6 +24,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.Serializable;
+
 public class AddPoll extends Fragment {
     EditText condName, condEmail, condMobile, condAddress, condAadhaar;
     Button condAdd, condView, condCancel;
@@ -80,7 +82,7 @@ public class AddPoll extends Fragment {
     }
     public void addCondidate () {
         // Take the value of two edit texts in Strings
-        String email, password, fullname, address, conpassword;
+        String email, fullname, address;
         long mobile, aadhar;
         email = condEmail.getText().toString();
         fullname = condName.getText().toString();

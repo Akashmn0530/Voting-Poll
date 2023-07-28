@@ -1,6 +1,9 @@
 package com.example.votingadmin;
 
-public class AddPollClass {
+import java.io.Serializable;
+
+public class AddPollClass implements Serializable {
+    private String aId;
     private String aFullname;
     private String aEmail;
     private  long aMobile;
@@ -49,6 +52,13 @@ public class AddPollClass {
         return aFullname;
     }
 
+    public String getaId() {
+        return aId;
+    }
+
+    public void setaId(String aId) {
+        this.aId = aId;
+    }
 }
 
 

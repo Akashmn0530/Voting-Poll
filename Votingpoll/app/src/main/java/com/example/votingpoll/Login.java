@@ -26,7 +26,7 @@ public class Login extends AppCompatActivity {
     Button button1;
     private ProgressBar progressbar;
     private FirebaseAuth mAuth;
-
+    String email, password;
     int counter = 3;
     @SuppressLint("MissingInflatedId")
     @Override
@@ -63,13 +63,13 @@ public class Login extends AppCompatActivity {
 
     }
 
+
     private void loginUserAccount()
     {
         // show the visibility of progress bar to show loading
         progressbar.setVisibility(View.VISIBLE);
 
         // Take the value of two edit texts in Strings
-        String email, password;
         email = uname.getText().toString();
         password = pword.getText().toString();
 
@@ -103,11 +103,6 @@ public class Login extends AppCompatActivity {
                                                     "Login successful!!",
                                                     Toast.LENGTH_LONG)
                                             .show();
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString("iEmail", email);
-                                    // set Fragmentclass Arguments
-                                    ProfileFragment fragobj = new ProfileFragment();
-                                    fragobj.setArguments(bundle);
                                     // hide the progress bar
                                     progressbar.setVisibility(View.GONE);
 
@@ -145,6 +140,8 @@ public class Login extends AppCompatActivity {
                             }
                         });
     }
-
+    public String getMyData() {
+        return email;
+    }
 
 }

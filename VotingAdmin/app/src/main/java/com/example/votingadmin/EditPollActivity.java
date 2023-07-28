@@ -25,12 +25,13 @@ import java.util.Map;
 public class EditPollActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
+    AddPollClass userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_poll);
         db = FirebaseFirestore.getInstance();
-        String userId = getIntent().getStringExtra("userId");
+        userId = (AddPollClass) getIntent().getSerializableExtra("userId");
         Log.d("Akash","EditUserClass"+userId);
         if (userId != null) {
             // Use the user ID to fetch the user data from Firestore and display it in the activity
@@ -49,9 +50,10 @@ public class EditPollActivity extends AppCompatActivity {
             finish();
         }
     }
-    private void fetchUserData(String userId) {
+    private void fetchUserData(AddPollClass userId) {
+        String mail = userId.getaEmail();
         db.collection("PollData")
-                .whereEqualTo("aEmail", userId)
+                .whereEqualTo("aEmail", mail)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -80,28 +82,27 @@ public class EditPollActivity extends AppCompatActivity {
     }
 
     // Implement the updateFirestoreData method to update the Firestore data with edited user data
-    private void updateFirestoreData(String userId, String fullName, String email, long mobile, String address, long aadhar) {
-// Use the userId to update the Firestore data
-        DocumentReference userRef = db.collection("PollData").document(userId);
-        userRef.update(
-                        "aFullname", fullName,
-                        "aEmail", email,
-                        "aMobile", mobile,
-                        "aAddress", address,
-                        "aAadhaar", aadhar
-                ).addOnSuccessListener(new OnSuccessListener<Void>() {
+    private void updateFirestoreData(AddPollClass userId, String fullName, String email, long mobile, String address, long aadhar) {
+        // Use the userId to update the Firestore data
+        AddPollClass updatePoll = new AddPollClass();
+        updatePoll.setaAadhaar(aadhar);
+        updatePoll.setaAddress(address);
+        updatePoll.setaEmail(email);
+        updatePoll.setaFullname(fullName);
+        updatePoll.setaMobile(mobile);
+        db.collection("PollData").document(userId.getaEmail()).
+                set(updatePoll)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(EditPollActivity.this, "User data updated successfully.", Toast.LENGTH_SHORT).show();
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(EditPollActivity.this, "Successfully updated...", Toast.LENGTH_SHORT).show();
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
+                }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(EditPollActivity.this, "Failed to update user data.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditPollActivity.this, "Failed to update...", Toast.LENGTH_SHORT).show();
                     }
                 });
-
     }
 
     // Implement the method to handle the Save button click to update the Firestore data
@@ -115,7 +116,6 @@ public class EditPollActivity extends AppCompatActivity {
 
 // Get other fields as needed
 
-        String userId = getIntent().getStringExtra("userId");
         if (userId != null) {
             updateFirestoreData(userId, fullName, email, mobile, address, aadhar); // Call the updateFirestoreData method to update data
         }

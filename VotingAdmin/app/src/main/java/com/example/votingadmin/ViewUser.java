@@ -72,6 +72,7 @@ public class ViewUser extends Fragment {
                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                             for (DocumentSnapshot d : list) {
                                 ServerData c = d.toObject(ServerData.class);
+                                c.setAuId(d.getId());
                                 myListData.add(c);
                                 Log.d("Aka","getting data..");
                             }

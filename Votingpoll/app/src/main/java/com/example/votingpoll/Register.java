@@ -39,7 +39,7 @@ public class Register extends AppCompatActivity {
     private ProgressBar progressBar;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-    UserData userData;
+    ServerData userData;
     EditText fulln,usern,passw,cpassword,eMobile,eAddress,eAadharno;
     @SuppressLint("MissingInflatedId")
     @Override
@@ -60,7 +60,7 @@ public class Register extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         mAuth = FirebaseAuth.getInstance();
-        userData = new UserData();
+        userData = new ServerData();
         signbtn.setOnClickListener(new View.OnClickListener(){
                                        @Override
                                        public void onClick(View view) {
@@ -126,7 +126,7 @@ public class Register extends AppCompatActivity {
                             // hide the progress bar
                             progressBar.setVisibility(View.GONE);
                             //firestore
-                            addDatatoFireStore(fullname, email, address, mobile, aadhar, password);
+                            addDatatoFireStore(fullname, email, address, mobile, aadhar);
                             // if the user created intent to login activity
                             Intent intent = new Intent(Register.this, Login.class);
                             startActivity(intent);
@@ -175,11 +175,15 @@ public class Register extends AppCompatActivity {
             return true;
         }
     }
-    private void addDatatoFireStore(String fname, String email, String address, long mobile,long aadhar, String password) {
+    private void addDatatoFireStore(String fname, String email, String address, long mobile,long aadhar) {
 
         //CollectionReference dbUserData = db.collection("UserData");
-        UserData userData1 = new UserData(fname, email, address, mobile, aadhar, password);
-
+        ServerData userData1 = new ServerData();
+        userData1.setauAadhaar(aadhar);
+        userData1.setauAddress(address);
+        userData1.setauEmail(email);
+        userData1.setauFullname(fname);
+        userData1.setauMobile(mobile);
         // Add a new document with a generated ID
         db.collection("UserData")
                 .add(userData1)

@@ -77,6 +77,7 @@ public class ViewPoll extends Fragment {
                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                             for (DocumentSnapshot d : list) {
                                 AddPollClass c = d.toObject(AddPollClass.class);
+                                c.setaId(d.getId());
                                 addPollClasses.add(c);
                                 Log.d("Aka","getting data..");
                             }

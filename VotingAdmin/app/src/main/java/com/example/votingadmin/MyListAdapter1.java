@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class MyListAdapter1 extends RecyclerView.Adapter<MyListAdapter1.ViewHolder>{
@@ -68,7 +69,7 @@ public class MyListAdapter1 extends RecyclerView.Adapter<MyListAdapter1.ViewHold
                     AddPollClass addPollClass = listdata.get(getAdapterPosition());
                     Intent intent = new Intent(context, EditPollActivity.class);
                     Log.d("Akash",addPollClass.getaEmail());
-                    intent.putExtra("userId",addPollClass.getaEmail());
+                    intent.putExtra("userId",addPollClass);
                     context.startActivity(intent);
                 }
             });
