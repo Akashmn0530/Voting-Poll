@@ -131,21 +131,18 @@ public class AddUser extends Fragment {
         eAddedData.setauAddress(address);
         eAddedData.setauAadhaar(aadhar);
 
-        db.collection("AddUser")
-                .add(eAddedData)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        db.collection("AddUser").document(email)
+                .set(eAddedData).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(getActivity(), "User added successfully", Toast.LENGTH_SHORT).show();
+                    public void onSuccess(Void unused) {
                         progressBar.setVisibility(View.GONE);
-                        clearFields();
+                        Toast.makeText(getActivity(), "Success...", Toast.LENGTH_SHORT).show();
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
+                }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), "Failed to add user", Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.GONE);
+                        Toast.makeText(getActivity(), "Failed...", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

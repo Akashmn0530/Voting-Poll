@@ -28,6 +28,7 @@ public class Login extends AppCompatActivity {
     private FirebaseAuth mAuth;
     String email, password;
     int counter = 3;
+    static String emailId;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +106,7 @@ public class Login extends AppCompatActivity {
                                             .show();
                                     // hide the progress bar
                                     progressbar.setVisibility(View.GONE);
-
+                                    emailId = email;
                                     // if sign-in is successful
                                     // intent to home activity
                                     Intent intent
@@ -139,9 +140,6 @@ public class Login extends AppCompatActivity {
                                 }
                             }
                         });
-    }
-    public String getMyData() {
-        return email;
     }
 
 }

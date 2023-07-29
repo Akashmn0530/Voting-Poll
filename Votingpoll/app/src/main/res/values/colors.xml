@@ -27,4 +27,7 @@
     <color name="error2">#edf2f4</color>
     <color name="error3">#ef233c</color>
 
+    <color name="lightGrey">#808080</color>
+    <color name="duskYellow">#8B8000</color>
+
 </resources>

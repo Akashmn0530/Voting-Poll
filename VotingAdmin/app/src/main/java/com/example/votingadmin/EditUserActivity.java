@@ -56,8 +56,8 @@ public class EditUserActivity extends AppCompatActivity {
 
     private void fetchUserData(ServerData userId) {
          String mail = userId.getAuEmail();
-         Log.d("Akash",mail);
-                db.collection("AddData")
+         Log.d("Akash",mail+"line 59");
+                db.collection("AddUser")
                         .whereEqualTo("auEmail", mail)
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -65,19 +65,20 @@ public class EditUserActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Map<String,Object> server1 = document.getData();
                                         EditText fullNameEditText = findViewById(R.id.editFullName);
                                         EditText emailEditText = findViewById(R.id.editEmail);
                                         EditText mobileEditText = findViewById(R.id.editMobile);
                                         EditText addressEditText = findViewById(R.id.editAddress);
                                         EditText aadharEditText = findViewById(R.id.editAadhar);
 
-                                        Map<String,Object> server1 = document.getData();
-
                                         fullNameEditText.setText(String.valueOf(server1.get("auFullname")));
                                         emailEditText.setText(String.valueOf(server1.get("auEmail")));
                                         mobileEditText.setText(String.valueOf(server1.get("auMobile")));
                                         addressEditText.setText(String.valueOf(server1.get("auAddress")));
                                         aadharEditText.setText(String.valueOf(server1.get("auAadhaar")));
+                                        //String ab = server1.get();
+
                                     }
                                 } else {
                                     Toast.makeText(EditUserActivity.this, "Error", Toast.LENGTH_SHORT).show();
@@ -88,7 +89,7 @@ public class EditUserActivity extends AppCompatActivity {
 
     // Implement the updateFirestoreData method to update the Firestore data with edited user data
     private void updateFirestoreData(ServerData userId, String fullName, String email, long mobile, String address, long aadhar) {
-// Use the userId to update the Firestore data
+        // Use the userId to update the Firestore data
         ServerData updatePoll = new ServerData();
         updatePoll.setauAadhaar(aadhar);
         updatePoll.setauAddress(address);
@@ -112,14 +113,14 @@ public class EditUserActivity extends AppCompatActivity {
 
     // Implement the method to handle the Save button click to update the Firestore data
     public void onSaveButtonClick() {
-// Get the updated data from the edit text fields
+        // Get the updated data from the edit text fields
         String fullName = ((EditText)findViewById(R.id.editFullName)).getText().toString();
         String email = ((EditText)findViewById(R.id.editEmail)).getText().toString();
         long mobile = Long.parseLong(((EditText)findViewById(R.id.editMobile)).getText().toString());
         String address = ((EditText)findViewById(R.id.editAddress)).getText().toString();
         long aadhar = Long.parseLong(((EditText)findViewById(R.id.editAadhar)).getText().toString());
 
-// Get other fields as needed
+        // Get other fields as needed
 
         if (userId != null) {
             updateFirestoreData(userId, fullName, email, mobile, address, aadhar); // Call the updateFirestoreData method to update data

@@ -50,6 +50,7 @@
             android:background="@drawable/custombutton"
             android:gravity="center"
             android:hint="Mobile"
+            android:inputType="number"
             android:textColorHint="#000000" />
 
         <EditText
@@ -69,6 +70,7 @@
             android:background="@drawable/custombutton"
             android:gravity="center"
             android:hint="Aadhar"
+            android:inputType="number"
             android:textColorHint="#000000" />
 
         <EditText

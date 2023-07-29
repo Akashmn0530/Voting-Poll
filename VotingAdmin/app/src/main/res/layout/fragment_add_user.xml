@@ -48,6 +48,7 @@
             android:layout_marginTop="15dp"
             android:background="@drawable/custombutton"
             android:gravity="center"
+            android:inputType="number"
             android:hint="Mobile"
             android:textColorHint="#000000" />
 
@@ -67,6 +68,7 @@
             android:layout_marginTop="15dp"
             android:background="@drawable/custombutton"
             android:gravity="center"
+            android:inputType="number"
             android:hint="Aadhar"
             android:textColorHint="#000000" />
 

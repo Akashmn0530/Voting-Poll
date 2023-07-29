@@ -7,9 +7,11 @@
     <string name="aadhar"></string>
     <string name="email_id" />
     <string name="mob_no" />
-    <string name="name" />
+    <string name="name">Name</string>
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
     <string name="open_drawer">open</string>
     <string name="close_drawer">close</string>
+    <string name="status">Status</string>
+    <string name="vote_count">Vote Count</string>
 </resources>

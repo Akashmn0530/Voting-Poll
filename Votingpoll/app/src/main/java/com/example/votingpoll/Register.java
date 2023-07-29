@@ -93,59 +93,66 @@ public class Register extends AppCompatActivity {
             usern.setError("Invalid mail!!!");
             return;
         }
-        if (!validatePassword(password,conpassword,passw)) {
+        else if (!validatePassword(password,conpassword,passw)) {
             return;
         }
-        if (TextUtils.isEmpty(fullname) || fullname.length()<3) {
+        else if (TextUtils.isEmpty(fullname) || fullname.length()<3) {
             fulln.setError("Invalid name!!!");
             return;
         }
-        if (!(String.valueOf(mobile).length() == 10)) {
+        else if (!(String.valueOf(mobile).length() == 10)) {
             eMobile.setError("Invalid mobile no!!!");
             return;
         }
-        if (TextUtils.isEmpty(address)) {
+        else if (TextUtils.isEmpty(address)) {
             eAddress.setError("Invalid address!!!");
             return;
         }
-        if (!(String.valueOf(aadhar).length() == 12)) {
+        else if (!(String.valueOf(aadhar).length() == 12)) {
             eAadharno.setError("Invalid aadhaar no.!!!");
             return;
         }
-        // create new user or register new user
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        else if(!toCheckExisistingUser(email,aadhar)){
 
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task)
-                    {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(),
-                                            "Registration successful!",
-                                            Toast.LENGTH_LONG).show();
-                            // hide the progress bar
-                            progressBar.setVisibility(View.GONE);
-                            //firestore
-                            addDatatoFireStore(fullname, email, address, mobile, aadhar);
-                            // if the user created intent to login activity
-                            Intent intent = new Intent(Register.this, Login.class);
-                            startActivity(intent);
+         }
+        else {
+            // create new user or register new user
+            mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getApplicationContext(),
+                                        "Registration successful!",
+                                        Toast.LENGTH_LONG).show();
+                                // hide the progress bar
+                                progressBar.setVisibility(View.GONE);
+                                //firestore
+                                addDatatoFireStore(fullname, email, address, mobile, aadhar);
+                                // if the user created intent to login activity
+                                Intent intent = new Intent(Register.this, Login.class);
+                                startActivity(intent);
+                            } else {
+
+                                // Registration failed
+                                Toast.makeText(
+                                                getApplicationContext(),
+                                                "Registration failed!!"
+                                                        + " Please try again later",
+                                                Toast.LENGTH_LONG)
+                                        .show();
+
+                                // hide the progress bar
+                                progressBar.setVisibility(View.GONE);
+                            }
                         }
-                        else {
+                    });
+        }
+    }
 
-                            // Registration failed
-                            Toast.makeText(
-                                            getApplicationContext(),
-                                            "Registration failed!!"
-                                                    + " Please try again later",
-                                            Toast.LENGTH_LONG)
-                                    .show();
-
-                            // hide the progress bar
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    }
-                });
+    public boolean toCheckExisistingUser(String email,long aadhar){
+        return true;
     }
 
     public boolean validatePassword(String passwordInput,String cpass, EditText password) {
@@ -185,18 +192,16 @@ public class Register extends AppCompatActivity {
         userData1.setauFullname(fname);
         userData1.setauMobile(mobile);
         // Add a new document with a generated ID
-        db.collection("UserData")
-                .add(userData1)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        db.collection("UserData").document(email)
+                .set(userData1).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(Register.this, "Success...", Toast.LENGTH_SHORT).show();
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
+                }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
+                        Toast.makeText(Register.this, "Failed...", Toast.LENGTH_SHORT).show();
                     }
                 });
 

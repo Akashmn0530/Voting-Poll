@@ -72,4 +72,13 @@
         android:text="Vote count"
         android:textSize="24sp"
         android:textColor="#000000" />
+    <TextView
+        android:id="@+id/rv_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rv_count"
+        android:layout_margin="10dp"
+        android:text="Vote count"
+        android:textSize="24sp"
+        android:textColor="#000000" />
 </RelativeLayout>

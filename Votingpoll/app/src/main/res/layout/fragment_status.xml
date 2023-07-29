@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".StatusFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <!--    <TextView-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="STATUS"-->
+    <!--        android:textSize="35dp"-->
+    <!--        android:textAlignment="center"-->
+    <!--        android:layout_gravity="center"-->
+    <!--        android:layout_margin="20dp"-->
+    <!--        android:textStyle="bold"-->
+    <!--        android:textColor="#673ab7"-->
+    <!--        android:textAllCaps="true"/>-->
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:src="@drawable/votebg"
+        app:civ_border_width="2dp"
+        app:civ_border_color="#FF000000"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="100dp">
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20sp"
+            android:text="@string/name"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/statusName"
+            android:layout_height="wrap_content"
+            android:paddingLeft="50dp"
+            android:text="name"
+            android:textAllCaps="true"
+            android:textSize="20sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="20dp">
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20sp"
+            android:text="@string/status"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/statusStatus"
+            android:paddingLeft="50dp"
+            android:text="Not Voted"
+            android:textSize="20sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="20dp">
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20sp"
+            android:text="@string/vote_count"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="50dp"
+            android:id="@+id/statusCount"
+            android:text="0"
+            android:textSize="20sp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

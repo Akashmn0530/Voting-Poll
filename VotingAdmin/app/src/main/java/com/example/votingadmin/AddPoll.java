@@ -126,19 +126,17 @@ public class AddPoll extends Fragment {
         addPollClass.setaAadhaar(aadhar);
         //DocumentReference newDB = db.collection("PollData").document();
         // Add a new document with a generated ID
-        db.collection("PollData")
-                .add(addPollClass)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+
+        db.collection("PollData").document(email)
+                .set(addPollClass).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        clearFields();
-                        Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(getActivity(), "Success...", Toast.LENGTH_SHORT).show();
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
+                }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Failed...", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

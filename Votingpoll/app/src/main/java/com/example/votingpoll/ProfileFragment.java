@@ -32,7 +32,8 @@ import java.util.Map;
 
 
 public class ProfileFragment extends Fragment {
-    EditText proName,proEmail,proMobile,proAddress,proAadhar;
+    EditText proName,proEmail,proMobile,proAddress;
+    TextView proAadhar;
     Button proEdit;
     FirebaseFirestore db;
     public ProfileFragment() {
@@ -52,12 +53,16 @@ public class ProfileFragment extends Fragment {
         proEdit = getView().findViewById(R.id.pEdit);
         db = FirebaseFirestore.getInstance();
         // Getting Intent...
-        Login login = new Login();
-        String email = login.getMyData();
-        //String email = getArguments().getString("iEmail");
+        String email =  Login.emailId;
 
         //Calling fetchData method...
         fetchTheData(email);
+        proEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateData();
+            }
+        });
     }
 
     @Override
@@ -67,8 +72,51 @@ public class ProfileFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
+    void updateData(){
+        // Get the updated data from the edit text fields
+        String fullName = (proName).getText().toString();
+        String email = (proEmail).getText().toString();
+        long mobile = Long.parseLong((proMobile).getText().toString());
+        String address = (proAddress).getText().toString();
+       // long aadhar = Long.parseLong((proAddress).getText().toString());
+
+        // Get other fields as needed
+
+        if (email != null) {
+            // Use the userId to update the Firestore data
+//            ServerData proUpdate = new ServerData();
+//            proUpdate.setauAddress(address);
+//            proUpdate.setauEmail(email);
+//            proUpdate.setauFullname(fullName);
+//            proUpdate.setauMobile(mobile);
+
+            DocumentReference update1 = db.collection("UserData").document(email);
+            //Update DB
+            update1
+                    .update("auFullname", fullName,
+                    "auEmail",email,
+                            "auAddress",address,
+                            "auMobile",mobile
+                            )
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(getActivity(), "Successfully updated", Toast.LENGTH_SHORT).show();
+                            Log.d("Akash", "DocumentSnapshot successfully updated!");
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+                    Log.w("Akash", "Error updating document", e);
+                }
+            });
+        }
+    }
+
     void fetchTheData(String email){
-        DocumentReference docRef = db.collection("AddUser").document(email);
+        Log.d("Akash","profile 70"+email);
+        DocumentReference docRef = db.collection("UserData").document(email);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

@@ -12,6 +12,7 @@ public class ServerData implements Serializable {
     private  long auMobile;
     private String auAddress;
     private long auAadhaar;
+    private float auRating = 0.0f;
 
     private String vote = "Not voted";
 
@@ -80,6 +81,14 @@ public class ServerData implements Serializable {
 
     public void setAuId(String auId) {
         this.auId = auId;
+    }
+
+    public float getAuRating() {
+        return auRating;
+    }
+
+    public void setAuRating(float auRating) {
+        this.auRating = auRating;
     }
 }
 

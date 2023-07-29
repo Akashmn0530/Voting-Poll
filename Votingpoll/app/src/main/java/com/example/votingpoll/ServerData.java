@@ -10,7 +10,7 @@ public class ServerData {
     private  long auMobile;
     private String auAddress;
     private long auAadhaar;
-
+    private float auRating = 0;
     private String vote = "Not voted";
 
     private int voteCount = 0;
@@ -70,6 +70,14 @@ public class ServerData {
 
     public void setVoteCount(int voteCount) {
         this.voteCount = voteCount;
+    }
+
+    public float getAuRating() {
+        return auRating;
+    }
+
+    public void setAuRating(float auRating) {
+        this.auRating = auRating;
     }
 }
 
