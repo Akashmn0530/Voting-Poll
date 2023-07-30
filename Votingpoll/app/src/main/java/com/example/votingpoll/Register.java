@@ -30,7 +30,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.regex.Pattern;
 
@@ -41,6 +44,7 @@ public class Register extends AppCompatActivity {
     private FirebaseFirestore db;
     ServerData userData;
     EditText fulln,usern,passw,cpassword,eMobile,eAddress,eAadharno;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +60,7 @@ public class Register extends AppCompatActivity {
         cpassword = (EditText)findViewById(R.id.confirmpassword);
         progressBar = findViewById(R.id.progressBar);
         Button signbtn = (Button)findViewById(R.id.signbtn);
+
         //for firestore
         db = FirebaseFirestore.getInstance();
 
@@ -112,47 +117,85 @@ public class Register extends AppCompatActivity {
             eAadharno.setError("Invalid aadhaar no.!!!");
             return;
         }
-        else if(!toCheckExisistingUser(email,aadhar)){
-
-         }
+        ////////////////////
         else {
-            // create new user or register new user
-            mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            checkAadharNumberInFireStore(aadhar, new AadharCheckCallback() {
+                @Override
+                public void onAadharExists(boolean exists) {
+                    if (exists) {
 
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(getApplicationContext(),
-                                        "Registration successful!",
-                                        Toast.LENGTH_LONG).show();
-                                // hide the progress bar
-                                progressBar.setVisibility(View.GONE);
-                                //firestore
-                                addDatatoFireStore(fullname, email, address, mobile, aadhar);
-                                // if the user created intent to login activity
-                                Intent intent = new Intent(Register.this, Login.class);
-                                startActivity(intent);
-                            } else {
+                        // create new user or register new user
+                        mAuth.createUserWithEmailAndPassword(email, password)
+                                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
 
-                                // Registration failed
-                                Toast.makeText(
-                                                getApplicationContext(),
-                                                "Registration failed!!"
-                                                        + " Please try again later",
-                                                Toast.LENGTH_LONG)
-                                        .show();
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(getApplicationContext(),
+                                                    "Registration successful!",
+                                                    Toast.LENGTH_LONG).show();
+                                            // hide the progress bar
+                                            progressBar.setVisibility(View.GONE);
+                                            //firestore
+                                            addDatatoFireStore(fullname, email, address, mobile, aadhar);
+                                            // if the user created intent to login activity
+                                            Intent intent = new Intent(Register.this, Login.class);
+                                            startActivity(intent);
+                                        } else {
 
-                                // hide the progress bar
-                                progressBar.setVisibility(View.GONE);
-                            }
-                        }
-                    });
+                                            // Registration failed
+                                            Toast.makeText(
+                                                            getApplicationContext(),
+                                                            "Registration failed!!"
+                                                                    + " Please try again later",
+                                                            Toast.LENGTH_LONG)
+                                                    .show();
+
+                                            // hide the progress bar
+                                            progressBar.setVisibility(View.GONE);
+                                        }
+                                    }
+                                });
+                    }
+                    else {
+                        usern.setText("");
+                        passw.setText("");
+                        eAadharno.setText("");
+                        eAddress.setText("");
+                        eMobile.setText("");
+                        fulln.setText("");
+                        cpassword.setText("");
+                        Toast.makeText(Register.this, "Your not eligible...", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            });
         }
+        ///////////////////
+
     }
 
-    public boolean toCheckExisistingUser(String email,long aadhar){
-        return true;
+    private void checkAadharNumberInFireStore(long aadhar, AadharCheckCallback callback){
+        CollectionReference collectionReference = db.collection("AddUser");
+        Query aadharQuery = collectionReference.whereEqualTo("auAadhaar", aadhar);
+        aadharQuery.get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                QuerySnapshot querySnapshot = task.getResult();
+                boolean aadharExists = false;
+                if(querySnapshot != null){
+                    for(DocumentSnapshot document : querySnapshot.getDocuments()){
+                        if(document.exists()) {
+                            aadharExists = true;
+                            break;
+                        }
+                    }
+                }
+                if (aadharExists) Toast.makeText(this, "Addhar no. Exists", Toast.LENGTH_SHORT).show();
+                else Toast.makeText(this, "Aadhar no. is not exists in the database", Toast.LENGTH_SHORT).show();
+                callback.onAadharExists(aadharExists);
+            }
+        });
+
     }
 
     public boolean validatePassword(String passwordInput,String cpass, EditText password) {
