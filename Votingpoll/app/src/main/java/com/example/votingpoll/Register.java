@@ -166,6 +166,8 @@ public class Register extends AppCompatActivity {
                         fulln.setText("");
                         cpassword.setText("");
                         Toast.makeText(Register.this, "Your not eligible...", Toast.LENGTH_SHORT).show();
+                        // hide the progress bar
+                        progressBar.setVisibility(View.GONE);
                     }
 
                 }

@@ -32,7 +32,6 @@ public class EditPollActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_poll);
         db = FirebaseFirestore.getInstance();
         userId = (AddPollClass) getIntent().getSerializableExtra("userId");
-        Log.d("Akash","EditUserClass"+userId);
         if (userId != null) {
             // Use the user ID to fetch the user data from Firestore and display it in the activity
             fetchUserData(userId);

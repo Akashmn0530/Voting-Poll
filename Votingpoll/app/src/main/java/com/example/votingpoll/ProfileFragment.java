@@ -2,8 +2,10 @@ package com.example.votingpoll;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -54,7 +56,15 @@ public class ProfileFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         // Getting Intent...
         String email =  Login.emailId;
-
+        // This callback will only be called when MyFragment is at least Started.
+//        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+//            @Override
+//            public void handleOnBackPressed() {
+//                Intent intent = new Intent(getContext(), HomeActivity.class);
+//                startActivity(intent);
+//            }
+//        };
+//        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);
         //Calling fetchData method...
         fetchTheData(email);
         proEdit.setOnClickListener(new View.OnClickListener() {
@@ -79,17 +89,9 @@ public class ProfileFragment extends Fragment {
         long mobile = Long.parseLong((proMobile).getText().toString());
         String address = (proAddress).getText().toString();
        // long aadhar = Long.parseLong((proAddress).getText().toString());
-
         // Get other fields as needed
-
         if (email != null) {
             // Use the userId to update the Firestore data
-//            ServerData proUpdate = new ServerData();
-//            proUpdate.setauAddress(address);
-//            proUpdate.setauEmail(email);
-//            proUpdate.setauFullname(fullName);
-//            proUpdate.setauMobile(mobile);
-
             DocumentReference update1 = db.collection("UserData").document(email);
             //Update DB
             update1
