@@ -8,7 +8,7 @@
     android:id="@+id/layDL"
     android:fitsSystemWindows="true"
     tools:openDrawer="start"
-    tools:context=".HomeActivity">
+    tools:context=".user.HomeActivity">
 
     <LinearLayout
         android:orientation="vertical"
@@ -23,7 +23,7 @@
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#673AB7"
+                android:background="#000000"
                 app:title="VOTE POLLING"
                 app:titleTextColor="@color/white"
                 android:id="@+id/toolbar" />
@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="WELCOME TO  ONLINE VOTING"
-        android:textColor="#FF283593"
+        android:textColor="#000000"
         android:textStyle="bold|italic"
         android:textSize="20sp"
         android:id="@+id/welcomeTxt"

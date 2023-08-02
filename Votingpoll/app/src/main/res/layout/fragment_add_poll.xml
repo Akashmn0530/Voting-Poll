@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg3"
+    tools:context="com.example.votingadmin.AddPoll">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle"
+            android:layout_marginTop="38dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:text="Voting"
+            android:textColor="#fff" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:fontFamily="sans-serif-smallcaps"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="ADD POLL"
+            android:textColor="#FFFFFF"
+            android:textSize="50dp"
+            tools:ignore="MissingConstraints" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="100dp"
+        android:padding="40dp">
+
+        <EditText
+            android:id="@+id/pollname"
+            android:layout_width="250dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/custombutton"
+            android:backgroundTint="#D0353333"
+            android:padding="10dp"
+            android:drawableStart="@drawable/baseline_user"
+            android:gravity="left"
+            android:hint="Candidate name"
+            android:textColorHint="#000000" />
+
+
+        <EditText
+            android:id="@+id/pollaadhar"
+            android:layout_width="250dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/custombutton"
+            android:backgroundTint="#D0353333"
+            android:padding="10dp"
+            android:drawableStart="@drawable/baseline_user"
+            android:gravity="left"
+            android:hint="Identity Number"
+            android:textColorHint="#000000" />
+
+        <LinearLayout
+            android:layout_width="328dp"
+            android:layout_height="102dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <Button
+                android:id="@+id/polladd"
+                android:layout_width="100dp"
+                android:layout_height="48dp"
+                android:padding="10dp"
+                android:text="ADD"
+                android:layout_marginRight="10dp"
+                android:backgroundTint="#0E0E0E"
+                android:textColor="#FFFBF6" />
+            <Button
+                android:id="@+id/pollView"
+                android:layout_width="100dp"
+                android:layout_height="48dp"
+                android:padding="10dp"
+                android:text="VIEW"
+                android:backgroundTint="@color/black"
+                android:layout_marginRight="10dp"
+                android:textAllCaps="false"
+                android:textColor="#FFFBF6" />
+
+            <Button
+                android:id="@+id/pollcancel"
+                android:layout_width="100dp"
+                android:layout_height="48dp"
+                android:padding="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="CANCEL"
+                android:backgroundTint="@color/black"
+                android:textAllCaps="false"
+                android:textColor="#FFFBF6" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="#3fff"
+            android:layout_marginTop="15dp"/>
+
+        <ProgressBar
+            android:id="@+id/userprogressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+    </LinearLayout>
+    <FrameLayout
+        android:id="@+id/viewfragmentContainer4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+</RelativeLayout>
