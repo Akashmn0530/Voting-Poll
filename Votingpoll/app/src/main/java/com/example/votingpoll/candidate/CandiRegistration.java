@@ -37,7 +37,6 @@ public class CandiRegistration extends AppCompatActivity {
 
 
     private ProgressBar progressBar;
-    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     CandiData userData;
     EditText fulln,usern,passw,cpassword,eMobile,eAddress,eAadharno;
@@ -60,8 +59,6 @@ public class CandiRegistration extends AppCompatActivity {
 
         //for firestore
         db = FirebaseFirestore.getInstance();
-
-        mAuth = FirebaseAuth.getInstance();
         userData = new CandiData();
         signbtn.setOnClickListener(new View.OnClickListener(){
                                        @Override
@@ -129,38 +126,14 @@ public class CandiRegistration extends AppCompatActivity {
                 public void onAadharExists(boolean exists) {
                     if (exists) {
 
-                        // create new user or register new user
-                        mAuth.createUserWithEmailAndPassword(email, password)
-                                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        // hide the progress bar
+                        progressBar.setVisibility(View.GONE);
+                        //firestore
+                        addDatatoFireStore(fullname, email, address, mobile, aadhar,password);
+                        // if the user created intent to login activity
+                        Intent intent = new Intent(CandiRegistration.this, Login.class);
+                        startActivity(intent);
 
-                                    @Override
-                                    public void onComplete(@NonNull Task<AuthResult> task) {
-                                        if (task.isSuccessful()) {
-                                            Toast.makeText(getApplicationContext(),
-                                                    "Registration successful!",
-                                                    Toast.LENGTH_LONG).show();
-                                            // hide the progress bar
-                                            progressBar.setVisibility(View.GONE);
-                                            //firestore
-                                            addDatatoFireStore(fullname, email, address, mobile, aadhar);
-                                            // if the user created intent to login activity
-                                            Intent intent = new Intent(CandiRegistration.this, Login.class);
-                                            startActivity(intent);
-                                        } else {
-
-                                            // Registration failed
-                                            Toast.makeText(
-                                                            getApplicationContext(),
-                                                            "Registration failed!!"
-                                                                    + " Please try again later",
-                                                            Toast.LENGTH_LONG)
-                                                    .show();
-
-                                            // hide the progress bar
-                                            progressBar.setVisibility(View.GONE);
-                                        }
-                                    }
-                                });
                     }
                     else {
                         usern.setText("");
@@ -232,7 +205,7 @@ public class CandiRegistration extends AppCompatActivity {
             return true;
         }
     }
-    private void addDatatoFireStore(String fname, String email, String address, long mobile,String aadhar) {
+    private void addDatatoFireStore(String fname, String email, String address, long mobile,String aadhar,String pass) {
 
         //CollectionReference dbUserData = db.collection("UserData");
         CandiData userData1 = new CandiData();
@@ -241,6 +214,7 @@ public class CandiRegistration extends AppCompatActivity {
         userData1.setaucEmail(email);
         userData1.setaucFullname(fname);
         userData1.setaucMobile(mobile);
+        userData1.setAucPass(pass);
         // Add a new document with a generated ID
         db.collection("CandiData").document(aadhar)
                 .set(userData1).addOnSuccessListener(new OnSuccessListener<Void>() {

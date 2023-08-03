@@ -10,6 +10,9 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
@@ -24,6 +27,7 @@ public class HomeActivity extends AppCompatActivity {
     NavigationView vNV;
     Toolbar toolbar;
     TextView textView;
+    LinearLayout linearLayout;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -35,9 +39,20 @@ public class HomeActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         textView = findViewById(R.id.welcomeTxt);
         setSupportActionBar(toolbar);
+        linearLayout = findViewById(R.id.linearHome1);
         Bundle bundle = getIntent().getExtras();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, layDL, toolbar, R.string.open_drawer, R.string.close_drawer);
-
+        ImageButton imageButton =  (ImageButton) findViewById(R.id.imageButton);
+        imageButton.setOnClickListener(view -> {
+            // Creating a toast to display the message
+            linearLayout.setVisibility(View.GONE);
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction t1 = fm.beginTransaction();
+            TermsAndConditionsFragment termsAndConditionsFragment = new TermsAndConditionsFragment();
+            t1.replace(R.id.fragmentContainer1, termsAndConditionsFragment);
+            t1.commit();
+            Log.d("Akash","HomeActivity button clicked");
+        });
         layDL.addDrawerListener(toggle);
         toggle.syncState();
 

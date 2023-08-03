@@ -8,6 +8,7 @@ public class CandiData {
     private String aucAadhaar;
     private float aucRating = 0;
     private String aucId;
+    private String aucPass;
 
     public void setaucAadhaar(String uAadhaar) {
         this.aucAadhaar = uAadhaar;
@@ -63,6 +64,14 @@ public class CandiData {
 
     public void setAucId(String auId) {
         this.aucId = auId;
+    }
+
+    public String getAucPass() {
+        return aucPass;
+    }
+
+    public void setAucPass(String aucPass) {
+        this.aucPass = aucPass;
     }
 }
 

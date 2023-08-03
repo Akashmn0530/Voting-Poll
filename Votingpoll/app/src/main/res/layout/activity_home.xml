@@ -39,7 +39,21 @@
 
 
     </LinearLayout>
-
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:id="@+id/linearHome1">
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/votingimage" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,10 +64,10 @@
         android:textSize="20sp"
         android:id="@+id/welcomeTxt"
         tools:ignore="MissingConstraints" />
-
+    </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="match_parent"
         android:id="@+id/vNV"
         app:menu="@menu/nav_menu2"
@@ -61,5 +75,4 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         tools:ignore="MissingConstraints" />
-
 </androidx.drawerlayout.widget.DrawerLayout>
