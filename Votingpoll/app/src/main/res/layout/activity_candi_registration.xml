@@ -82,7 +82,6 @@
             android:id="@+id/aadhar"
             android:layout_width="250dp"
             android:layout_height="48dp"
-            android:inputType="number"
             android:layout_marginTop="15dp"
             android:background="@drawable/custombutton"
             android:backgroundTint="#D0353333"

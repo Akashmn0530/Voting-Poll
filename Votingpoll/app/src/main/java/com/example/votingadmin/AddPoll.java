@@ -81,7 +81,7 @@ public class AddPoll extends Fragment {
             return;
         }
 
-        else if (!(String.valueOf(aadhar).length() == 12)) {
+        else if (TextUtils.isEmpty(aadhar)) {
             condAadhaar.setError("Invalid aadhaar no.!!!");
             return;
         }

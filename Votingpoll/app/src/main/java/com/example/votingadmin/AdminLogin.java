@@ -75,14 +75,14 @@ public class AdminLogin extends AppCompatActivity {
         progressbar.setVisibility(View.VISIBLE);
 
         // Take the value of two edit texts in Strings
-        String email, password;
-        email = uname.getText().toString();
+        String Uid, password;
+        Uid = uname.getText().toString();
         password = pword.getText().toString();
 
         // validations for input email and password
-        if (TextUtils.isEmpty(email)) {
+        if (TextUtils.isEmpty(Uid)) {
             Toast.makeText(getApplicationContext(),
-                            "Please enter email!!",
+                            "Please enter userID!!",
                             Toast.LENGTH_LONG)
                     .show();
             return;
@@ -96,13 +96,13 @@ public class AdminLogin extends AppCompatActivity {
             return;
         }
         else {
-            checkAadharNumberInFireStore(email, new EmailCheckCallback() {
+            checkEmailInFireStore(Uid, new EmailCheckCallback() {
                 @Override
                 public void onEmailExists(boolean exists) {
                     if (exists) {
                         //Fetch the data from AdminData DB and
                         // Check the user entered data and DB data should match or not...
-                        fetchTheData(email,password);
+                        fetchTheData(Uid,password);
                     }
                     else {
                         Toast.makeText(AdminLogin.this, "User not exists Sign up and try again...", Toast.LENGTH_SHORT).show();
@@ -116,9 +116,9 @@ public class AdminLogin extends AppCompatActivity {
         }
     }
 
-    private void checkAadharNumberInFireStore(String email, EmailCheckCallback callback){
+    private void checkEmailInFireStore(String Uid, EmailCheckCallback callback){
         CollectionReference collectionReference = db.collection("AdminData");
-        Query aadharQuery = collectionReference.whereEqualTo("aEmail", email);
+        Query aadharQuery = collectionReference.whereEqualTo("aAadhaar", Uid);
         aadharQuery.get().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 QuerySnapshot querySnapshot = task.getResult();
@@ -136,9 +136,8 @@ public class AdminLogin extends AppCompatActivity {
         });
 
     }
-    void fetchTheData(String email, String password){
-        Log.d("Akash","199 "+email);
-        DocumentReference docRef = db.collection("AdminData").document(email);
+    void fetchTheData(String Uid, String password){
+        DocumentReference docRef = db.collection("AdminData").document(Uid);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -146,9 +145,9 @@ public class AdminLogin extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         AdminAddedData c = document.toObject(AdminAddedData.class);
-                        String getEmail = c.getaEmail();
+                        String getUID = c.getaAadhaar();
                         String getPass = c.getaPassword();
-                        if(email.equals(getEmail) && password.equals(getPass)){
+                        if(Uid.equals(getUID) && password.equals(getPass)){
                             message.getText().clear();
                             message.setBackgroundColor(Color.TRANSPARENT);
                             counter = 3;

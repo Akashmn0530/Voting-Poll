@@ -197,7 +197,7 @@ public class CandiRegistration extends AppCompatActivity {
                         }
                     }
                 }
-                if (aadharExists) Toast.makeText(this, "Addhar no. Exists", Toast.LENGTH_SHORT).show();
+                if (aadharExists) Toast.makeText(this, "Success...", Toast.LENGTH_SHORT).show();
                 else Toast.makeText(this, "Aadhar no. is not exists in the database", Toast.LENGTH_SHORT).show();
                 callback.onAadharExists(aadharExists);
             }
@@ -242,7 +242,7 @@ public class CandiRegistration extends AppCompatActivity {
         userData1.setaucFullname(fname);
         userData1.setaucMobile(mobile);
         // Add a new document with a generated ID
-        db.collection("CandiData").document(email)
+        db.collection("CandiData").document(aadhar)
                 .set(userData1).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {

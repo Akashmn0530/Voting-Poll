@@ -33,7 +33,6 @@ import java.util.regex.Pattern;
 public class Register extends AppCompatActivity {
 
     private ProgressBar progressBar;
-    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     ServerData userData;
     EditText fulln,usern,passw,cpassword,eMobile,eAddress,eAadharno;
@@ -56,8 +55,6 @@ public class Register extends AppCompatActivity {
 
         //for firestore
         db = FirebaseFirestore.getInstance();
-
-        mAuth = FirebaseAuth.getInstance();
         userData = new ServerData();
         signbtn.setOnClickListener(new View.OnClickListener(){
                                        @Override
@@ -126,37 +123,13 @@ public class Register extends AppCompatActivity {
                     if (exists) {
 
                         // create new user or register new user
-                        mAuth.createUserWithEmailAndPassword(email, password)
-                                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-
-                                    @Override
-                                    public void onComplete(@NonNull Task<AuthResult> task) {
-                                        if (task.isSuccessful()) {
-                                            Toast.makeText(getApplicationContext(),
-                                                    "Registration successful!",
-                                                    Toast.LENGTH_LONG).show();
-                                            // hide the progress bar
-                                            progressBar.setVisibility(View.GONE);
-                                            //firestore
-                                            addDatatoFireStore(fullname, email, address, mobile, aadhar);
-                                            // if the user created intent to login activity
-                                            Intent intent = new Intent(Register.this, Login.class);
-                                            startActivity(intent);
-                                        } else {
-
-                                            // Registration failed
-                                            Toast.makeText(
-                                                            getApplicationContext(),
-                                                            "Registration failed!!"
-                                                                    + " Please try again later",
-                                                            Toast.LENGTH_LONG)
-                                                    .show();
-
-                                            // hide the progress bar
-                                            progressBar.setVisibility(View.GONE);
-                                        }
-                                    }
-                                });
+                        // hide the progress bar
+                        progressBar.setVisibility(View.GONE);
+                        //firestore
+                        addDatatoFireStore(fullname, email, address, mobile, aadhar,password);
+                        // if the user created intent to login activity
+                        Intent intent = new Intent(Register.this, Login.class);
+                        startActivity(intent);
                     }
                     else {
                         usern.setText("");
@@ -228,7 +201,7 @@ public class Register extends AppCompatActivity {
             return true;
         }
     }
-    private void addDatatoFireStore(String fname, String email, String address, long mobile,String aadhar) {
+    private void addDatatoFireStore(String fname, String email, String address, long mobile,String aadhar, String password) {
 
         //CollectionReference dbUserData = db.collection("UserData");
         ServerData userData1 = new ServerData();
@@ -237,8 +210,9 @@ public class Register extends AppCompatActivity {
         userData1.setauEmail(email);
         userData1.setauFullname(fname);
         userData1.setauMobile(mobile);
+        userData1.setPassword(password);
         // Add a new document with a generated ID
-        db.collection("UserData").document(email)
+        db.collection("UserData").document(aadhar)
                 .set(userData1).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {

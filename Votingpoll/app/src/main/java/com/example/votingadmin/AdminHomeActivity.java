@@ -15,6 +15,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class AdminHomeActivity extends AppCompatActivity{
@@ -23,6 +24,7 @@ public class AdminHomeActivity extends AppCompatActivity{
     DrawerLayout layDL;
     NavigationView vNV;
     Toolbar toolbar;
+    LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +33,12 @@ public class AdminHomeActivity extends AppCompatActivity{
             addInfoData = findViewById(R.id.addInfo);
             addPollData = findViewById(R.id.addpoll);
             addUserData = findViewById(R.id.adduser1);
+            linearLayout = findViewById(R.id.linear123);
             // Your existing button setup
             addPollData.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    linearLayout.setVisibility(View.GONE);
                     FragmentManager fm = getSupportFragmentManager();
                     FragmentTransaction t1 = fm.beginTransaction();
                     AddPoll aPoll = new AddPoll();
@@ -46,6 +50,7 @@ public class AdminHomeActivity extends AppCompatActivity{
             addUserData.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    linearLayout.setVisibility(View.GONE);
                     FragmentManager fm = getSupportFragmentManager();
                     FragmentTransaction t1 = fm.beginTransaction();
                     AddUser aUser = new AddUser();

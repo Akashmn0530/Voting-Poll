@@ -59,7 +59,7 @@ public class CandiLogin extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(), "Redirecting...",Toast.LENGTH_SHORT).show();
-                Intent inte = new Intent(getApplicationContext(), Register.class);
+                Intent inte = new Intent(getApplicationContext(), CandiRegistration.class);
                 startActivity(inte);
             }
         });
@@ -114,7 +114,7 @@ public class CandiLogin extends AppCompatActivity {
                                     // intent to home activity
                                     Intent intent
                                             = new Intent(CandiLogin.this,
-                                            HomeActivity.class);
+                                            CandiHomeActivity.class);
                                     startActivity(intent);
                                 }
 

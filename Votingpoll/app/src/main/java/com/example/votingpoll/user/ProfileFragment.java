@@ -47,7 +47,7 @@ public class ProfileFragment extends Fragment {
         proEdit = getView().findViewById(R.id.pEdit);
         db = FirebaseFirestore.getInstance();
         // Getting Intent...
-        String email =  Login.emailId;
+        String id =  Login.uidpass;
         // This callback will only be called when MyFragment is at least Started.
 //        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
 //            @Override
@@ -58,7 +58,7 @@ public class ProfileFragment extends Fragment {
 //        };
 //        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);
         //Calling fetchData method...
-        fetchTheData(email);
+        fetchTheData(id);
         proEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,11 +80,11 @@ public class ProfileFragment extends Fragment {
         String email = (proEmail).getText().toString();
         long mobile = Long.parseLong((proMobile).getText().toString());
         String address = (proAddress).getText().toString();
-       // long aadhar = Long.parseLong((proAddress).getText().toString());
+        String aadhar = (proAadhar).getText().toString();
         // Get other fields as needed
-        if (email != null) {
+        if (aadhar != null) {
             // Use the userId to update the Firestore data
-            DocumentReference update1 = db.collection("UserData").document(email);
+            DocumentReference update1 = db.collection("UserData").document(aadhar);
             //Update DB
             update1
                     .update("auFullname", fullName,
@@ -108,9 +108,9 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    void fetchTheData(String email){
-        Log.d("Akash","profile 70"+email);
-        DocumentReference docRef = db.collection("UserData").document(email);
+    void fetchTheData(String id){
+        Log.d("Akash","profile 70"+id);
+        DocumentReference docRef = db.collection("UserData").document(id);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

@@ -14,7 +14,7 @@ public class ServerData implements Serializable {
     private float auRating = 0;
     private String auId;
     private String vote = "Not voted";
-
+    private  String password;
     private int voteCount = 0;
 
     public void setauAadhaar(String uAadhaar) {
@@ -24,7 +24,6 @@ public class ServerData implements Serializable {
     public void setauAddress(String uAddress) {
         this.auAddress = uAddress;
     }
-
 
     public void setauEmail(String uEmail) {
         this.auEmail = uEmail;
@@ -88,6 +87,14 @@ public class ServerData implements Serializable {
 
     public void setAuId(String auId) {
         this.auId = auId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
 

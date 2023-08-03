@@ -86,14 +86,14 @@ public class AdminRegister extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
 
         // Take the value of two edit texts in Strings
-        String email, password, fullname, address, conpassword;
-        long mobile, aadhar;
+        String email, password, aadhar, fullname, address, conpassword;
+        long mobile;
         email = usern.getText().toString();
         password = passw.getText().toString();
         fullname = fulln.getText().toString();
         mobile = Long.parseLong(eMobile.getText().toString());
         address = eAddress.getText().toString();
-        aadhar = Long.parseLong(eAadharno.getText().toString());
+        aadhar = eAadharno.getText().toString();
         conpassword = cpassword.getText().toString();
 
         // Validations for input
@@ -111,10 +111,10 @@ public class AdminRegister extends AppCompatActivity {
         } else if (TextUtils.isEmpty(address)) {
             eAddress.setError("Invalid address!!!");
             return;
-        } else if (!(String.valueOf(aadhar).length() == 12)) {
-            eAadharno.setError("Invalid aadhaar no.!!!");
-            return;
         }
+        else if (TextUtils.isEmpty(aadhar)) {
+            eAddress.setError("Invalid address!!!");
+            return;}
         else {
             // hide the progress bar
             progressBar.setVisibility(View.GONE);
@@ -148,7 +148,7 @@ public class AdminRegister extends AppCompatActivity {
             return true;
         }
     }
-    private void addDatatoFireStore(String fname, String email, String address, long mobile,long aadhar,String passwd) {
+    private void addDatatoFireStore(String fname, String email, String address, long mobile,String aadhar,String passwd) {
 
         AdminAddedData adminAddedData = new AdminAddedData();
         adminAddedData.setaAadhaar(aadhar);
@@ -158,7 +158,7 @@ public class AdminRegister extends AppCompatActivity {
         adminAddedData.setaFullname(fname);
         adminAddedData.setaPassword(passwd);
         // Add a new document with a generated ID
-        db.collection("AdminData").document(email)
+        db.collection("AdminData").document(aadhar)
                 .set(adminAddedData).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {

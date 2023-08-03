@@ -97,13 +97,14 @@ public class AddUser extends Fragment {
             return;
         }
 
-        if (!(String.valueOf(aadhar).length() == 12)) {
+        else if (TextUtils.isEmpty(aadhar)) {
             eAadharno.setError("Invalid Aadhar number!");
             progressBar.setVisibility(View.GONE);
             return;
         }
-
-        addUserDatatoFirestore(fullname,aadhar);
+        else {
+            addUserDatatoFirestore(fullname, aadhar);
+        }
     }
 
     private void addUserDatatoFirestore(String fname, String aadhar) {

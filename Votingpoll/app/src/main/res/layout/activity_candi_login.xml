@@ -19,7 +19,8 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:gravity="center"
-            android:text="Voting"
+            android:text="Candidate"
+            android:fontFamily="sans-serif-smallcaps"
             android:textColor="#fff" />
         <TextView
             android:layout_width="wrap_content"

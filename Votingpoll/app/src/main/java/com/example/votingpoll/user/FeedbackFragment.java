@@ -50,10 +50,10 @@ public class FeedbackFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_feedback, container, false);
     }
     void updateUserStar(float rating){
-        String email = Login.emailId;
+        String uidpass = Login.uidpass;
         //int rating1 = Integer.parseInt(rating);
-        if (email != null) {
-            DocumentReference update1 = db.collection("UserData").document(email);
+        if (uidpass != null) {
+            DocumentReference update1 = db.collection("UserData").document(uidpass);
             //Update DB
             update1
                     .update("auRating", rating
@@ -72,7 +72,7 @@ public class FeedbackFragment extends Fragment {
                         }
                     });
             //To update Admin's database
-            DocumentReference update2 = db.collection("AddUser").document(email);
+            DocumentReference update2 = db.collection("AddUser").document(uidpass);
             //Update DB
             update2
                     .update("auRating", rating

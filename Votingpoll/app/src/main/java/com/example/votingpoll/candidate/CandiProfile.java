@@ -83,11 +83,11 @@ public class CandiProfile extends Fragment {
         String email = (proEmail).getText().toString();
         long mobile = Long.parseLong((proMobile).getText().toString());
         String address = (proAddress).getText().toString();
-        // long aadhar = Long.parseLong((proAddress).getText().toString());
+        String aadhar = (proAddress).getText().toString();
         // Get other fields as needed
         if (email != null) {
             // Use the userId to update the Firestore data
-            DocumentReference update1 = db.collection("CandiData").document(email);
+            DocumentReference update1 = db.collection("CandiData").document(aadhar);
             //Update DB
             update1
                     .update("aucFullname", fullName,

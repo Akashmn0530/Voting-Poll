@@ -43,9 +43,9 @@ public class StatusFragment extends Fragment {
     }
 
     void fetchData(){
-        String email = Login.emailId;
-        Log.d("Akash","profile 70"+email);
-        DocumentReference docRef = db.collection("UserData").document(email);
+        String id = Login.uidpass;
+        Log.d("Akash","profile 70"+id);
+        DocumentReference docRef = db.collection("UserData").document(id);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

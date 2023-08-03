@@ -9,10 +9,10 @@ public class AdminAddedData implements Serializable {
     private  long aMobile;
     private String aPassword;
     private String aAddress;
-    private long aAadhaar;
+    private String aAadhaar;
 
 
-    public void setaAadhaar(long uAadhaar) {
+    public void setaAadhaar(String uAadhaar) {
         this.aAadhaar = uAadhaar;
     }
 
@@ -52,7 +52,7 @@ public class AdminAddedData implements Serializable {
         return aPassword;
     }
 
-    public long getaAadhaar() {
+    public String getaAadhaar() {
         return aAadhaar;
     }
 
