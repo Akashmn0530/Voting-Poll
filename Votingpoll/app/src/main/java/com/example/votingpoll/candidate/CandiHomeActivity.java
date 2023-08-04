@@ -65,14 +65,14 @@ public class CandiHomeActivity extends AppCompatActivity {
                 Log.d("Akash","HomeActivity button clicked");
                 textView.setText("");
                 layDL.closeDrawer(GravityCompat.START);
-            } else if (id==R.id.status) {
-                Toast.makeText(this, "status", Toast.LENGTH_SHORT).show();
-//                FragmentManager fm = getSupportFragmentManager();
-//                FragmentTransaction t1 = fm.beginTransaction();
-//                StatusFragment statusFragment = new StatusFragment();
-//                t1.replace(R.id.fragmentContainer1, statusFragment);
-//                t1.commit();
-//                Log.d("Akash","HomeActivity button clicked");
+            } else if (id==R.id.plan) {
+                Toast.makeText(this, "Plans", Toast.LENGTH_SHORT).show();
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction t1 = fm.beginTransaction();
+                AddPlansFragment addPlansFragment = new AddPlansFragment();
+                t1.replace(R.id.fragmentContainer1, addPlansFragment);
+                t1.commit();
+                Log.d("Akash","HomeActivity button clicked");
                 textView.setText("");
                 layDL.closeDrawer(GravityCompat.START);
 

@@ -131,7 +131,7 @@ public class CandiRegistration extends AppCompatActivity {
                         //firestore
                         addDatatoFireStore(fullname, email, address, mobile, aadhar,password);
                         // if the user created intent to login activity
-                        Intent intent = new Intent(CandiRegistration.this, Login.class);
+                        Intent intent = new Intent(CandiRegistration.this, CandiLogin.class);
                         startActivity(intent);
 
                     }

@@ -11,7 +11,7 @@
         <item
             android:title="Plans"
             android:icon="@drawable/baseline_checklist"
-            android:id="@+id/status"/>
+            android:id="@+id/plan"/>
 
 
 
