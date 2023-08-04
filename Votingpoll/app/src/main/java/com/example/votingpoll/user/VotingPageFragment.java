@@ -23,8 +23,12 @@ public class VotingPageFragment extends Fragment implements SelectListener{
     public VotingPageFragment() { }
     @Override
     public void onIemClicked(Item item) {
+        recyclerView.setVisibility(View.GONE);
         Toast.makeText(getActivity(), item.getName(), Toast.LENGTH_SHORT).show();
-
+        FinalVotePage finalVotePage = new FinalVotePage();
+        getChildFragmentManager().beginTransaction()
+                .replace(R.id.votefinalfragmentContainer1, finalVotePage)
+                .commit();
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {

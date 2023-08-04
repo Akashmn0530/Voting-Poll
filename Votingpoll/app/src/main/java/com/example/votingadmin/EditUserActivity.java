@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.votingpoll.user.ServerData;
@@ -67,7 +68,7 @@ public class EditUserActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Map<String,Object> server1 = document.getData();
                                 EditText fullNameEditText = findViewById(R.id.editFullName);
-                                EditText aadharEditText = findViewById(R.id.editAadhar);
+                                TextView aadharEditText = findViewById(R.id.editAadhar);
 
                                 fullNameEditText.setText(String.valueOf(server1.get("auFullname")));
                                 aadharEditText.setText(String.valueOf(server1.get("auAadhaar")));
@@ -106,7 +107,7 @@ public class EditUserActivity extends AppCompatActivity {
     public void onSaveButtonClick() {
         // Get the updated data from the edit text fields
         String fullName = ((EditText)findViewById(R.id.editFullName)).getText().toString();
-        String aadhar = ((EditText)findViewById(R.id.editAadhar)).getText().toString();
+        String aadhar = ((TextView)findViewById(R.id.editAadhar)).getText().toString();
 
         // Get other fields as needed
 

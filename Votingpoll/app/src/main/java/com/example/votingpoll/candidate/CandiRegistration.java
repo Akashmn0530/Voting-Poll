@@ -73,7 +73,7 @@ public class CandiRegistration extends AppCompatActivity {
         logintxtbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CandiRegistration.this, Login.class));
+                startActivity(new Intent(CandiRegistration.this, CandiLogin.class));
             }
         });
         //getSupportActionBar().setTitle("Akash");

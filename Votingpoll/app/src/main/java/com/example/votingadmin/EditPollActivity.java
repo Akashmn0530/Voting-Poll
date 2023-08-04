@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -61,7 +62,7 @@ public class EditPollActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Map<String,Object> addPollClass1 = document.getData();
                                 EditText fullNameEditText = findViewById(R.id.editFullName);
-                                EditText aadharEditText = findViewById(R.id.editAadhar);
+                                TextView aadharEditText = findViewById(R.id.editAadhar);
 
                                 fullNameEditText.setText(String.valueOf(addPollClass1.get("aFullname")));
                                 aadharEditText.setText(String.valueOf(addPollClass1.get("aAadhaar")));
@@ -99,7 +100,7 @@ public class EditPollActivity extends AppCompatActivity {
     public void onSaveButtonClick() {
 // Get the updated data from the edit text fields
         String fullName = ((EditText)findViewById(R.id.editFullName)).getText().toString();
-        String aadhar = ((EditText)findViewById(R.id.editAadhar)).getText().toString();
+        String aadhar = ((TextView)findViewById(R.id.editAadhar)).getText().toString();
 
 // Get other fields as needed
 

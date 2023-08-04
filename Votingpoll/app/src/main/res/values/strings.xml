@@ -23,5 +23,6 @@
     <string name="must_read_all_instructions">Must read all instructions</string>
     <string name="accept_terms_conditions">Accept terms conditions</string>
     <string name="click_here_to_vote">click here to vote</string>
+    <string name="VOTE">VOTE</string>
 
 </resources>

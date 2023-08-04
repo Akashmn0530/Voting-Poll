@@ -87,33 +87,45 @@ public class AdminRegister extends AppCompatActivity {
 
         // Take the value of two edit texts in Strings
         String email, password, aadhar, fullname, address, conpassword;
-        long mobile;
+        long mobile = 0;
         email = usern.getText().toString();
         password = passw.getText().toString();
         fullname = fulln.getText().toString();
-        mobile = Long.parseLong(eMobile.getText().toString());
+        try {
+            mobile = Long.parseLong(eMobile.getText().toString());
+        }catch (Exception e){}
         address = eAddress.getText().toString();
         aadhar = eAadharno.getText().toString();
         conpassword = cpassword.getText().toString();
 
         // Validations for input
-        if (TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if(TextUtils.isEmpty(email) && TextUtils.isEmpty(fullname)&&TextUtils.isEmpty(address)&&TextUtils.isEmpty(aadhar)){
+            progressBar.setVisibility(View.GONE);
             usern.setError("Invalid mail!!!");
+            fulln.setError("Invalid name!!!");
+            eMobile.setError("Invalid mobile no!!!");
+            eAddress.setError("Invalid address!!!");
+            eAadharno.setError("Invalid aadhaar!!!");
+            cpassword.setError("Invalid Confirm password!!!");
+        }
+        else if (TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            usern.setError("Invalid mail!!!");progressBar.setVisibility(View.GONE);
             return;
         } else if (!validatePassword(password, conpassword, passw)) {
+            progressBar.setVisibility(View.GONE);
             return;
         } else if (TextUtils.isEmpty(fullname) || fullname.length() < 3) {
-            fulln.setError("Invalid name!!!");
+            fulln.setError("Invalid name!!!");progressBar.setVisibility(View.GONE);
             return;
         } else if (!(String.valueOf(mobile).length() == 10)) {
-            eMobile.setError("Invalid mobile no!!!");
+            eMobile.setError("Invalid mobile no!!!");progressBar.setVisibility(View.GONE);
             return;
         } else if (TextUtils.isEmpty(address)) {
-            eAddress.setError("Invalid address!!!");
+            eAddress.setError("Invalid address!!!");progressBar.setVisibility(View.GONE);
             return;
         }
         else if (TextUtils.isEmpty(aadhar)) {
-            eAddress.setError("Invalid address!!!");
+            eAadharno.setError("Invalid address!!!");progressBar.setVisibility(View.GONE);
             return;}
         else {
             // hide the progress bar

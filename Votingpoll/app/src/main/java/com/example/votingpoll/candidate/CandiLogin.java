@@ -40,7 +40,6 @@ public class CandiLogin extends AppCompatActivity {
     int counter = 3;
     private FirebaseFirestore db;
     static String cidpass = "";
-    static String emailId;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -144,7 +143,7 @@ public class CandiLogin extends AppCompatActivity {
 
     }
     void fetchTheData(String Uid, String password){
-        DocumentReference docRef = db.collection("UserData").document(Uid);
+        DocumentReference docRef = db.collection("CandiData").document(Uid);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -163,6 +162,7 @@ public class CandiLogin extends AppCompatActivity {
                             Toast.makeText(CandiLogin.this, "Successfully logged in", Toast.LENGTH_SHORT).show();
                             // if sign-in is successful
                             // intent to home activity
+                           // ----
                             Intent intent
                                     = new Intent(CandiLogin.this,
                                     CandiHomeActivity.class);

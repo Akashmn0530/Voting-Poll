@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.example.votingpoll.R;
+import com.example.votingpoll.user.StatusFragment;
 import com.google.android.material.navigation.NavigationView;
 
 import android.annotation.SuppressLint;
@@ -81,7 +82,13 @@ public class AdminHomeActivity extends AppCompatActivity{
                 layDL.closeDrawer(GravityCompat.START);
             }
             else if(id==R.id.viewfeedback) {
+                linearLayout.setVisibility(View.GONE);
                 Toast.makeText(this, "view feedback", Toast.LENGTH_SHORT).show();
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction t1 = fm.beginTransaction();
+                ViewFeedbackFragment viewFeedbackFragment = new ViewFeedbackFragment();
+                t1.replace(R.id.fragmentContainer1, viewFeedbackFragment);
+                t1.commit();
                 layDL.closeDrawer(GravityCompat.START);
             }
             else {

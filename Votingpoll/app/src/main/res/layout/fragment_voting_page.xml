@@ -10,6 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/recyclicview12"/>
-
+    <FrameLayout
+        android:id="@+id/votefinalfragmentContainer1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
 
 </RelativeLayout>

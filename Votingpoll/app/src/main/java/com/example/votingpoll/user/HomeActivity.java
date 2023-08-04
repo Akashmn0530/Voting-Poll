@@ -67,6 +67,7 @@ public class HomeActivity extends AppCompatActivity {
             Fragment frag = null;
             int id=item.getItemId();
             if(id==R.id.profile) {
+                linearLayout.setVisibility(View.GONE);
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction t1 = fm.beginTransaction();
                 ProfileFragment profileFragment = new ProfileFragment();
@@ -75,7 +76,9 @@ public class HomeActivity extends AppCompatActivity {
                 Log.d("Akash","HomeActivity button clicked");
                 textView.setText("");
                 layDL.closeDrawer(GravityCompat.START);
-            } else if (id==R.id.status) {
+            }
+            else if (id==R.id.status) {
+                linearLayout.setVisibility(View.GONE);
                 Toast.makeText(this, "status", Toast.LENGTH_SHORT).show();
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction t1 = fm.beginTransaction();
@@ -86,8 +89,9 @@ public class HomeActivity extends AppCompatActivity {
                 textView.setText("");
                 layDL.closeDrawer(GravityCompat.START);
 
-            } else if (id==R.id.feedback) {
-
+            }
+            else if (id==R.id.feedback) {
+                linearLayout.setVisibility(View.GONE);
                 Toast.makeText(this, "Feedback", Toast.LENGTH_SHORT).show();
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction t1 = fm.beginTransaction();
@@ -98,9 +102,8 @@ public class HomeActivity extends AppCompatActivity {
                 textView.setText("");
                 layDL.closeDrawer(GravityCompat.START);
             }
-
-
             else {
+                linearLayout.setVisibility(View.GONE);
                 Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), Login.class);
                 startActivity(intent);

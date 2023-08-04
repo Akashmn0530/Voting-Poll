@@ -37,7 +37,6 @@ public class VotingPageMyAdapter extends RecyclerView.Adapter<VotingPageMyViewHo
         holder.imageView.setImageResource(items.get(position).getImage());
         holder.imageView1.setImageResource(items.get(position).getImage1());
         holder.textView1.setText(items.get(position).pname);
-
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -55,7 +55,7 @@ public class CandiProfile extends Fragment {
         proEdit = getView().findViewById(R.id.pEdit);
         db = FirebaseFirestore.getInstance();
         // Getting Intent...
-        String email =  CandiLogin.emailId;
+        String cidpass =  CandiLogin.cidpass;
         // This callback will only be called when MyFragment is at least Started.
 //        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
 //            @Override
@@ -66,7 +66,7 @@ public class CandiProfile extends Fragment {
 //        };
 //        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);
         //Calling fetchData method...
-        fetchTheData(email);
+        fetchTheData(cidpass);
         proEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,9 +83,10 @@ public class CandiProfile extends Fragment {
         String email = (proEmail).getText().toString();
         long mobile = Long.parseLong((proMobile).getText().toString());
         String address = (proAddress).getText().toString();
-        String aadhar = (proAddress).getText().toString();
+        //String aadhar = (proAddress).getText().toString();
         // Get other fields as needed
-        if (email != null) {
+        String aadhar = CandiLogin.cidpass;
+        if (aadhar != null) {
             // Use the userId to update the Firestore data
             DocumentReference update1 = db.collection("CandiData").document(aadhar);
             //Update DB
@@ -111,9 +112,8 @@ public class CandiProfile extends Fragment {
         }
     }
 
-    void fetchTheData(String email){
-        Log.d("Akash","profile 70"+email);
-        DocumentReference docRef = db.collection("CandiData").document(email);
+    void fetchTheData(String cid){
+        DocumentReference docRef = db.collection("CandiData").document(cid);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -122,13 +122,13 @@ public class CandiProfile extends Fragment {
                     if (document.exists()) {
                         Toast.makeText(getActivity(), "Successfully getting the data...", Toast.LENGTH_SHORT).show();
                         Log.d("Akash", "DocumentSnapshot data: " + document.getData());
-                        ServerData c = document.toObject(ServerData.class);
+                        CandiData c = document.toObject(CandiData.class);
                         Log.d("Akash","setting data...");
-                        proName.setText(c.getAuFullname());
-                        proMobile.setText(String.valueOf(c.getAuMobile()));
-                        proEmail.setText(c.getAuEmail());
-                        proAadhar.setText(String.valueOf(c.getAuAadhaar()));
-                        proAddress.setText(c.getAuAddress());
+                        proName.setText(c.getAucFullname());
+                        proMobile.setText(String.valueOf(c.getAucMobile()));
+                        proEmail.setText(c.getAucEmail());
+                        proAadhar.setText(String.valueOf(c.getAucAadhaar()));
+                        proAddress.setText(c.getAucAddress());
                     } else {
                         Log.d("Akash", "No such document");
                     }

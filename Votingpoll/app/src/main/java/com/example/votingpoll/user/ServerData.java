@@ -15,6 +15,7 @@ public class ServerData implements Serializable {
     private String auId;
     private String vote = "Not voted";
     private  String password;
+    private String auFeedbackDescription;
     private int voteCount = 0;
 
     public void setauAadhaar(String uAadhaar) {
@@ -95,6 +96,14 @@ public class ServerData implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAuFeedbackDescription() {
+        return auFeedbackDescription;
+    }
+
+    public void setAuFeedbackDescription(String auFeedbackDescription) {
+        this.auFeedbackDescription = auFeedbackDescription;
     }
 }
 
