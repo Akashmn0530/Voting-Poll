@@ -59,6 +59,17 @@ public class AdminHomeActivity extends AppCompatActivity{
                     t1.commit();
                 }
             });
+            addInfoData.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    linearLayout.setVisibility(View.GONE);
+                    FragmentManager fm = getSupportFragmentManager();
+                    FragmentTransaction t1 = fm.beginTransaction();
+                    AddTermsAndConditionsFragment addTermsAndConditionsFragment = new AddTermsAndConditionsFragment();
+                    t1.replace(R.id.fragmentContainer1, addTermsAndConditionsFragment);
+                    t1.commit();
+                }
+            });
 
         layDL = findViewById(R.id.layDL);
         vNV = findViewById(R.id.vNV);
