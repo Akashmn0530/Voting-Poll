@@ -7,23 +7,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.Serializable;
 import java.util.List;
 import com.example.votingpoll.R;
 public class MyListAdapter1 extends RecyclerView.Adapter<MyListAdapter1.ViewHolder>{
-    private List<AddPollClass> listdata;
+    private List<AddCandidatesClass> listdata;
     private Context context;
     // RecyclerView recyclerView;
-    public MyListAdapter1(Context context, List<AddPollClass> listdata) {
+    public MyListAdapter1(Context context, List<AddCandidatesClass> listdata) {
         this.context = context;
         this.listdata = listdata;
     }
@@ -37,9 +32,9 @@ public class MyListAdapter1 extends RecyclerView.Adapter<MyListAdapter1.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MyListAdapter1.ViewHolder holder, int position) {
-        final AddPollClass addPollClass = listdata.get(position);
-        holder.fullname.setText("Name :"+addPollClass.getaFullname());
-        holder.aadhar.setText("Aadhar :"+addPollClass.getaAadhaar());
+        final AddCandidatesClass addCandidatesClass = listdata.get(position);
+        holder.fullname.setText("Name :"+ addCandidatesClass.getaFullname());
+        holder.aadhar.setText("Aadhar :"+ addCandidatesClass.getaAadhaar());
 
     }
 
@@ -60,10 +55,10 @@ public class MyListAdapter1 extends RecyclerView.Adapter<MyListAdapter1.ViewHold
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AddPollClass addPollClass = listdata.get(getAdapterPosition());
-                    Intent intent = new Intent(context, EditPollActivity.class);
-                    Log.d("Akash",addPollClass.getaAadhaar());
-                    intent.putExtra("userId",addPollClass);
+                    AddCandidatesClass addCandidatesClass = listdata.get(getAdapterPosition());
+                    Intent intent = new Intent(context, EditCandidatesActivity.class);
+                    Log.d("Akash", addCandidatesClass.getaAadhaar());
+                    intent.putExtra("userId", addCandidatesClass);
                     context.startActivity(intent);
                 }
             });

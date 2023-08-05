@@ -2,7 +2,7 @@ package com.example.votingadmin;
 
 import java.io.Serializable;
 
-public class AddPollClass implements Serializable {
+public class AddCandidatesClass implements Serializable {
 
     private String aFullname;
     private String aAadhaar;

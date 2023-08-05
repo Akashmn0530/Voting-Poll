@@ -34,6 +34,7 @@ public class AdminLogin extends AppCompatActivity {
     private ProgressBar progressbar;
     private FirebaseFirestore db;
     int counter = 3;
+    static String logID;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +79,7 @@ public class AdminLogin extends AppCompatActivity {
         String Uid, password;
         Uid = uname.getText().toString();
         password = pword.getText().toString();
-
+        logID = Uid;
         // validations for input email and password
         if (TextUtils.isEmpty(Uid)) {
             Toast.makeText(getApplicationContext(),

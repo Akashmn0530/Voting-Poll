@@ -31,7 +31,7 @@
             android:id="@+id/fullname"
             android:layout_width="250dp"
             android:layout_height="48dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="35dp"
             android:background="@drawable/custombutton"
             android:backgroundTint="#D0353333"
             android:padding="10dp"

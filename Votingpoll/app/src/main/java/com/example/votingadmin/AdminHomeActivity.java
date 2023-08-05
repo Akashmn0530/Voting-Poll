@@ -9,10 +9,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.example.votingpoll.R;
-import com.example.votingpoll.user.StatusFragment;
 import com.google.android.material.navigation.NavigationView;
 
-import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -42,7 +41,7 @@ public class AdminHomeActivity extends AppCompatActivity{
                     linearLayout.setVisibility(View.GONE);
                     FragmentManager fm = getSupportFragmentManager();
                     FragmentTransaction t1 = fm.beginTransaction();
-                    AddPoll aPoll = new AddPoll();
+                    AddCandidates aPoll = new AddCandidates();
                     t1.replace(R.id.fragmentContainer1, aPoll);
                     t1.commit();
                 }
@@ -89,7 +88,13 @@ public class AdminHomeActivity extends AppCompatActivity{
             Fragment frag = null;
             int id=item.getItemId();
             if(id==R.id.adminprofile) {
+                linearLayout.setVisibility(View.GONE);
                 Toast.makeText(this, "Admin Profile", Toast.LENGTH_SHORT).show();
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction t1 = fm.beginTransaction();
+                AdminProfileFragment adminProfileFragment = new AdminProfileFragment();
+                t1.replace(R.id.fragmentContainer1, adminProfileFragment);
+                t1.commit();
                 layDL.closeDrawer(GravityCompat.START);
             }
             else if(id==R.id.viewfeedback) {
@@ -102,8 +107,20 @@ public class AdminHomeActivity extends AppCompatActivity{
                 t1.commit();
                 layDL.closeDrawer(GravityCompat.START);
             }
+            else if(id==R.id.viewTC) {
+                linearLayout.setVisibility(View.GONE);
+                Toast.makeText(this, "view terms and conditions", Toast.LENGTH_SHORT).show();
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction t1 = fm.beginTransaction();
+                ViewTermsAndConditionFragment viewTermsAndConditionFragment = new ViewTermsAndConditionFragment();
+                t1.replace(R.id.fragmentContainer1, viewTermsAndConditionFragment);
+                t1.commit();
+                layDL.closeDrawer(GravityCompat.START);
+            }
             else {
                 Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(),AdminLogin.class);
+                startActivity(intent);
                 layDL.closeDrawer(GravityCompat.START);
             }
             layDL.closeDrawer(GravityCompat.START);

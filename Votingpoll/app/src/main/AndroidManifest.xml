@@ -29,7 +29,7 @@
             android:name="com.example.votingadmin.EditUserActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.votingadmin.EditPollActivity"
+            android:name="com.example.votingadmin.EditCandidatesActivity"
             android:exported="false" />
         <activity
             android:name="com.example.votingadmin.AdminHomeActivity"

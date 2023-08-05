@@ -16,9 +16,12 @@ import android.widget.Toast;
 
 import com.example.votingpoll.R;
 import com.example.votingpoll.user.Login;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class AddPlansFragment extends Fragment {
@@ -34,6 +37,7 @@ public class AddPlansFragment extends Fragment {
         addPlansBtn = getView().findViewById(R.id.addPlansBtn);
         String aadhar = CandiLogin.cidpass;
         db = FirebaseFirestore.getInstance();
+        fetchTheData(aadhar);
         addPlansBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,9 +52,7 @@ public class AddPlansFragment extends Fragment {
             // Use the userId to update the Firestore data
             DocumentReference update1 = db.collection("CandiData").document(aadhar);
             //Update DB
-            update1
-                    .update("aucPlans",plans
-                    )
+            update1.update("aucPlans",plans)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
@@ -64,6 +66,27 @@ public class AddPlansFragment extends Fragment {
                     });
         }
     }
+
+    void fetchTheData(String cid){
+        DocumentReference docRef = db.collection("CandiData").document(cid);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        CandiData c = document.toObject(CandiData.class);
+                        plansEdittext.setText(c.getAucPlans());
+                    } else {
+                        Log.d("Akash", "No Data");
+                    }
+                } else {
+                    Log.d("Akash", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
     public AddPlansFragment() { }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {// Inflate the layout for this fragment

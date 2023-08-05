@@ -11,6 +11,10 @@
             android:title="View Feedback"
             android:icon="@drawable/baseline_feedback_24"
             android:id="@+id/viewfeedback"/>
+        <item
+            android:title="Terms and Conditions"
+            android:icon="@drawable/baseline_note_alt_24"
+            android:id="@+id/viewTC"/>
 
         <item
             android:title="Sign Out"

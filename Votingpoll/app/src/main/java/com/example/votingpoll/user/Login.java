@@ -33,7 +33,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 public class Login extends AppCompatActivity {
-    EditText uname,pword, message;
+    EditText uname, pword, message;
     Button button1;
     private ProgressBar progressbar;
     private FirebaseFirestore db;

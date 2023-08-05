@@ -2,7 +2,6 @@ package com.example.votingadmin;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +56,7 @@ public class FeedbackAdaptor extends RecyclerView.Adapter<FeedbackAdaptor.ViewHo
                 @Override
                 public void onClick(View view) {
                     ViewFeedback viewFeedback = listdata.get(getAdapterPosition());
-                    Intent intent = new Intent(context, EditPollActivity.class);
+                    Intent intent = new Intent(context, EditCandidatesActivity.class);
 //                    Log.d("Akash",addPollClass.getaAadhaar());
 //                    intent.putExtra("userId",addPollClass);
                     context.startActivity(intent);

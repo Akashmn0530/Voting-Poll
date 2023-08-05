@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +19,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class AddPoll extends Fragment {
+public class AddCandidates extends Fragment {
     EditText condName, condAadhaar;
     Button condAdd, condView, condCancel;
-    AddPollClass addPollClass;
+    AddCandidatesClass addCandidatesClass;
     private FirebaseFirestore db;
-    public AddPoll() {
+    public AddCandidates() {
 // Required empty public constructor
     }
 
@@ -39,7 +38,7 @@ public class AddPoll extends Fragment {
         condView = getView().findViewById(R.id.pollView);
         condCancel = getView().findViewById(R.id.pollcancel);
 
-        addPollClass = new AddPollClass();
+        addCandidatesClass = new AddCandidatesClass();
         //for firestore
         db = FirebaseFirestore.getInstance();
 
@@ -53,7 +52,7 @@ public class AddPoll extends Fragment {
             @Override
             public void onClick(View view) {
                 // Add the child fragment to the container view
-                ViewPoll vUser = new ViewPoll();
+                ViewCandidates vUser = new ViewCandidates();
                 getChildFragmentManager().beginTransaction()
                         .replace(R.id.viewfragmentContainer4, vUser)
                         .commit();
@@ -94,13 +93,13 @@ public class AddPoll extends Fragment {
     private void addDatatoFireStore(String fname, String aadhar) {
         // below 3 lines of code is used to set
         // data in our object class.
-        addPollClass.setaFullname(fname);
-        addPollClass.setaAadhaar(aadhar);
+        addCandidatesClass.setaFullname(fname);
+        addCandidatesClass.setaAadhaar(aadhar);
         //DocumentReference newDB = db.collection("PollData").document();
         // Add a new document with a generated ID
 
         db.collection("PollData").document(aadhar)
-                .set(addPollClass).addOnSuccessListener(new OnSuccessListener<Void>() {
+                .set(addCandidatesClass).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         Toast.makeText(getActivity(), "Success...", Toast.LENGTH_SHORT).show();
@@ -117,7 +116,7 @@ public class AddPoll extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_poll, container, false);
+        return inflater.inflate(R.layout.fragment_add_candidates, container, false);
     }
     private void clearFields() {
         condName.setText("");

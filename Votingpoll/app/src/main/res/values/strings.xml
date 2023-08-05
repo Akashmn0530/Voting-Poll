@@ -25,5 +25,6 @@
     <string name="click_here_to_vote">click here to vote</string>
     <string name="VOTE">VOTE</string>
     <string name="add_terms_and_conditions">ADD TERMS AND CONDITIONS</string>
+    <string name="terms_and_conditions">TERMS AND CONDITIONS</string>
 
 </resources>

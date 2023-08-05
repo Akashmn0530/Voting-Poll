@@ -1,16 +1,20 @@
 package com.example.votingpoll.user;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,11 +31,17 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.regex.Pattern;
 
 public class Register extends AppCompatActivity {
-
+    ImageView imageView;
+    ProgressDialog progressDialog;
+    Uri imageUri;
+    StorageReference storageReference;
     private ProgressBar progressBar;
     private FirebaseFirestore db;
     ServerData userData;
@@ -52,7 +62,7 @@ public class Register extends AppCompatActivity {
         cpassword = (EditText)findViewById(R.id.confirmpassword);
         progressBar = findViewById(R.id.progressBar);
         Button signbtn = (Button)findViewById(R.id.signbtn);
-
+        imageView = findViewById(R.id.imageView);
         //for firestore
         db = FirebaseFirestore.getInstance();
         userData = new ServerData();
@@ -60,9 +70,9 @@ public class Register extends AppCompatActivity {
                                        @Override
                                        public void onClick(View view) {
                                            registerNewUser();
+                                           uploadIamage();
                                        }
                                    }
-
         );
         //for login text in reg page
         TextView logintxtbtn = findViewById(R.id.logintxtbtn);
@@ -72,7 +82,59 @@ public class Register extends AppCompatActivity {
                 startActivity(new Intent(Register.this,Login.class));
             }
         });
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectImage();
+            }
+        });
         //getSupportActionBar().setTitle("Akash");
+    }
+    private void selectImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 100);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 100 && data.getData() != null){
+            imageUri = data.getData();
+            imageView.setImageURI(imageUri);
+        }
+    }
+
+    private void uploadIamage() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Uploading File...");
+        progressDialog.show();
+        String fileName = eAadharno.getText().toString();
+        storageReference = FirebaseStorage.getInstance().getReference("images/"+fileName);
+
+        storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                imageView.setImageURI(null);
+                Toast.makeText(Register.this, "Successfully uploaded", Toast.LENGTH_SHORT).show();
+
+                if (progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                if (progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
+                Toast.makeText(Register.this, "Failed to upload", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
     private void registerNewUser()
     {

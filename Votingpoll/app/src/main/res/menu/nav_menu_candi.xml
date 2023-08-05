@@ -13,8 +13,6 @@
             android:icon="@drawable/baseline_checklist"
             android:id="@+id/plan"/>
 
-
-
         <item
             android:title="Feedback"
             android:icon="@drawable/baseline_feedback_24"

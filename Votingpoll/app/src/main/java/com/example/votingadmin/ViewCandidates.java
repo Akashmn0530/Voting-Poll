@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,22 +24,22 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 import com.example.votingpoll.R;
-public class ViewPoll extends Fragment {
+public class ViewCandidates extends Fragment {
 
 
     private RecyclerView voteRV;
-    private ArrayList<AddPollClass> addPollClasses;
+    private ArrayList<AddCandidatesClass> addPollClasses;
     private MyListAdapter1 myListAdapter1;
     private FirebaseFirestore db;
     ProgressBar loadingPB;
-    public ViewPoll() {
+    public ViewCandidates() {
         // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_view_poll, container, false);
+        View view = inflater.inflate(R.layout.fragment_view_candidates, container, false);
         voteRV = view.findViewById(R.id.your_recycler_view_id2);
         loadingPB = view.findViewById(R.id.idProgressBar);
 
@@ -76,7 +75,7 @@ public class ViewPoll extends Fragment {
                             loadingPB.setVisibility(View.GONE);
                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                             for (DocumentSnapshot d : list) {
-                                AddPollClass c = d.toObject(AddPollClass.class);
+                                AddCandidatesClass c = d.toObject(AddCandidatesClass.class);
                                 c.setaAadhaar(d.getId());
                                 addPollClasses.add(c);
                                 Log.d("Aka","getting data..");
