@@ -2,6 +2,7 @@ package com.example.votingpoll.user;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,12 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.votingpoll.R;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class TermsAndConditionsFragment extends Fragment {
     ScrollView scrollView;
@@ -41,19 +47,82 @@ public class TermsAndConditionsFragment extends Fragment {
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.votefragmentContainer11, scrollFragment)
                 .commit();
-
         button.setOnClickListener(view1 -> {
             if (ch.isChecked() && ch1.isChecked()) {
-                linearLayout.setVisibility(View.GONE);
-                Toast.makeText(getActivity(), "Successfully clicked on check box.", Toast.LENGTH_SHORT).show();
-                VotingPageFragment votingPageFragment = new VotingPageFragment();
-                getChildFragmentManager().beginTransaction()
-                        .replace(R.id.votefragmentContainer1, votingPageFragment)
-                        .commit();
+                checkDuplicateVotes();
             } else {
                 Toast.makeText(getActivity(), "Please Accept Terms  & Conditions", Toast.LENGTH_SHORT).show();
             }
         });
+
         return view;
     }
+    void checkDuplicateVotes(){
+        DocumentReference docRef = db.collection("UserData").document(Login.uidpass);
+        docRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    ServerData c = document.toObject(ServerData.class);
+                    assert c != null;
+                    if(c.getVote().equals("Not voted")){
+                        VotingPageFragment votingPageFragment = new VotingPageFragment();
+                        getChildFragmentManager().beginTransaction()
+                                .replace(R.id.votefragmentContainer1, votingPageFragment)
+                                .commit();
+                    }
+                    else {
+                        Toast.makeText(getActivity(), "Already voted!!!", Toast.LENGTH_SHORT).show();
+                        button.setEnabled(false);
+                    }
+                }
+                else {
+                    Toast.makeText(getActivity(), "Already voted!!!", Toast.LENGTH_SHORT).show();
+                    button.setEnabled(false);
+                }
+            }
+            else {
+                Log.d("Akash", "Get failed with ", task.getException());
+            }
+        });
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//DocumentReference documentReference = db.collection("UserData").document(Login.uidpass);
+//        Query aadharQuery = documentReference.
+//        aadharQuery.get().addOnCompleteListener(task -> {
+//            if(task.isSuccessful()){
+//                QuerySnapshot querySnapshot = task.getResult();
+//                boolean Status = false;
+//                if(querySnapshot != null){
+//                    for(DocumentSnapshot document : querySnapshot.getDocuments()){
+//                        if(document.exists()) {
+//                            Status = true;
+//                            break;
+//                        }
+//                    }
+//                }
+//                if (Status) {
+//
+//                }
+//                else {
+//                    Toast.makeText(getActivity(), "Already voted!!!", Toast.LENGTH_SHORT).show();
+//                    button.setEnabled(false);
+//                }
+//
+//            }
+//        });

@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.votingadmin.ContestClass;
 import com.example.votingpoll.R;
 import com.example.votingpoll.user.AadharCheckCallback;
 import com.example.votingpoll.user.Login;
@@ -37,6 +39,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class CandiRegistration extends AppCompatActivity {
@@ -150,21 +153,24 @@ public class CandiRegistration extends AppCompatActivity {
             eAadharno.setError("Invalid aadhaar no.!!!");
             return;
         }
-        ////////////////////
         else {
             checkAadharNumberInFireStore(aadhar, new com.example.votingpoll.user.AadharCheckCallback() {
                 @Override
                 public void onAadharExists(boolean exists) {
                     if (exists) {
-
-                        // hide the progress bar
-                        progressBar.setVisibility(View.GONE);
-                        //firestore
-                        addDatatoFireStore(fullname, email, address, mobile, aadhar,password);
-                        // if the user created intent to login activity
-                        Intent intent = new Intent(CandiRegistration.this, CandiLogin.class);
-                        startActivity(intent);
-
+                        db.collection("contestData").get()
+                                .addOnSuccessListener(queryDocumentSnapshots -> {
+                                    if (!queryDocumentSnapshots.isEmpty()) {
+                                        addDatatoFireStore(fullname, email, address, mobile, aadhar,password);
+                                        Intent intent = new Intent(CandiRegistration.this, CandiLogin.class);
+                                        startActivity(intent);
+                                    }
+                                    else {
+                                        Toast.makeText(CandiRegistration.this, "Poll not exist...", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .addOnFailureListener(e -> {
+                                });
                     }
                     else {
                         usern.setText("");
@@ -182,8 +188,6 @@ public class CandiRegistration extends AppCompatActivity {
                 }
             });
         }
-        ///////////////////
-
     }
 
     private void checkAadharNumberInFireStore(String aadhar, AadharCheckCallback callback){
@@ -206,9 +210,7 @@ public class CandiRegistration extends AppCompatActivity {
                 callback.onAadharExists(aadharExists);
             }
         });
-
     }
-
     public boolean validatePassword(String passwordInput,String cpass, EditText password) {
         // defining our own password pattern
         final Pattern PASSWORD_PATTERN =
@@ -259,8 +261,6 @@ public class CandiRegistration extends AppCompatActivity {
                         Toast.makeText(CandiRegistration.this, "Failed...", Toast.LENGTH_SHORT).show();
                     }
                 });
-
-
     }
 
     private void uploadIamage() {
@@ -285,15 +285,10 @@ public class CandiRegistration extends AppCompatActivity {
             }
             Toast.makeText(CandiRegistration.this, "Failed to upload", Toast.LENGTH_SHORT).show();
         });
-
     }
-
-
     @Override
     protected void onResume() {
         super.onResume();
         progressBar.setVisibility(View.GONE);
     }
-
-
 }

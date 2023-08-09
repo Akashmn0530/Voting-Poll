@@ -3,7 +3,9 @@ package com.example.votingadmin;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,10 +16,17 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.votingpoll.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AdminHomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
     BottomNavigationView bottomNavigationView;
@@ -26,8 +35,10 @@ public class AdminHomeActivity extends AppCompatActivity implements BottomNaviga
     NavigationView vNV;
     Toolbar toolbar;
     FragmentManager fm = getSupportFragmentManager();
-    ViewContest viewContest;
 
+    private ArrayList myListData;
+    private AdapterContest myListAdapter;
+    private FirebaseFirestore db;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +47,6 @@ public class AdminHomeActivity extends AppCompatActivity implements BottomNaviga
         //Bottom layout
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
-        //bottomNavigationView.setSelectedItemId(R.id.adminprofile);
         layDL = findViewById(R.id.layDL);
         vNV = findViewById(R.id.vNV);
         toolbar = findViewById(R.id.toolbar);
@@ -45,16 +55,53 @@ public class AdminHomeActivity extends AppCompatActivity implements BottomNaviga
         layDL.addDrawerListener(toggle);
         toggle.syncState();
 
-        //To display the poll list
-        viewContest = new ViewContest();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContainer1, viewContest)
-                .addToBackStack(null)
-                .commit();
+        RecyclerView voteRV = findViewById(R.id.your_recycler_view_id11);
+
+        // Initializing our variable for Firestore and getting its instance
+        db = FirebaseFirestore.getInstance();
+        Log.d("Aka", "getting view");
+        // Creating our new array list
+        myListData = new ArrayList<>();
+
+        voteRV.setHasFixedSize(true);
+        voteRV.setLayoutManager(new LinearLayoutManager(AdminHomeActivity.this));
+
+        // Adding our array list
+        myListAdapter = new AdapterContest(AdminHomeActivity.this, myListData);
+
+        voteRV.setAdapter(myListAdapter); // Setting the adapter to the RecyclerView
+
+        fetchUserDataFromFirestore();
         if (savedInstanceState == null) {
             vNV.setCheckedItem(R.id.adduser1);
         }
         NavClick();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void fetchUserDataFromFirestore() {
+
+        db.collection("contestData").get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                        for (DocumentSnapshot d : list) {
+                            ContestClass c = d.toObject(ContestClass.class);
+                            assert c != null;
+                            c.setConId(d.getId());
+                            myListData.add(c);
+                            Log.d("Aka", "getting data..");
+                        }
+                        myListAdapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(AdminHomeActivity.this, "No data found in Database", Toast.LENGTH_SHORT).show();
+                        Log.d("Aka", "no data found");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(AdminHomeActivity.this, "Fail to get the data.", Toast.LENGTH_SHORT).show();
+                    Log.d("Aka", "failure to get");
+                });
     }
 
     AdminProfileFragment adminProfileFragment = new AdminProfileFragment();
@@ -147,10 +194,6 @@ public class AdminHomeActivity extends AppCompatActivity implements BottomNaviga
         }
         else {
             super.onBackPressed();
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContainer1, viewContest)
-                    .addToBackStack(null)
-                    .commit();
         }
     }
 

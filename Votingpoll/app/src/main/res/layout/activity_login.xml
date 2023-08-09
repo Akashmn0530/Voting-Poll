@@ -11,30 +11,30 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         tools:ignore="MissingConstraints">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/circle"
-        android:layout_marginTop="38dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:gravity="center"
-        android:fontFamily="sans-serif-smallcaps"
-        android:text="Voter"
-        android:textColor="#fff" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:gravity="center"
-        android:padding="15dp"
-        android:text="Login"
-        android:fontFamily="sans-serif-smallcaps"
-        android:textColor="#FFFFFF"
-        android:textSize="50dp"
-        tools:ignore="MissingConstraints" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle"
+            android:layout_marginTop="38dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="Voter"
+            android:textColor="#fff" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="Login"
+            android:fontFamily="sans-serif-smallcaps"
+            android:textColor="#FFFFFF"
+            android:textSize="50dp"
+            tools:ignore="MissingConstraints" />
 
-</LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,35 +45,33 @@
         android:padding="10dp">
 
 
-        <EditText
-            android:id="@+id/username1"
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="300dp"
+            android:layout_marginTop="40dp"
+            android:layout_height="wrap_content">
 
-            android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="15dp"
-            android:padding="10dp"
-            android:drawableStart="@drawable/baseline_user"
-            android:gravity="left"
-            android:textColorHint="#F3393636"
-            android:background="@drawable/custombutton"
-            android:backgroundTint="#D0353333"
-            android:hint="  Username"
-            />
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:id="@+id/username1"
+                android:drawableStart="@drawable/baseline_user"
+                android:layout_height="wrap_content"
+                android:hint="  Username"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/password1"
-            android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/custombutton"
-            android:backgroundTint="#D0353333"
-            android:gravity="left"
-            android:hint="  Password"
-            android:padding="10dp"
-            android:drawableStart="@drawable/baseline_password"
-            android:inputType="textPassword"
-            android:textColorHint="#F3393636" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="300dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:id="@+id/password1"
+                android:drawableStart="@drawable/baseline_password"
+                android:layout_height="wrap_content"
+                android:hint=" Password "/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/loginbtn"

@@ -2,7 +2,9 @@ package com.example.votingpoll.candidate;
 
 import android.graphics.Bitmap;
 
-public class CandiData {
+import java.io.Serializable;
+
+public class CandiData implements Serializable {
     private String aucFullname;
     private String aucEmail;
     private  long aucMobile;
@@ -14,26 +16,17 @@ public class CandiData {
     private String aucPlans;
     private String aucPass;
     private String partyName;
-
+    private int voteCountCandi;
     Bitmap partySymbol, partyCandidateImage;
-    //////////////
-    String name;
     int image1;
-    String pname;
     int image;
     CandiData(){ }
-    public CandiData(Bitmap partySymbol, String name, Bitmap partyCandidateImage, String pname) {
+    public CandiData(Bitmap partySymbol, String name, Bitmap partyCandidateImage, String pname,String aucAadhaar) {
         this.partySymbol = partySymbol;
         this.partyCandidateImage = partyCandidateImage;
-        this.name = name;
-        this.pname = pname;
-    }
-
-    public CandiData(int image, String name, int image1, String pname) {
-        this.image = image;
-        this.name = name;
-        this.image1 = image1;
-        this.pname = pname;
+        this.aucFullname = name;
+        this.partyName = pname;
+        this.aucAadhaar = aucAadhaar;
     }
 
     public int getImage() {
@@ -44,14 +37,6 @@ public class CandiData {
         this.image = image;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getImage1() {
         return image1;
     }
@@ -60,14 +45,6 @@ public class CandiData {
         this.image1 = image1;
     }
 
-    public String getPname() {
-        return pname;
-    }
-
-    public void setPname(String pname) {
-        this.pname = pname;
-    }
-////////////////
     public void setPartySymbol(Bitmap partySymbol) {
         this.partySymbol = partySymbol;
     }
@@ -170,6 +147,14 @@ public class CandiData {
 
     public void setPartyName(String partyName) {
         this.partyName = partyName;
+    }
+
+    public int getVoteCountCandi() {
+        return voteCountCandi;
+    }
+
+    public void setVoteCountCandi(int voteCountCandi) {
+        this.voteCountCandi = voteCountCandi;
     }
 }
 

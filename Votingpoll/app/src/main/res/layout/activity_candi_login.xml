@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,9 +18,10 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:gravity="center"
-            android:text="Candidate"
             android:fontFamily="sans-serif-smallcaps"
-            android:textColor="#fff" />
+            android:text="Candidate"
+            android:textColor="#fff"
+            tools:ignore="HardcodedText" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,13 +31,10 @@
             android:text="Login"
             android:fontFamily="sans-serif-smallcaps"
             android:textColor="#FFFFFF"
-            android:textSize="50dp"
-            tools:ignore="MissingConstraints" />
+            android:textSize="50sp"
+            tools:ignore="HardcodedText,MissingConstraints" />
 
     </LinearLayout>
-
-
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,34 +45,32 @@
         android:padding="10dp">
 
 
-        <EditText
-            android:id="@+id/username1"
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="300dp"
+            android:layout_marginTop="40dp"
+            android:layout_height="wrap_content">
 
-            android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="15dp"
-            android:padding="10dp"
-            android:drawableStart="@drawable/baseline_user"
-            android:gravity="left"
-            android:textColorHint="#F3393636"
-            android:background="@drawable/custombutton"
-            android:backgroundTint="#D0353333"
-            android:hint="  Username"
-            />
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:id="@+id/username1"
+                android:drawableStart="@drawable/baseline_user"
+                android:layout_height="wrap_content"
+                android:hint="  Username"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="300dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/password1"
-            android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/custombutton"
-            android:backgroundTint="#D0353333"
-            android:gravity="left"
-            android:hint="  Password"
-            android:padding="10dp"
-            android:drawableStart="@drawable/baseline_password"
-            android:inputType="textPassword"
-            android:textColorHint="#F3393636" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:id="@+id/password1"
+                android:drawableStart="@drawable/baseline_password"
+                android:layout_height="wrap_content"
+                android:hint=" Password "/>
+        </com.google.android.material.textfield.TextInputLayout>
 
 
         <Button
@@ -86,7 +81,8 @@
             android:backgroundTint="#0E0E0E"
             android:text="LOGIN"
             android:textAllCaps="false"
-            android:textColor="#FFFBF6" />
+            android:textColor="#FFFBF6"
+            tools:ignore="HardcodedText" />
         <Button
             android:id="@+id/signupbtn"
             android:layout_width="250dp"
@@ -95,7 +91,8 @@
             android:backgroundTint="#0E0E0E"
             android:text="SIGN UP"
             android:textAllCaps="false"
-            android:textColor="#FFFBF6" />
+            android:textColor="#FFFBF6"
+            tools:ignore="HardcodedText" />
         <View
             android:layout_width="fill_parent"
             android:layout_height="2dp"
@@ -104,11 +101,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Forget Password?"
-            android:textSize="18dp"
+            android:text="Forgot Password?"
+            android:textSize="18sp"
             android:layout_marginTop="15dp"
             android:textColor="#000000"
-            />
+            tools:ignore="HardcodedText" />
 
         <EditText
             android:id="@+id/msg"
@@ -116,7 +113,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:gravity="center"
-            android:hint="3 Attempt left"/>
+            android:hint="3 Attempt left"
+            tools:ignore="Autofill,HardcodedText,TextFields" />
 
         <!-- ProgressBar for Loading Time -->
         <ProgressBar

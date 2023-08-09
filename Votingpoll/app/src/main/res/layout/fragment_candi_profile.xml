@@ -4,14 +4,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_margin="10dp"
+    android:background="@drawable/bg2"
     android:layout_height="match_parent">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Candidate profile"
+        android:gravity="center"
+        android:fontFamily="sans-serif-smallcaps"
+        android:textColor="@color/white"
+        android:textSize="30dp"
+        />
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
         android:layout_width="109dp"
         android:layout_height="106dp"
         android:layout_gravity="center"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:src="@drawable/hand"
         app:civ_border_color="#FF000000"
         app:civ_border_width="2dp" />
@@ -19,15 +29,17 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Aadhar : "
-        android:layout_marginTop="10dp"
+        android:text="Identity Number : "
+        android:textColor="@color/black"
+        android:layout_marginTop="17dp"
         android:textSize="20sp" />
 
     <TextView
         android:id="@+id/pAadhar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:hint="Identity number"
+        android:paddingStart="100dp"
         android:layout_margin="10dp"
         android:textColor="#000000"
         android:textSize="20sp" />
@@ -35,6 +47,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
         android:text="Name : "
         android:textSize="20sp" />
 
@@ -42,6 +55,8 @@
         android:id="@+id/pname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="Name"
+        android:paddingStart="100dp"
         android:layout_margin="10dp"
         android:textColor="#000000"
         android:textSize="20sp" />
@@ -49,6 +64,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
         android:text="Mobile : "
         android:textSize="20sp" />
 
@@ -57,6 +73,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="number"
+        android:hint="Mobile"
+        android:paddingStart="100dp"
         android:layout_margin="10dp"
         android:textColor="#000000"
         android:textSize="20sp" />
@@ -64,6 +82,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
         android:text="Email : "
         android:textSize="20sp" />
 
@@ -72,6 +91,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#000000"
+        android:hint="Email"
+        android:paddingStart="100dp"
         android:layout_margin="10dp"
         android:textSize="20sp" />
 
@@ -79,6 +100,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Address : "
+        android:textColor="@color/black"
         android:textSize="20sp" />
 
     <EditText
@@ -87,12 +109,15 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:textColor="#000000"
+        android:hint="Address"
+        android:paddingStart="100dp"
         android:textSize="20sp" />
 
     <Button
         android:id="@+id/pEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:textSize="20dp"
         android:layout_gravity="center"
-        android:text="@string/edit" />
+        android:text="Edit" />
 </LinearLayout>

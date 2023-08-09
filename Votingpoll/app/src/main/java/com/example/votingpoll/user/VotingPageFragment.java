@@ -4,30 +4,20 @@ import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.votingadmin.AddUserData;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.votingpoll.R;
 import com.example.votingpoll.candidate.CandiData;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -39,7 +29,7 @@ import java.util.List;
 public class VotingPageFragment extends Fragment implements SelectListener {
     RecyclerView recyclerView;
     StorageReference storageReference;
-
+    static String toGetId;
     FirebaseFirestore db;
     List<CandiData> items=new ArrayList<>();
 
@@ -47,9 +37,10 @@ public class VotingPageFragment extends Fragment implements SelectListener {
     public VotingPageFragment() { }
     @Override
     public void onIemClicked(CandiData item) {
-        recyclerView.setVisibility(View.GONE);
-        Toast.makeText(getActivity(), item.getName(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), item.getAucFullname(), Toast.LENGTH_SHORT).show();
         FinalVotePage finalVotePage = new FinalVotePage();
+        toGetId = item.getAucAadhaar();
+        Log.d("Aka","Voting page ->"+toGetId);
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.votefinalfragmentContainer1, finalVotePage)
                 .commit();
@@ -59,14 +50,12 @@ public class VotingPageFragment extends Fragment implements SelectListener {
         View view = inflater.inflate(R.layout.fragment_voting_page, container, false);
         recyclerView = view.findViewById(R.id.recyclicview12);
         db = FirebaseFirestore.getInstance();
-        fetchTheData(Login.uidpass);
+        fetchTheData();
         return view;
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private void fetchTheData(String id) {
-        //////////////////////////////////
-
+    private void fetchTheData() {
         db.collection("CandiData").get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
@@ -75,8 +64,35 @@ public class VotingPageFragment extends Fragment implements SelectListener {
                             CandiData c = d.toObject(CandiData.class);
                             assert c != null;
                             c.setaucAadhaar(d.getId());
-                            items.add(c);
+                            //items.add(c);
                             Log.d("Aka","getting data..");
+                            try {
+
+                                storageReference = FirebaseStorage.getInstance().getReference("images/"+c.getAucAadhaar());
+                                File localfile = File.createTempFile("tempfile", ".jpg");
+                                storageReference.getFile(localfile)
+                                        .addOnSuccessListener(taskSnapshot -> {
+                                            Bitmap bitmap = BitmapFactory.decodeFile(localfile.getAbsolutePath());
+                                            try {
+                                                storageReference = FirebaseStorage.getInstance().getReference("Party_Images/"+c.getAucAadhaar()+"Party");
+                                                File localfile1 = File.createTempFile("tempfile", ".jpg");
+                                                storageReference.getFile(localfile1)
+                                                        .addOnSuccessListener(taskSnapshot1 -> {
+                                                            Bitmap bitmap1 = BitmapFactory.decodeFile(localfile1.getAbsolutePath());
+                                                            items.add(new CandiData(bitmap,c.getAucFullname(),bitmap1,c.getPartyName(),c.getAucAadhaar()));
+                                                            recyclerView.setHasFixedSize(true);
+                                                            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                                            recyclerView.setAdapter(new VotingPageMyAdapter(getContext(),items,VotingPageFragment.this));
+                                                        }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to retrieve", Toast.LENGTH_SHORT).show());
+
+                                            } catch (IOException e) {
+                                                throw new RuntimeException(e);
+                                            }
+                                        }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to retrieve", Toast.LENGTH_SHORT).show());
+
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
 //                        VotingPageMyAdapter.notifyDataSetChanged();
                     } else {
@@ -88,61 +104,5 @@ public class VotingPageFragment extends Fragment implements SelectListener {
                     Toast.makeText(getActivity(), "Fail to get the data.", Toast.LENGTH_SHORT).show();
                     Log.d("Aka","failure to get");
                 });
-
-
-
-        /////////////////////////////////
-        DocumentReference docRef = db.collection("CandiData").document(id);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        CandiData c = document.toObject(CandiData.class);
-                        try {
-
-                            storageReference = FirebaseStorage.getInstance().getReference("images/"+c.getAucAadhaar());
-                            File localfile = File.createTempFile("tempfile", ".jpg");
-                            storageReference.getFile(localfile)
-                                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                                        @Override
-                                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-
-
-
-                                            Bitmap bitmap = BitmapFactory.decodeFile(localfile.getAbsolutePath());
-                                            items.add(new CandiData(bitmap,c.getAucFullname(),bitmap,c.getPartyName()));
-                                            recyclerView.setHasFixedSize(true);
-                                            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                                            recyclerView.setAdapter(new VotingPageMyAdapter(getContext(),items,VotingPageFragment.this));
-
-
-
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-
-
-                                            Toast.makeText(getActivity(), "Failed to retrieve", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-
-                    } else {
-                        Log.d("Akash", "No such document");
-                    }
-                } else {
-                    Log.d("Akash", "get failed with ", task.getException());
-                }
-            }
-        });
     }
-
-
-
 }
