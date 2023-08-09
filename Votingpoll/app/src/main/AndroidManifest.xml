@@ -12,7 +12,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.VotingPoll">
+        android:theme="@style/Theme.VotingPoll"
+        android:enableOnBackInvokedCallback="true">
         <activity
             android:name=".candidate.CandiRegistration"
             android:exported="false" />

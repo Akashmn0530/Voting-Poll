@@ -1,5 +1,6 @@
 package com.example.votingadmin;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -15,8 +16,8 @@ import com.example.votingpoll.R;
 import java.util.List;
 
 public class FeedbackAdaptor extends RecyclerView.Adapter<FeedbackAdaptor.ViewHolder>{
-    private List<ViewFeedback> listdata;
-    private Context context;
+    private final List<ViewFeedback> listdata;
+    private final Context context;
     // RecyclerView recyclerView;
     public FeedbackAdaptor(Context context, List<ViewFeedback> listdata) {
         this.context = context;
@@ -26,10 +27,11 @@ public class FeedbackAdaptor extends RecyclerView.Adapter<FeedbackAdaptor.ViewHo
     @NonNull
     @Override
     public FeedbackAdaptor.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.feedback_items, parent, false);;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.feedback_items, parent, false);
         return new FeedbackAdaptor.ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull FeedbackAdaptor.ViewHolder holder, int position) {
         final ViewFeedback viewFeedback = listdata.get(position);
@@ -49,18 +51,12 @@ public class FeedbackAdaptor extends RecyclerView.Adapter<FeedbackAdaptor.ViewHo
         public TextView fullname,aadhar;
         public ViewHolder(View itemView) {
             super(itemView);
-            this.fullname = (TextView) itemView.findViewById(R.id.rv_Name);
-            this.aadhar = (TextView) itemView.findViewById(R.id.rv_aadhar);
+            this.fullname = itemView.findViewById(R.id.rv_Name);
+            this.aadhar = itemView.findViewById(R.id.rv_aadhar);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ViewFeedback viewFeedback = listdata.get(getAdapterPosition());
-                    Intent intent = new Intent(context, EditCandidatesActivity.class);
-//                    Log.d("Akash",addPollClass.getaAadhaar());
-//                    intent.putExtra("userId",addPollClass);
-                    context.startActivity(intent);
-                }
+            itemView.setOnClickListener(view -> {
+                Intent intent = new Intent(context, EditCandidatesActivity.class);
+                context.startActivity(intent);
             });
         }
     }

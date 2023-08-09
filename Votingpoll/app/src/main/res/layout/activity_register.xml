@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bg2"
     tools:context=".user.Register">
     <LinearLayout
@@ -16,22 +16,13 @@
             android:fontFamily="sans-serif-smallcaps"
             android:gravity="center"
             android:padding="15dp"
+            android:layout_marginTop="18dp"
             android:text="Register"
             android:textColor="#FFFFFF"
             android:textSize="50dp"
             tools:ignore="MissingConstraints" />
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginStart="20dp"
-            android:foregroundGravity="right"
-            android:background="@drawable/clickimage"
-            tools:srcCompat="@drawable/clickimage"
-            />
-    </LinearLayout>
 
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -39,13 +30,20 @@
         android:gravity="center"
         android:layout_marginTop="100dp"
         android:padding="10dp">
-
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageView"
+            android:layout_width="71dp"
+            android:layout_height="71dp"
+            android:layout_gravity="center"
+            android:src="@drawable/clickimage"
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="2dp" />
 
         <EditText
             android:id="@+id/fullname"
             android:layout_width="250dp"
             android:layout_height="48dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="15dp"
             android:background="@drawable/custombutton"
             android:backgroundTint="#D0353333"
             android:padding="10dp"

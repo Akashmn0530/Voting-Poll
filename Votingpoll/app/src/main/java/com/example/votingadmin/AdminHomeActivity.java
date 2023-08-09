@@ -1,75 +1,42 @@
 package com.example.votingadmin;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
 import com.example.votingpoll.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.Toast;
-
-public class AdminHomeActivity extends AppCompatActivity{
-    Button addUserData, addPollData, addInfoData;
+public class AdminHomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
+    BottomNavigationView bottomNavigationView;
     // Your existing button declarations
     DrawerLayout layDL;
     NavigationView vNV;
     Toolbar toolbar;
-    LinearLayout linearLayout;
+    FragmentManager fm = getSupportFragmentManager();
+    ViewContest viewContest;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_admin_home);
-            addInfoData = findViewById(R.id.addInfo);
-            addPollData = findViewById(R.id.addpoll);
-            addUserData = findViewById(R.id.adduser1);
-            linearLayout = findViewById(R.id.linear123);
-            // Your existing button setup
-            addPollData.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    linearLayout.setVisibility(View.GONE);
-                    FragmentManager fm = getSupportFragmentManager();
-                    FragmentTransaction t1 = fm.beginTransaction();
-                    AddCandidates aPoll = new AddCandidates();
-                    t1.replace(R.id.fragmentContainer1, aPoll);
-                    t1.commit();
-                }
-            });
-
-            addUserData.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    linearLayout.setVisibility(View.GONE);
-                    FragmentManager fm = getSupportFragmentManager();
-                    FragmentTransaction t1 = fm.beginTransaction();
-                    AddUser aUser = new AddUser();
-                    t1.replace(R.id.fragmentContainer1, aUser);
-                    t1.commit();
-                }
-            });
-            addInfoData.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    linearLayout.setVisibility(View.GONE);
-                    FragmentManager fm = getSupportFragmentManager();
-                    FragmentTransaction t1 = fm.beginTransaction();
-                    AddTermsAndConditionsFragment addTermsAndConditionsFragment = new AddTermsAndConditionsFragment();
-                    t1.replace(R.id.fragmentContainer1, addTermsAndConditionsFragment);
-                    t1.commit();
-                }
-            });
-
+        setContentView(R.layout.activity_admin_home);
+        //Bottom layout
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+        //bottomNavigationView.setSelectedItemId(R.id.adminprofile);
         layDL = findViewById(R.id.layDL);
         vNV = findViewById(R.id.vNV);
         toolbar = findViewById(R.id.toolbar);
@@ -77,43 +44,87 @@ public class AdminHomeActivity extends AppCompatActivity{
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, layDL, toolbar, R.string.open_drawer, R.string.close_drawer);
         layDL.addDrawerListener(toggle);
         toggle.syncState();
+
+        //To display the poll list
+        viewContest = new ViewContest();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentContainer1, viewContest)
+                .addToBackStack(null)
+                .commit();
         if (savedInstanceState == null) {
-            vNV.setCheckedItem(R.id.adminprofile);
+            vNV.setCheckedItem(R.id.adduser1);
         }
         NavClick();
     }
 
+    AdminProfileFragment adminProfileFragment = new AdminProfileFragment();
+    ViewFeedbackFragment viewFeedbackFragment = new ViewFeedbackFragment();
+    ViewTermsAndConditionFragment viewTermsAndConditionFragment = new ViewTermsAndConditionFragment();
+
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item)
+    {
+        int idd = item.getItemId();
+            if(idd == R.id.adminprofile) {
+                Toast.makeText(this, "Admin Profile", Toast.LENGTH_SHORT).show();
+                fm.beginTransaction()
+                        .replace(R.id.fragmentContainer1, adminProfileFragment)
+                        .addToBackStack(null)
+                        .commit();
+                return true;
+            }
+            if(idd== R.id.viewfeedback) {
+                Toast.makeText(this, "view feedback", Toast.LENGTH_SHORT).show();
+                fm.beginTransaction()
+                        .replace(R.id.fragmentContainer1, viewFeedbackFragment)
+                        .addToBackStack(null)
+                        .commit();
+                return true;
+            }
+            if(idd== R.id.viewTC){
+                Toast.makeText(this, "view terms and conditions", Toast.LENGTH_SHORT).show();
+                fm.beginTransaction()
+                        .replace(R.id.fragmentContainer1, viewTermsAndConditionFragment)
+                        .addToBackStack(null)
+                        .commit();
+                return true;
+        }
+        return false;
+    }
+
     private void NavClick() {
         vNV.setNavigationItemSelectedListener(item -> {
-            Fragment frag = null;
             int id=item.getItemId();
-            if(id==R.id.adminprofile) {
-                linearLayout.setVisibility(View.GONE);
-                Toast.makeText(this, "Admin Profile", Toast.LENGTH_SHORT).show();
-                FragmentManager fm = getSupportFragmentManager();
+            if(id==R.id.addpoll) {
                 FragmentTransaction t1 = fm.beginTransaction();
-                AdminProfileFragment adminProfileFragment = new AdminProfileFragment();
-                t1.replace(R.id.fragmentContainer1, adminProfileFragment);
+                AddCandidates aPoll = new AddCandidates();
+                t1.replace(R.id.fragmentContainer1, aPoll);
+                t1.addToBackStack(null);
                 t1.commit();
                 layDL.closeDrawer(GravityCompat.START);
             }
-            else if(id==R.id.viewfeedback) {
-                linearLayout.setVisibility(View.GONE);
-                Toast.makeText(this, "view feedback", Toast.LENGTH_SHORT).show();
-                FragmentManager fm = getSupportFragmentManager();
+            else if(id==R.id.adduser1) {
                 FragmentTransaction t1 = fm.beginTransaction();
-                ViewFeedbackFragment viewFeedbackFragment = new ViewFeedbackFragment();
-                t1.replace(R.id.fragmentContainer1, viewFeedbackFragment);
+                AddUser aUser = new AddUser();
+                t1.replace(R.id.fragmentContainer1, aUser);
+                t1.addToBackStack(null);
                 t1.commit();
                 layDL.closeDrawer(GravityCompat.START);
             }
-            else if(id==R.id.viewTC) {
-                linearLayout.setVisibility(View.GONE);
-                Toast.makeText(this, "view terms and conditions", Toast.LENGTH_SHORT).show();
-                FragmentManager fm = getSupportFragmentManager();
+            else if(id==R.id.addInfo) {
                 FragmentTransaction t1 = fm.beginTransaction();
-                ViewTermsAndConditionFragment viewTermsAndConditionFragment = new ViewTermsAndConditionFragment();
-                t1.replace(R.id.fragmentContainer1, viewTermsAndConditionFragment);
+                AddTermsAndConditionsFragment addTermsAndConditionsFragment = new AddTermsAndConditionsFragment();
+                t1.replace(R.id.fragmentContainer1, addTermsAndConditionsFragment);
+                t1.addToBackStack(null);
+                t1.commit();
+                layDL.closeDrawer(GravityCompat.START);
+            }
+            else if(id==R.id.addContest) {
+                FragmentTransaction t1 = fm.beginTransaction();
+                AddTermsAndConditionsFragment addTermsAndConditionsFragment = new AddTermsAndConditionsFragment();
+                t1.replace(R.id.fragmentContainer1, addTermsAndConditionsFragment);
+                t1.addToBackStack(null);
                 t1.commit();
                 layDL.closeDrawer(GravityCompat.START);
             }
@@ -128,15 +139,20 @@ public class AdminHomeActivity extends AppCompatActivity{
         });
     }
 
+
     @Override
     public void onBackPressed() {
-        Fragment currFrag = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer1);
-        if (layDL.isDrawerOpen(GravityCompat.START)){
-            layDL.closeDrawer(GravityCompat.START);
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
         }
         else {
             super.onBackPressed();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentContainer1, viewContest)
+                    .addToBackStack(null)
+                    .commit();
         }
     }
+
 }
 

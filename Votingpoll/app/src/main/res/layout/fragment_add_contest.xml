@@ -1,0 +1,83 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg2"
+    tools:context="com.example.votingadmin.AddContest">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-smallcaps"
+            android:gravity="center"
+            android:padding="15dp"
+            android:layout_marginTop="18dp"
+            android:text="Add contest"
+            android:textColor="#FFFFFF"
+            android:textSize="50dp"
+            tools:ignore="MissingConstraints" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="100dp"
+        android:padding="10dp">
+
+        <EditText
+            android:id="@+id/contestName1"
+            android:layout_width="250dp"
+            android:layout_height="48dp"
+            android:background="@drawable/custombutton"
+            android:backgroundTint="#D0353333"
+            android:padding="10dp"
+            android:drawableStart="@drawable/baseline_user"
+            android:gravity="left"
+            android:textColorHint="#F3393636"
+            android:hint="  Contest name" />
+
+        <EditText
+            android:id="@+id/ContestID1"
+            android:layout_width="250dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/custombutton"
+            android:backgroundTint="#D0353333"
+            android:padding="10dp"
+            android:drawableStart="@drawable/baseline_email"
+            android:gravity="left"
+            android:textColorHint="#F3393636"
+            android:hint="  Contest ID"
+            />
+
+        <Button
+            android:id="@+id/addContest"
+            android:layout_width="250dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#0E0E0E"
+            android:text="Add contest"
+            android:textAllCaps="false"
+            android:textColor="#FFFBF6"
+            tools:ignore="TextSizeCheck" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="#3fff"
+            android:layout_marginTop="15dp"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

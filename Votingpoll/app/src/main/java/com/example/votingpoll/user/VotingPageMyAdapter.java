@@ -8,15 +8,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.votingpoll.R;
+import com.example.votingpoll.candidate.CandiData;
 
 import java.util.List;
 
 public class VotingPageMyAdapter extends RecyclerView.Adapter<VotingPageMyViewHolder> {
 
     Context context;
-    List<Item> items;
+    List<CandiData> items;
     SelectListener listener;
-    public VotingPageMyAdapter(Context context, List<Item> items, SelectListener listener)
+    public VotingPageMyAdapter(Context context, List<CandiData> items, SelectListener listener)
     {
         this.context=context;
         this.items=items;
@@ -33,10 +34,10 @@ public class VotingPageMyAdapter extends RecyclerView.Adapter<VotingPageMyViewHo
     @NonNull
     @Override
     public void onBindViewHolder(VotingPageMyViewHolder holder, int position) {
-        holder.textView.setText(items.get(position).getName());
-        holder.imageView.setImageResource(items.get(position).getImage());
-        holder.imageView1.setImageResource(items.get(position).getImage1());
-        holder.textView1.setText(items.get(position).pname);
+        holder.textView.setText(items.get(position).getAucFullname());
+        holder.imageView.setImageBitmap(items.get(position).getPartySymbol());
+        holder.imageView1.setImageBitmap(items.get(position).getPartyCandidateImage());
+        holder.textView1.setText(items.get(position).getPartyName());
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

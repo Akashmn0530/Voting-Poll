@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -21,7 +20,8 @@
         android:gravity="center"
         android:fontFamily="sans-serif-smallcaps"
         android:text="Admin"
-        android:textColor="#fff" />
+        android:textColor="#fff"
+        tools:ignore="HardcodedText" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,8 +31,8 @@
         android:text="Login"
         android:fontFamily="sans-serif-smallcaps"
         android:textColor="#FFFFFF"
-        android:textSize="50dp"
-        tools:ignore="MissingConstraints" />
+        android:textSize="50sp"
+        tools:ignore="HardcodedText,MissingConstraints" />
 
 </LinearLayout>
 
@@ -58,7 +58,7 @@
             android:background="@drawable/custombutton"
             android:backgroundTint="#D0353333"
             android:hint="  Username"
-            />
+            tools:ignore="HardcodedText,RtlHardcoded,TextFields" />
 
         <EditText
             android:id="@+id/password1"
@@ -72,7 +72,8 @@
             android:padding="10dp"
             android:drawableStart="@drawable/baseline_password"
             android:inputType="textPassword"
-            android:textColorHint="#F3393636" />
+            android:textColorHint="#F3393636"
+            tools:ignore="Autofill,HardcodedText,RtlHardcoded" />
 
 
         <Button
@@ -83,7 +84,8 @@
             android:backgroundTint="#0E0E0E"
             android:text="LOGIN"
             android:textAllCaps="false"
-            android:textColor="#FFFBF6" />
+            android:textColor="#FFFBF6"
+            tools:ignore="HardcodedText" />
         <Button
             android:id="@+id/signupbtn"
             android:layout_width="250dp"
@@ -92,7 +94,8 @@
             android:backgroundTint="#0E0E0E"
             android:text="SIGN UP"
             android:textAllCaps="false"
-            android:textColor="#FFFBF6" />
+            android:textColor="#FFFBF6"
+            tools:ignore="HardcodedText" />
         <View
             android:layout_width="fill_parent"
             android:layout_height="2dp"
@@ -102,10 +105,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Forget Password?"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:layout_marginTop="15dp"
             android:textColor="#000000"
-            />
+            tools:ignore="HardcodedText" />
 
         <EditText
             android:id="@+id/msg"
@@ -113,7 +116,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:gravity="center"
-            android:hint="3 Attempt left"/>
+            android:hint="3 Attempt left"
+            tools:ignore="Autofill,HardcodedText,TextFields" />
 
         <!-- ProgressBar for Loading Time -->
         <ProgressBar

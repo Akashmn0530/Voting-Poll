@@ -6,13 +6,28 @@
     android:orientation="vertical"
     android:background="@drawable/bg10"
     tools:context=".candidate.AddPlansFragment">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="40dp"
         android:textSize="24dp"
         android:gravity="center"
-        android:text="ADD YOUR PLANS HERE" />
+        android:text="ADD YOUR PARTY HERE" />
+    <EditText
+        android:id="@+id/partySelect"
+        android:layout_width="250dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="40dp"
+        android:textSize="24dp"
+        android:gravity="center"
+        android:text="ADD YOUR MANIFESTO HERE" />
     <EditText
         android:id="@+id/addPlans123"
         android:layout_width="350dp"

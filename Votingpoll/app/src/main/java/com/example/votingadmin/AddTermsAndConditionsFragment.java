@@ -1,30 +1,24 @@
 package com.example.votingadmin;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.example.votingpoll.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class AddTermsAndConditionsFragment extends Fragment {
     EditText editText;
     Button b;
     FirebaseFirestore db;
-    String aadhar;
     TermsAndConditions termsAndConditions;
 
     public AddTermsAndConditionsFragment() {
@@ -39,13 +33,10 @@ public class AddTermsAndConditionsFragment extends Fragment {
         // Initializing our variable for Firestore and getting its instance
         db = FirebaseFirestore.getInstance();
         termsAndConditions = new TermsAndConditions();
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String terms = editText.getText().toString();
-                editText.setText("");
-                addDatatoFireStore(terms);
-            }
+        b.setOnClickListener(v -> {
+            String terms = editText.getText().toString();
+            editText.setText("");
+            addDatatoFireStore(terms);
         });
     }
 
@@ -57,17 +48,7 @@ public class AddTermsAndConditionsFragment extends Fragment {
         // Add a new document with a generated ID
 
         db.collection("termsData").document("terms")
-                .set(termsAndConditions).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Toast.makeText(getActivity(), "Success...", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), "Failed...", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                .set(termsAndConditions).addOnSuccessListener(unused -> Toast.makeText(getActivity(), "Success...", Toast.LENGTH_SHORT).show()).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed...", Toast.LENGTH_SHORT).show());
     }
 
     @Override

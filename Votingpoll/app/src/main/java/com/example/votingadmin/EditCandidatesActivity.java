@@ -1,22 +1,16 @@
 package com.example.votingadmin;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import com.example.votingpoll.R;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.votingpoll.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Map;
 
@@ -34,12 +28,9 @@ public class EditCandidatesActivity extends AppCompatActivity {
             // Use the user ID to fetch the user data from Firestore and display it in the activity
             fetchUserData(userId);
             Button btnSave = findViewById(R.id.btnSave);
-            btnSave.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    // Handle the Save button click to update the Firestore data
-                    onSaveButtonClick();
-                }
+            btnSave.setOnClickListener(view -> {
+                // Handle the Save button click to update the Firestore data
+                onSaveButtonClick();
             });
         } else {
             // Handle case when user ID is not available
@@ -52,21 +43,18 @@ public class EditCandidatesActivity extends AppCompatActivity {
         db.collection("PollData")
                 .whereEqualTo("aAadhaar", id)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Map<String,Object> addPollClass1 = document.getData();
-                                EditText fullNameEditText = findViewById(R.id.editFullName);
-                                TextView aadharEditText = findViewById(R.id.editAadhar);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Map<String,Object> addPollClass1 = document.getData();
+                            EditText fullNameEditText = findViewById(R.id.editFullName);
+                            TextView aadharEditText = findViewById(R.id.editAadhar);
 
-                                fullNameEditText.setText(String.valueOf(addPollClass1.get("aFullname")));
-                                aadharEditText.setText(String.valueOf(addPollClass1.get("aAadhaar")));
-                            }
-                        } else {
-                            Toast.makeText(EditCandidatesActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                            fullNameEditText.setText(String.valueOf(addPollClass1.get("aFullname")));
+                            aadharEditText.setText(String.valueOf(addPollClass1.get("aAadhaar")));
                         }
+                    } else {
+                        Toast.makeText(EditCandidatesActivity.this, "Error", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -80,17 +68,7 @@ public class EditCandidatesActivity extends AppCompatActivity {
         updatePoll.setaFullname(fullName);
         db.collection("PollData").document(userId.getaAadhaar()).
                 set(updatePoll)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Toast.makeText(EditCandidatesActivity.this, "Successfully updated...", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(EditCandidatesActivity.this, "Failed to update...", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                .addOnSuccessListener(unused -> Toast.makeText(EditCandidatesActivity.this, "Successfully updated...", Toast.LENGTH_SHORT).show()).addOnFailureListener(e -> Toast.makeText(EditCandidatesActivity.this, "Failed to update...", Toast.LENGTH_SHORT).show());
     }
 
     // Implement the method to handle the Save button click to update the Firestore data

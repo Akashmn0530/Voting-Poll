@@ -10,7 +10,6 @@ public class AdminAddedData implements Serializable {
     private String aPassword;
     private String aAddress;
     private String aAadhaar;
-    private String termsAndConditions;
 
 
     public void setaAadhaar(String uAadhaar) {
@@ -61,11 +60,5 @@ public class AdminAddedData implements Serializable {
         return aMobile;
     }
 
-    public String getTermsAndConditions() {
-        return termsAndConditions;
-    }
-    public void setTermsAndConditions(String termsAndConditions) {
-        this.termsAndConditions = termsAndConditions;
-    }
 }
 

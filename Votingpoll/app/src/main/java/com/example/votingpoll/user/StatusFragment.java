@@ -1,11 +1,6 @@
 package com.example.votingpoll.user;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +8,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.example.votingpoll.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -46,25 +43,23 @@ public class StatusFragment extends Fragment {
         String id = Login.uidpass;
         Log.d("Akash","profile 70"+id);
         DocumentReference docRef = db.collection("UserData").document(id);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Toast.makeText(getActivity(), "Successfully getting the data...", Toast.LENGTH_SHORT).show();
-                        Log.d("Akash", "DocumentSnapshot data: " + document.getData());
-                        ServerData c = document.toObject(ServerData.class);
-                        Log.d("Akash","setting data...");
-                        name.setText(c.getAuFullname());
-                        status.setText(c.getVote());
-                        count.setText(String.valueOf(c.getVoteCount()));
-                    } else {
-                        Log.d("Akash", "No such document");
-                    }
+        docRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    Toast.makeText(getActivity(), "Successfully getting the data...", Toast.LENGTH_SHORT).show();
+                    Log.d("Akash", "DocumentSnapshot data: " + document.getData());
+                    ServerData c = document.toObject(ServerData.class);
+                    Log.d("Akash","setting data...");
+                    assert c != null;
+                    name.setText(c.getAuFullname());
+                    status.setText(c.getVote());
+                    count.setText(String.valueOf(c.getVoteCount()));
                 } else {
-                    Log.d("Akash", "get failed with ", task.getException());
+                    Log.d("Akash", "No such document");
                 }
+            } else {
+                Log.d("Akash", "get failed with ", task.getException());
             }
         });
     }

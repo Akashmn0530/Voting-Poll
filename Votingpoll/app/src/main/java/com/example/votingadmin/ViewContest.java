@@ -2,6 +2,26 @@ package com.example.votingadmin;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import com.example.votingpoll.R;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.List;
+import android.annotation.SuppressLint;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,36 +40,39 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewFeedbackFragment extends Fragment {
+public class ViewContest extends Fragment {
 
-    private ArrayList<ViewFeedback> viewFeedbacks;
-    private FeedbackAdaptor feedbackAdaptor;
+
+    private ArrayList myListData;
+    private AdapterContest myListAdapter;
     private FirebaseFirestore db;
-    ProgressBar loadingPB;
-    public ViewFeedbackFragment() {
+    private ProgressBar loadingPB;
+
+    public ViewContest() {
         // Required empty public constructor
     }
-
-
+    @SuppressLint("MissingInflatedId")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_view_feedback, container, false);
-        RecyclerView voteRV = view.findViewById(R.id.your_recycler_view_id3);
-        loadingPB = view.findViewById(R.id.idProgressBar1);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_view_contest, container, false);
+        RecyclerView voteRV = view.findViewById(R.id.your_recycler_view_id11);
+        loadingPB = view.findViewById(R.id.idProgressBar11);
 
         // Initializing our variable for Firestore and getting its instance
         db = FirebaseFirestore.getInstance();
-        Log.d("Aka","getting view");
+        Log.d("Aka", "getting view");
         // Creating our new array list
-        viewFeedbacks = new ArrayList<>();
+        myListData = new ArrayList<>();
 
         voteRV.setHasFixedSize(true);
         voteRV.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         // Adding our array list
-        feedbackAdaptor = new FeedbackAdaptor(getContext(), viewFeedbacks);
+        myListAdapter = new AdapterContest(getContext(), myListData);
 
-        voteRV.setAdapter(feedbackAdaptor); // Setting the adapter to the RecyclerView
+        voteRV.setAdapter(myListAdapter); // Setting the adapter to the RecyclerView
 
         fetchUserDataFromFirestore();
 
@@ -60,28 +83,29 @@ public class ViewFeedbackFragment extends Fragment {
     private void fetchUserDataFromFirestore() {
         loadingPB.setVisibility(View.VISIBLE);
 
-        db.collection("FeedbackDB").get()
+        db.collection("contestData").get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
                         loadingPB.setVisibility(View.GONE);
                         List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                         for (DocumentSnapshot d : list) {
-                            ViewFeedback c = d.toObject(ViewFeedback.class);
-                           // c.setViewDescription(d.getId());
-                            viewFeedbacks.add(c);
-                            Log.d("Aka","getting data..");
+                            ContestClass c = d.toObject(ContestClass.class);
+                            assert c != null;
+                            c.setConId(d.getId());
+                            myListData.add(c);
+                            Log.d("Aka", "getting data..");
                         }
-                        feedbackAdaptor.notifyDataSetChanged();
+                        myListAdapter.notifyDataSetChanged();
                     } else {
                         loadingPB.setVisibility(View.GONE);
                         Toast.makeText(getActivity(), "No data found in Database", Toast.LENGTH_SHORT).show();
-                        Log.d("Aka","no data found");
+                        Log.d("Aka", "no data found");
                     }
                 })
                 .addOnFailureListener(e -> {
                     loadingPB.setVisibility(View.GONE);
                     Toast.makeText(getActivity(), "Fail to get the data.", Toast.LENGTH_SHORT).show();
-                    Log.d("Aka","failure to get");
+                    Log.d("Aka", "failure to get");
                 });
     }
 }

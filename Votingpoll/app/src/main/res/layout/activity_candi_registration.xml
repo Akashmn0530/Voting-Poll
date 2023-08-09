@@ -7,17 +7,23 @@
     android:background="@drawable/bg2"
     tools:context=".candidate.CandiRegistration">
 
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:fontFamily="sans-serif-smallcaps"
-        android:gravity="center"
-        android:padding="15dp"
-        android:text="Register"
-        android:textColor="#FFFFFF"
-        android:textSize="50dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-smallcaps"
+            android:gravity="center"
+            android:padding="15dp"
+            android:layout_marginTop="18dp"
+            android:text="Register"
+            android:textColor="#FFFFFF"
+            android:textSize="50dp"
+            tools:ignore="MissingConstraints" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,11 +33,19 @@
         android:layout_marginTop="100dp"
         android:padding="10dp">
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageView"
+            android:layout_width="71dp"
+            android:layout_height="71dp"
+            android:layout_gravity="center"
+            android:src="@drawable/clickimage"
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="2dp" />
         <EditText
             android:id="@+id/fullname"
             android:layout_width="250dp"
             android:layout_height="48dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="15dp"
             android:background="@drawable/custombutton"
             android:backgroundTint="#D0353333"
             android:padding="10dp"

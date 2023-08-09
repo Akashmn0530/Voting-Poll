@@ -1,11 +1,5 @@
 package com.example.votingpoll.user;
 
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +9,12 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -40,9 +39,8 @@ public class HomeActivity extends AppCompatActivity {
         textView = findViewById(R.id.welcomeTxt);
         setSupportActionBar(toolbar);
         linearLayout = findViewById(R.id.linearHome1);
-        Bundle bundle = getIntent().getExtras();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, layDL, toolbar, R.string.open_drawer, R.string.close_drawer);
-        ImageButton imageButton =  (ImageButton) findViewById(R.id.imageButton);
+        ImageButton imageButton = findViewById(R.id.imageButton);
         imageButton.setOnClickListener(view -> {
             // Creating a toast to display the message
             linearLayout.setVisibility(View.GONE);
@@ -50,6 +48,7 @@ public class HomeActivity extends AppCompatActivity {
             FragmentTransaction t1 = fm.beginTransaction();
             TermsAndConditionsFragment termsAndConditionsFragment = new TermsAndConditionsFragment();
             t1.replace(R.id.fragmentContainer1, termsAndConditionsFragment);
+            t1.addToBackStack(null);
             t1.commit();
             Log.d("Akash","HomeActivity button clicked");
         });
@@ -64,7 +63,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private void NavClick() {
         vNV.setNavigationItemSelectedListener(item -> {
-            Fragment frag = null;
             int id=item.getItemId();
             if(id==R.id.profile) {
                 linearLayout.setVisibility(View.GONE);
@@ -72,6 +70,7 @@ public class HomeActivity extends AppCompatActivity {
                 FragmentTransaction t1 = fm.beginTransaction();
                 ProfileFragment profileFragment = new ProfileFragment();
                 t1.replace(R.id.fragmentContainer1, profileFragment);
+                t1.addToBackStack(null);
                 t1.commit();
                 Log.d("Akash","HomeActivity button clicked");
                 textView.setText("");
@@ -84,6 +83,7 @@ public class HomeActivity extends AppCompatActivity {
                 FragmentTransaction t1 = fm.beginTransaction();
                 StatusFragment statusFragment = new StatusFragment();
                 t1.replace(R.id.fragmentContainer1, statusFragment);
+                t1.addToBackStack(null);
                 t1.commit();
                 Log.d("Akash","HomeActivity button clicked");
                 textView.setText("");
@@ -97,6 +97,7 @@ public class HomeActivity extends AppCompatActivity {
                 FragmentTransaction t1 = fm.beginTransaction();
                 FeedbackFragment feedbackFragment = new FeedbackFragment();
                 t1.replace(R.id.fragmentContainer1, feedbackFragment);
+                t1.addToBackStack(null);
                 t1.commit();
                 Log.d("Akash","HomeActivity button clicked");
                 textView.setText("");
@@ -117,12 +118,11 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Fragment currFrag = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer1);
-        if (layDL.isDrawerOpen(GravityCompat.START)){
-            layDL.closeDrawer(GravityCompat.START);
-        }
-        else {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+        } else {
             super.onBackPressed();
         }
     }
+
 }

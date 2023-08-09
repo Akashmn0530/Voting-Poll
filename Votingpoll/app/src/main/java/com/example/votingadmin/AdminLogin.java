@@ -1,33 +1,26 @@
 package com.example.votingadmin;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.votingpoll.R;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.example.votingpoll.R;
 public class AdminLogin extends AppCompatActivity {
     EditText uname,pword, message;
     Button button1;
@@ -41,30 +34,19 @@ public class AdminLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_login);
 
-        uname = (EditText)findViewById(R.id.username1);
-        pword = (EditText)findViewById(R.id.password1);
-        message = (EditText)findViewById(R.id.msg);
-        button1 = (Button)findViewById(R.id.loginbtn);
+        uname = findViewById(R.id.username1);
+        pword = findViewById(R.id.password1);
+        message = findViewById(R.id.msg);
+        button1 = findViewById(R.id.loginbtn);
         progressbar = findViewById(R.id.progressbar);
 
         //for firestore
         db = FirebaseFirestore.getInstance();
-        button1.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                loginUserAccount();
-
-            }
-        });
-        Button buttonsignup = (Button) findViewById(R.id.signupbtn);
-        buttonsignup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent inte = new Intent(getApplicationContext(), AdminRegister.class);
-                startActivity(inte);
-            }
+        button1.setOnClickListener(v -> loginUserAccount());
+        Button buttonsignup = findViewById(R.id.signupbtn);
+        buttonsignup.setOnClickListener(view -> {
+            Intent inte = new Intent(getApplicationContext(), AdminRegister.class);
+            startActivity(inte);
         });
         //getSupportActionBar().setTitle("Akash");
 
@@ -86,7 +68,6 @@ public class AdminLogin extends AppCompatActivity {
                             "Please enter userID!!",
                             Toast.LENGTH_LONG)
                     .show();
-            return;
         }
 
         else if(TextUtils.isEmpty(password)) {
@@ -94,24 +75,20 @@ public class AdminLogin extends AppCompatActivity {
                             "Please enter password!!",
                             Toast.LENGTH_LONG)
                     .show();
-            return;
         }
         else {
-            checkEmailInFireStore(Uid, new EmailCheckCallback() {
-                @Override
-                public void onEmailExists(boolean exists) {
-                    if (exists) {
-                        //Fetch the data from AdminData DB and
-                        // Check the user entered data and DB data should match or not...
-                        fetchTheData(Uid,password);
-                    }
-                    else {
-                        Toast.makeText(AdminLogin.this, "User not exists Sign up and try again...", Toast.LENGTH_SHORT).show();
-                        Intent inte = new Intent(getApplicationContext(), AdminRegister.class);
-                        startActivity(inte);
-                        // hide the progress bar
-                        progressbar.setVisibility(View.GONE);
-                    }
+            checkEmailInFireStore(Uid, exists -> {
+                if (exists) {
+                    //Fetch the data from AdminData DB and
+                    // Check the user entered data and DB data should match or not...
+                    fetchTheData(Uid,password);
+                }
+                else {
+                    Toast.makeText(AdminLogin.this, "User not exists Sign up and try again...", Toast.LENGTH_SHORT).show();
+                    Intent inte = new Intent(getApplicationContext(), AdminRegister.class);
+                    startActivity(inte);
+                    // hide the progress bar
+                    progressbar.setVisibility(View.GONE);
                 }
             });
         }
@@ -137,61 +114,60 @@ public class AdminLogin extends AppCompatActivity {
         });
 
     }
+    @SuppressLint("SetTextI18n")
     void fetchTheData(String Uid, String password){
         DocumentReference docRef = db.collection("AdminData").document(Uid);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        AdminAddedData c = document.toObject(AdminAddedData.class);
-                        String getUID = c.getaAadhaar();
-                        String getPass = c.getaPassword();
-                        if(Uid.equals(getUID) && password.equals(getPass)){
-                            message.getText().clear();
-                            message.setBackgroundColor(Color.TRANSPARENT);
-                            counter = 3;
-                            // hide the progress bar
-                            progressbar.setVisibility(View.GONE);
-                            Toast.makeText(AdminLogin.this, "Successfully logged in", Toast.LENGTH_SHORT).show();
-                            // if sign-in is successful
-                            // intent to home activity
-                            Intent intent
-                                    = new Intent(AdminLogin.this,
-                                    AdminHomeActivity.class);
-                            startActivity(intent);
-                        } else {
-
-                            Toast.makeText(getApplicationContext(), "Wrong Credentials", Toast.LENGTH_SHORT).show();
-                            pword.setError("wrong password...");
-                            message.setVisibility(View.VISIBLE);
-                            message.setBackgroundColor(Color.RED);
-                            counter--;
-                            message.setText(Integer.toString(counter));
-                            if (counter == 0) {
-                                button1.setEnabled(false);
-                                new CountDownTimer(10000, 10) { //Set Timer for 10 seconds
-                                    public void onTick(long millisUntilFinished) {
-                                    }
-
-                                    @Override
-                                    public void onFinish() {
-                                        button1.setEnabled(true);
-                                        message.getText().clear();
-                                        message.setBackgroundColor(Color.TRANSPARENT);
-                                        counter = 3;
-                                    }
-                                }.start();
-                            }
-                            progressbar.setVisibility(View.GONE);
-                        }
+        docRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    AdminAddedData c = document.toObject(AdminAddedData.class);
+                    assert c != null;
+                    String getUID = c.getaAadhaar();
+                    String getPass = c.getaPassword();
+                    if(Uid.equals(getUID) && password.equals(getPass)){
+                        message.getText().clear();
+                        message.setBackgroundColor(Color.TRANSPARENT);
+                        counter = 3;
+                        // hide the progress bar
+                        progressbar.setVisibility(View.GONE);
+                        Toast.makeText(AdminLogin.this, "Successfully logged in", Toast.LENGTH_SHORT).show();
+                        // if sign-in is successful
+                        // intent to home activity
+                        Intent intent
+                                = new Intent(AdminLogin.this,
+                                AdminHomeActivity.class);
+                        startActivity(intent);
                     } else {
-                        Toast.makeText(AdminLogin.this, "No such document", Toast.LENGTH_SHORT).show();
+
+                        Toast.makeText(getApplicationContext(), "Wrong Credentials", Toast.LENGTH_SHORT).show();
+                        pword.setError("wrong password...");
+                        message.setVisibility(View.VISIBLE);
+                        message.setBackgroundColor(Color.RED);
+                        counter--;
+                        message.setText(Integer.toString(counter));
+                        if (counter == 0) {
+                            button1.setEnabled(false);
+                            new CountDownTimer(10000, 10) { //Set Timer for 10 seconds
+                                public void onTick(long millisUntilFinished) {
+                                }
+
+                                @Override
+                                public void onFinish() {
+                                    button1.setEnabled(true);
+                                    message.getText().clear();
+                                    message.setBackgroundColor(Color.TRANSPARENT);
+                                    counter = 3;
+                                }
+                            }.start();
+                        }
+                        progressbar.setVisibility(View.GONE);
                     }
                 } else {
-                    Toast.makeText(AdminLogin.this, "get failed with "+ task.getException(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AdminLogin.this, "No such document", Toast.LENGTH_SHORT).show();
                 }
+            } else {
+                Toast.makeText(AdminLogin.this, "get failed with "+ task.getException(), Toast.LENGTH_SHORT).show();
             }
         });
     }

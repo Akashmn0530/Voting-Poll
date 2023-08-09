@@ -1,5 +1,7 @@
 package com.example.votingpoll.candidate;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +28,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
+import java.io.IOException;
 
 
 public class CandiProfile extends Fragment {
@@ -32,6 +41,8 @@ public class CandiProfile extends Fragment {
     TextView proAadhar;
     Button proEdit;
     FirebaseFirestore db;
+    ImageView profile_img;
+    StorageReference storageReference;
     public CandiProfile() {
         // Required empty public constructor
     }
@@ -54,6 +65,7 @@ public class CandiProfile extends Fragment {
         proName = getView().findViewById(R.id.pname);
         proEdit = getView().findViewById(R.id.pEdit);
         db = FirebaseFirestore.getInstance();
+        profile_img = getView().findViewById(R.id.profile_image);
         // Getting Intent...
         String cidpass =  CandiLogin.cidpass;
         // This callback will only be called when MyFragment is at least Started.
@@ -67,6 +79,7 @@ public class CandiProfile extends Fragment {
 //        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);
         //Calling fetchData method...
         fetchTheData(cidpass);
+        fetchImage(cidpass);
         proEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,7 +88,30 @@ public class CandiProfile extends Fragment {
         });
     }
 
+    private void fetchImage(String s) {
+        storageReference = FirebaseStorage.getInstance().getReference("images/"+s);
+        try {
+            File localfile = File.createTempFile("tempfile", ".jpg");
+            storageReference.getFile(localfile)
+                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            Bitmap bitmap = BitmapFactory.decodeFile(localfile.getAbsolutePath());
+                            profile_img.setImageBitmap(bitmap);
 
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getActivity(), "Failed to retrieve", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
     void updateData(){
         // Get the updated data from the edit text fields

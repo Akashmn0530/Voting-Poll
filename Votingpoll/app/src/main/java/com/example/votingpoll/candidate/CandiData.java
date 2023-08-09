@@ -1,5 +1,7 @@
 package com.example.votingpoll.candidate;
 
+import android.graphics.Bitmap;
+
 public class CandiData {
     private String aucFullname;
     private String aucEmail;
@@ -11,6 +13,76 @@ public class CandiData {
     private String aucFeedback;
     private String aucPlans;
     private String aucPass;
+    private String partyName;
+
+    Bitmap partySymbol, partyCandidateImage;
+    //////////////
+    String name;
+    int image1;
+    String pname;
+    int image;
+    CandiData(){ }
+    public CandiData(Bitmap partySymbol, String name, Bitmap partyCandidateImage, String pname) {
+        this.partySymbol = partySymbol;
+        this.partyCandidateImage = partyCandidateImage;
+        this.name = name;
+        this.pname = pname;
+    }
+
+    public CandiData(int image, String name, int image1, String pname) {
+        this.image = image;
+        this.name = name;
+        this.image1 = image1;
+        this.pname = pname;
+    }
+
+    public int getImage() {
+        return image;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getImage1() {
+        return image1;
+    }
+
+    public void setImage1(int image1) {
+        this.image1 = image1;
+    }
+
+    public String getPname() {
+        return pname;
+    }
+
+    public void setPname(String pname) {
+        this.pname = pname;
+    }
+////////////////
+    public void setPartySymbol(Bitmap partySymbol) {
+        this.partySymbol = partySymbol;
+    }
+
+    public void setPartyCandidateImage(Bitmap partyCandidateImage) {
+        this.partyCandidateImage = partyCandidateImage;
+    }
+
+    public Bitmap getPartySymbol() {
+        return partySymbol;
+    }
+
+    public Bitmap getPartyCandidateImage() {
+        return partyCandidateImage;
+    }
 
     public void setaucAadhaar(String uAadhaar) {
         this.aucAadhaar = uAadhaar;
@@ -90,6 +162,14 @@ public class CandiData {
 
     public void setAucPlans(String aucPlans) {
         this.aucPlans = aucPlans;
+    }
+
+    public String getPartyName() {
+        return partyName;
+    }
+
+    public void setPartyName(String partyName) {
+        this.partyName = partyName;
     }
 }
 

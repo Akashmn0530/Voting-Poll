@@ -1,11 +1,6 @@
 package com.example.votingpoll.candidate;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.example.votingpoll.R;
-import com.example.votingpoll.user.Login;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -38,13 +32,10 @@ public class AddPlansFragment extends Fragment {
         String aadhar = CandiLogin.cidpass;
         db = FirebaseFirestore.getInstance();
         fetchTheData(aadhar);
-        addPlansBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                plans = plansEdittext.getText().toString();
-                Log.d("Akash","Addplan plans"+plans);
-                updateData(plans,aadhar);
-            }
+        addPlansBtn.setOnClickListener(view1 -> {
+            plans = plansEdittext.getText().toString();
+            Log.d("Akash","Addplan plans"+plans);
+            updateData(plans,aadhar);
         });
     }
     void updateData(String plans,String aadhar){
@@ -53,36 +44,24 @@ public class AddPlansFragment extends Fragment {
             DocumentReference update1 = db.collection("CandiData").document(aadhar);
             //Update DB
             update1.update("aucPlans",plans)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(getActivity(), "Successfully updated", Toast.LENGTH_SHORT).show();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    .addOnSuccessListener(aVoid -> Toast.makeText(getActivity(), "Successfully updated", Toast.LENGTH_SHORT).show()).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show());
         }
     }
 
     void fetchTheData(String cid){
         DocumentReference docRef = db.collection("CandiData").document(cid);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        CandiData c = document.toObject(CandiData.class);
-                        plansEdittext.setText(c.getAucPlans());
-                    } else {
-                        Log.d("Akash", "No Data");
-                    }
+        docRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    CandiData c = document.toObject(CandiData.class);
+                    assert c != null;
+                    plansEdittext.setText(c.getAucPlans());
                 } else {
-                    Log.d("Akash", "get failed with ", task.getException());
+                    Log.d("Akash", "No Data");
                 }
+            } else {
+                Log.d("Akash", "get failed with ", task.getException());
             }
         });
     }

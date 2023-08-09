@@ -1,29 +1,19 @@
 package com.example.votingadmin;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.votingpoll.user.ServerData;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.votingpoll.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Map;
-import com.example.votingpoll.R;
 public class EditUserActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
@@ -41,12 +31,9 @@ public class EditUserActivity extends AppCompatActivity {
             // Use the user ID to fetch the user data from Firestore and display it in the activity
             fetchUserData(userId);
             Button btnSave = findViewById(R.id.btnSave);
-            btnSave.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    // Handle the Save button click to update the Firestore data
-                    onSaveButtonClick();
-                }
+            btnSave.setOnClickListener(view -> {
+                // Handle the Save button click to update the Firestore data
+                onSaveButtonClick();
             });
         } else {
             // Handle case when user ID is not available
@@ -61,23 +48,20 @@ public class EditUserActivity extends AppCompatActivity {
         db.collection("AddUser")
                 .whereEqualTo("auAadhaar", id)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Map<String,Object> server1 = document.getData();
-                                EditText fullNameEditText = findViewById(R.id.editFullName);
-                                TextView aadharEditText = findViewById(R.id.editAadhar);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Map<String,Object> server1 = document.getData();
+                            EditText fullNameEditText = findViewById(R.id.editFullName);
+                            TextView aadharEditText = findViewById(R.id.editAadhar);
 
-                                fullNameEditText.setText(String.valueOf(server1.get("auFullname")));
-                                aadharEditText.setText(String.valueOf(server1.get("auAadhaar")));
-                                //String ab = server1.get();
+                            fullNameEditText.setText(String.valueOf(server1.get("auFullname")));
+                            aadharEditText.setText(String.valueOf(server1.get("auAadhaar")));
+                            //String ab = server1.get();
 
-                            }
-                        } else {
-                            Toast.makeText(EditUserActivity.this, "Error", Toast.LENGTH_SHORT).show();
                         }
+                    } else {
+                        Toast.makeText(EditUserActivity.this, "Error", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -90,17 +74,7 @@ public class EditUserActivity extends AppCompatActivity {
         userData.setauFullname(fullName);
         db.collection("AddUser").document(userId.getAuAadhaar()).
                 set(userData)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Toast.makeText(EditUserActivity.this, "Successfully updated...", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(EditUserActivity.this, "Failed to update...", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                .addOnSuccessListener(unused -> Toast.makeText(EditUserActivity.this, "Successfully updated...", Toast.LENGTH_SHORT).show()).addOnFailureListener(e -> Toast.makeText(EditUserActivity.this, "Failed to update...", Toast.LENGTH_SHORT).show());
     }
 
     // Implement the method to handle the Save button click to update the Firestore data

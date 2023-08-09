@@ -1,28 +1,36 @@
 package com.example.votingpoll.user;
 
+import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.example.votingpoll.R;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
+import java.io.IOException;
 
 
 public class ProfileFragment extends Fragment {
@@ -30,6 +38,9 @@ public class ProfileFragment extends Fragment {
     TextView proAadhar;
     Button proEdit;
     FirebaseFirestore db;
+
+    ImageView profile_img;
+    StorageReference storageReference;
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -46,25 +57,13 @@ public class ProfileFragment extends Fragment {
         proName = getView().findViewById(R.id.pname);
         proEdit = getView().findViewById(R.id.pEdit);
         db = FirebaseFirestore.getInstance();
+        profile_img = getView().findViewById(R.id.profile_image);
         // Getting Intent...
         String id =  Login.uidpass;
-        // This callback will only be called when MyFragment is at least Started.
-//        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
-//            @Override
-//            public void handleOnBackPressed() {
-//                Intent intent = new Intent(getContext(), HomeActivity.class);
-//                startActivity(intent);
-//            }
-//        };
-//        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);
         //Calling fetchData method...
         fetchTheData(id);
-        proEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateData();
-            }
-        });
+        fetchImage(id);
+        proEdit.setOnClickListener(view1 -> updateData());
     }
 
     @Override
@@ -82,57 +81,71 @@ public class ProfileFragment extends Fragment {
         String address = (proAddress).getText().toString();
         String aadhar = (proAadhar).getText().toString();
         // Get other fields as needed
-        if (aadhar != null) {
-            // Use the userId to update the Firestore data
-            DocumentReference update1 = db.collection("UserData").document(aadhar);
-            //Update DB
-            update1
-                    .update("auFullname", fullName,
-                    "auEmail",email,
-                            "auAddress",address,
-                            "auMobile",mobile
-                            )
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(getActivity(), "Successfully updated", Toast.LENGTH_SHORT).show();
-                            Log.d("Akash", "DocumentSnapshot successfully updated!");
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
+        // Use the userId to update the Firestore data
+        DocumentReference update1 = db.collection("UserData").document(aadhar);
+        //Update DB
+        update1
+                .update("auFullname", fullName,
+                "auEmail",email,
+                        "auAddress",address,
+                        "auMobile",mobile
+                        )
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(getActivity(), "Successfully updated", Toast.LENGTH_SHORT).show();
+                    Log.d("Akash", "DocumentSnapshot successfully updated!");
+                }).addOnFailureListener(e -> {
                     Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
                     Log.w("Akash", "Error updating document", e);
-                }
-            });
-        }
+                });
     }
 
     void fetchTheData(String id){
         Log.d("Akash","profile 70"+id);
         DocumentReference docRef = db.collection("UserData").document(id);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Toast.makeText(getActivity(), "Successfully getting the data...", Toast.LENGTH_SHORT).show();
-                        Log.d("Akash", "DocumentSnapshot data: " + document.getData());
-                        ServerData c = document.toObject(ServerData.class);
-                        Log.d("Akash","setting data...");
-                        proName.setText(c.getAuFullname());
-                        proMobile.setText(String.valueOf(c.getAuMobile()));
-                        proEmail.setText(c.getAuEmail());
-                        proAadhar.setText(String.valueOf(c.getAuAadhaar()));
-                        proAddress.setText(c.getAuAddress());
-                    } else {
-                        Log.d("Akash", "No such document");
-                    }
+        docRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    Toast.makeText(getActivity(), "Successfully getting the data...", Toast.LENGTH_SHORT).show();
+                    Log.d("Akash", "DocumentSnapshot data: " + document.getData());
+                    ServerData c = document.toObject(ServerData.class);
+                    Log.d("Akash","setting data...");
+                    assert c != null;
+                    proName.setText(c.getAuFullname());
+                    proMobile.setText(String.valueOf(c.getAuMobile()));
+                    proEmail.setText(c.getAuEmail());
+                    proAadhar.setText(String.valueOf(c.getAuAadhaar()));
+                    proAddress.setText(c.getAuAddress());
                 } else {
-                    Log.d("Akash", "get failed with ", task.getException());
+                    Log.d("Akash", "No such document");
                 }
+            } else {
+                Log.d("Akash", "get failed with ", task.getException());
             }
         });
+    }
+    private void fetchImage(String s) {
+        storageReference = FirebaseStorage.getInstance().getReference("images/"+s);
+        try {
+            File localfile = File.createTempFile("tempfile", ".jpg");
+            storageReference.getFile(localfile)
+                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            Bitmap bitmap = BitmapFactory.decodeFile(localfile.getAbsolutePath());
+                            profile_img.setImageBitmap(bitmap);
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getActivity(), "Failed to retrieve", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

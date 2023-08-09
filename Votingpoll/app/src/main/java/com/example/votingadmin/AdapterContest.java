@@ -17,12 +17,12 @@ import com.example.votingpoll.R;
 
 import java.util.List;
 
-public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder>{
-    private final List<AddUserData> listdata;
+public class AdapterContest extends RecyclerView.Adapter<AdapterContest.ViewHolder>{
+    private final List<ContestClass> listdata;
     private final Context context;// Constructor to set the OnItemClickListener
 
     // RecyclerView recyclerView;
-    public MyListAdapter(Context context, List<AddUserData> listdata) {
+    public AdapterContest(Context context, List<ContestClass> listdata) {
         this.context = context;
         this.listdata = listdata;
     }
@@ -37,10 +37,10 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final AddUserData serverData = listdata.get(position);
+        final ContestClass serverData = listdata.get(position);
         Log.d("Aka","onBindViewHolder");
-        holder.fullname.setText("Name: " + serverData.getAuFullname());
-        holder.aadhar.setText("Aadhar: " + serverData.getAuAadhaar());
+        holder.fullname.setText("Poll Name: " + serverData.getConName());
+        holder.aadhar.setText("Poll ID: " + serverData.getConId());
     }
     @Override
     public int getItemCount() {
@@ -55,9 +55,9 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
             fullname = itemView.findViewById(R.id.rv_Name);
             aadhar = itemView.findViewById(R.id.rv_aadhar);
             itemView.setOnClickListener(view -> {
-                AddUserData serverData = listdata.get(getAdapterPosition());
+                ContestClass serverData = listdata.get(getAdapterPosition());
                 Intent intent = new Intent(context, EditUserActivity.class);
-                Log.d("Akash",serverData.getAuAadhaar());
+                Log.d("Akash",serverData.getConId());
                 intent.putExtra("userId1",serverData);
                 context.startActivity(intent);
             });

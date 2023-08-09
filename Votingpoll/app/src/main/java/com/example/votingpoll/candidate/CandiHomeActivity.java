@@ -61,6 +61,7 @@ public class CandiHomeActivity extends AppCompatActivity {
                 FragmentTransaction t1 = fm.beginTransaction();
                 CandiProfile candiProfile = new CandiProfile();
                 t1.replace(R.id.fragmentContainer1, candiProfile);
+                t1.addToBackStack(null);
                 t1.commit();
                 Log.d("Akash","HomeActivity button clicked");
                 textView.setText("");
@@ -71,6 +72,7 @@ public class CandiHomeActivity extends AppCompatActivity {
                 FragmentTransaction t1 = fm.beginTransaction();
                 AddPlansFragment addPlansFragment = new AddPlansFragment();
                 t1.replace(R.id.fragmentContainer1, addPlansFragment);
+                t1.addToBackStack(null);
                 t1.commit();
                 Log.d("Akash","HomeActivity button clicked");
                 textView.setText("");
@@ -83,6 +85,7 @@ public class CandiHomeActivity extends AppCompatActivity {
                 FragmentTransaction t1 = fm.beginTransaction();
                 CandiFeedbackFragment candiFeedbackFragment = new CandiFeedbackFragment();
                 t1.replace(R.id.fragmentContainer1, candiFeedbackFragment);
+                t1.addToBackStack(null);
                 t1.commit();
                 Log.d("Akash","HomeActivity button clicked");
                 textView.setText("");
@@ -104,11 +107,9 @@ public class CandiHomeActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Fragment currFrag = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer1);
-        if (layDL.isDrawerOpen(GravityCompat.START)){
-            layDL.closeDrawer(GravityCompat.START);
-        }
-        else {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+        } else {
             super.onBackPressed();
         }
     }

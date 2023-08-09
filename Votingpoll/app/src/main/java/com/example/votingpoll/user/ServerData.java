@@ -1,9 +1,6 @@
 package com.example.votingpoll.user;
 
-import android.content.Context;
-
 import java.io.Serializable;
-import java.util.List;
 
 public class ServerData implements Serializable {
     private String auFullname;

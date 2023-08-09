@@ -1,11 +1,6 @@
 package com.example.votingpoll.user;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +10,12 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.example.votingadmin.ViewFeedback;
 import com.example.votingpoll.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -38,15 +35,12 @@ public class FeedbackFragment extends Fragment {
         description = getView().findViewById(R.id.editTextTextMultiLine);
         db = FirebaseFirestore.getInstance();
         viewFeedback = new ViewFeedback();
-        getRating.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                float rating = ratingBar.getRating();
-                String des = description.getText().toString();
-                Toast.makeText(getActivity(), "Thank You", Toast.LENGTH_LONG).show();
-                updateUserStar(rating,des);
+        getRating.setOnClickListener(v -> {
+            float rating = ratingBar.getRating();
+            String des = description.getText().toString();
+            Toast.makeText(getActivity(), "Thank You", Toast.LENGTH_LONG).show();
+            updateUserStar(rating,des);
 
-            }
         });
     }
 
@@ -66,40 +60,15 @@ public class FeedbackFragment extends Fragment {
                     .update("auRating", rating,
                             "auFeedbackDescription", des
                     )
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(getActivity(), "Successfully updated", Toast.LENGTH_SHORT).show();
-                            Log.d("Akash", "DocumentSnapshot successfully updated!");
-                            addDatatoFireStore(rating,des,uidpass);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-                            Log.w("Akash", "Error updating document", e);
-                        }
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(getActivity(), "Successfully updated", Toast.LENGTH_SHORT).show();
+                        Log.d("Akash", "DocumentSnapshot successfully updated!");
+                        addDatatoFireStore(rating,des,uidpass);
+                    }).addOnFailureListener(e -> {
+                        Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+                        Log.w("Akash", "Error updating document", e);
                     });
             //To update Admin's database
-//            DocumentReference update2 = db.collection("FeedbackDB").document(uidpass);
-//            //Update DB
-//            update2
-//                    .update("viewRating", rating,
-//                            "viewDescription",des
-//                    )
-//                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                        @Override
-//                        public void onSuccess(Void aVoid) {
-//                            Toast.makeText(getActivity(), "Successfully updated", Toast.LENGTH_SHORT).show();
-//                            Log.d("Akash", "DocumentSnapshot successfully updated!");
-//                        }
-//                    }).addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//                            Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-//                            Log.w("Akash", "Error updating document", e);
-//                        }
-//                    });
         }
 
     }
@@ -112,16 +81,6 @@ public class FeedbackFragment extends Fragment {
         // Add a new document with a generated ID
 
         db.collection("FeedbackDB").document(uid)
-                .set(viewFeedback).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Toast.makeText(getActivity(), "Success...", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), "Failed...", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                .set(viewFeedback).addOnSuccessListener(unused -> Toast.makeText(getActivity(), "Success...", Toast.LENGTH_SHORT).show()).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed...", Toast.LENGTH_SHORT).show());
     }
 }

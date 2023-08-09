@@ -26,5 +26,7 @@
     <string name="VOTE">VOTE</string>
     <string name="add_terms_and_conditions">ADD TERMS AND CONDITIONS</string>
     <string name="terms_and_conditions">TERMS AND CONDITIONS</string>
+    <string name="add_user1">ADD USER</string>
+    <string name="t_c"><![CDATA[T & C]]></string>
 
 </resources>
