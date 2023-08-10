@@ -26,7 +26,7 @@ public class HomeActivity extends AppCompatActivity {
     NavigationView vNV;
     Toolbar toolbar;
     TextView textView;
-    LinearLayout linearLayout;
+   // LinearLayout linearLayout;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -38,12 +38,12 @@ public class HomeActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         textView = findViewById(R.id.welcomeTxt);
         setSupportActionBar(toolbar);
-        linearLayout = findViewById(R.id.linearHome1);
+        //linearLayout = findViewById(R.id.linearHome1);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, layDL, toolbar, R.string.open_drawer, R.string.close_drawer);
         ImageButton imageButton = findViewById(R.id.imageButton);
         imageButton.setOnClickListener(view -> {
             // Creating a toast to display the message
-            linearLayout.setVisibility(View.GONE);
+            //linearLayout.setVisibility(View.GONE);
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction t1 = fm.beginTransaction();
             TermsAndConditionsFragment termsAndConditionsFragment = new TermsAndConditionsFragment();
@@ -65,7 +65,7 @@ public class HomeActivity extends AppCompatActivity {
         vNV.setNavigationItemSelectedListener(item -> {
             int id=item.getItemId();
             if(id==R.id.profile) {
-                linearLayout.setVisibility(View.GONE);
+               // linearLayout.setVisibility(View.GONE);
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction t1 = fm.beginTransaction();
                 ProfileFragment profileFragment = new ProfileFragment();
@@ -77,7 +77,7 @@ public class HomeActivity extends AppCompatActivity {
                 layDL.closeDrawer(GravityCompat.START);
             }
             else if (id==R.id.status) {
-                linearLayout.setVisibility(View.GONE);
+                //linearLayout.setVisibility(View.GONE);
                 Toast.makeText(this, "status", Toast.LENGTH_SHORT).show();
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction t1 = fm.beginTransaction();
@@ -91,7 +91,7 @@ public class HomeActivity extends AppCompatActivity {
 
             }
             else if (id==R.id.feedback) {
-                linearLayout.setVisibility(View.GONE);
+                //linearLayout.setVisibility(View.GONE);
                 Toast.makeText(this, "Feedback", Toast.LENGTH_SHORT).show();
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction t1 = fm.beginTransaction();
@@ -104,7 +104,7 @@ public class HomeActivity extends AppCompatActivity {
                 layDL.closeDrawer(GravityCompat.START);
             }
             else {
-                linearLayout.setVisibility(View.GONE);
+               // linearLayout.setVisibility(View.GONE);
                 Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), Login.class);
                 startActivity(intent);

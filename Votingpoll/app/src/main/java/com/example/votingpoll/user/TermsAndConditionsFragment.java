@@ -27,7 +27,7 @@ public class TermsAndConditionsFragment extends Fragment {
     CheckBox ch, ch1;
     Button button;
     FirebaseFirestore db;
-    LinearLayout linearLayout;
+    //LinearLayout linearLayout;
 
 
     public TermsAndConditionsFragment() {
@@ -42,10 +42,11 @@ public class TermsAndConditionsFragment extends Fragment {
         button = view.findViewById(R.id.button);
         scrollView = view.findViewById(R.id.termsScrollView);
         db = FirebaseFirestore.getInstance();
-        linearLayout = view.findViewById(R.id.termsandconditions);
+        //linearLayout = view.findViewById(R.id.termsandconditions);
         ScrollFragment scrollFragment = new ScrollFragment();
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.votefragmentContainer11, scrollFragment)
+                .addToBackStack(null)
                 .commit();
         button.setOnClickListener(view1 -> {
             if (ch.isChecked() && ch1.isChecked()) {

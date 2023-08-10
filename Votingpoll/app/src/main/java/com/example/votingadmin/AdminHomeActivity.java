@@ -145,8 +145,16 @@ public class AdminHomeActivity extends AppCompatActivity implements BottomNaviga
             int id=item.getItemId();
             if(id==R.id.addpoll) {
                 FragmentTransaction t1 = fm.beginTransaction();
-                AddCandidates aPoll = new AddCandidates();
-                t1.replace(R.id.fragmentContainer1, aPoll);
+                AddCandidates addCandidates = new AddCandidates();
+                t1.replace(R.id.fragmentContainer1, addCandidates);
+                t1.addToBackStack(null);
+                t1.commit();
+                layDL.closeDrawer(GravityCompat.START);
+            }
+            else if(id==R.id.results) {
+                FragmentTransaction t1 = fm.beginTransaction();
+                ViewResultsFragment viewResultsFragment = new ViewResultsFragment();
+                t1.replace(R.id.fragmentContainer1, viewResultsFragment);
                 t1.addToBackStack(null);
                 t1.commit();
                 layDL.closeDrawer(GravityCompat.START);
@@ -169,8 +177,8 @@ public class AdminHomeActivity extends AppCompatActivity implements BottomNaviga
             }
             else if(id==R.id.addContest) {
                 FragmentTransaction t1 = fm.beginTransaction();
-                AddTermsAndConditionsFragment addTermsAndConditionsFragment = new AddTermsAndConditionsFragment();
-                t1.replace(R.id.fragmentContainer1, addTermsAndConditionsFragment);
+                AddContest addContest = new AddContest();
+                t1.replace(R.id.fragmentContainer1, addContest);
                 t1.addToBackStack(null);
                 t1.commit();
                 layDL.closeDrawer(GravityCompat.START);

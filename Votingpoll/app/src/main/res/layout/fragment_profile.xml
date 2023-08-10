@@ -3,8 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_height="match_parent"
-    tools:context=".user.ProfileFragment">
+    android:background="@drawable/bg2"
+    android:padding="10dp"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Voter profile"
+        android:gravity="center"
+        android:fontFamily="sans-serif-smallcaps"
+        android:textColor="@color/white"
+        android:textSize="30dp"
+        />
 
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -16,142 +27,146 @@
         android:src="@drawable/hand"
         app:civ_border_width="2dp"
         app:civ_border_color="#FF000000"/>
-    <LinearLayout
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="50dp">
-
-        <TextView
-            android:layout_width="105dp"
-            android:layout_height="wrap_content"
-            android:paddingLeft="20sp"
-            android:text="Name : "
-            android:textColor="#000000"
-            android:textSize="20sp" />
-
-        <EditText
-            android:layout_width="233dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:paddingLeft="50dp"
-            android:textAlignment="center"
-            android:id="@+id/pname"
-            android:text="Name"
-            android:textColor="#000000"
-            android:textSize="20sp"/>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="20dp">
-
-        <TextView
-            android:layout_width="107dp"
-            android:layout_height="wrap_content"
-            android:paddingLeft="20sp"
-            android:text="Mobile : "
-            android:textSize="20sp" />
-
-        <EditText
-            android:layout_width="233dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:paddingLeft="50dp"
-            android:textAlignment="center"
-            android:id="@+id/pmobile"
-            android:text="Mobile no."
-            android:inputType="number"
-            android:textColor="#000000"
-            android:textSize="20sp"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="20dp">
-
-        <TextView
-            android:layout_width="107dp"
-            android:layout_height="wrap_content"
-            android:paddingLeft="20sp"
-            android:text="Email : "
-            android:textSize="20sp" />
-
-        <EditText
-            android:id="@+id/pEmail"
-            android:layout_width="233dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:paddingLeft="50dp"
-            android:textAlignment="center"
-            android:text="Email"
-            android:textColor="#000000"
-            android:textSize="20sp" />
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="20dp">
-
-        <TextView
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:paddingLeft="20sp"
-            android:text="Aadhar : "
-            android:textSize="20sp" />
-
-        <TextView
-            android:layout_width="233dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:paddingLeft="50dp"
-            android:textAlignment="center"
-            android:text="Aadhar"
-            android:textColor="#000000"
-            android:id="@+id/pAadhar"
-            android:textSize="20sp"/>
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="20dp">
-
+        android:background="@drawable/square2"
+        android:layout_marginTop="10dp"
+        android:layout_height="80dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="20sp"
-            android:text="Address : "
+            android:text="Identity Number "
+            android:paddingStart="10dp"
+            android:textColor="#434141"
+            android:layout_marginTop="10dp"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/pAadhar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Identity number"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:gravity="bottom"
+            android:textColor="#000000"
             android:textSize="20sp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:background="@drawable/square2"
+        android:layout_marginTop="10dp"
+        android:layout_height="80dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name "
+            android:paddingStart="10dp"
+            android:textColor="#434141"
+            android:layout_marginTop="10dp"
+            android:textSize="15dp" />
 
         <EditText
-            android:layout_width="233dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:paddingLeft="50dp"
-            android:textAlignment="center"
-            android:text="Address"
+            android:id="@+id/pname"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Name"
+            android:padding="10dp"
+            android:background="@null"
+            android:layout_margin="10dp"
+            android:gravity="bottom"
             android:textColor="#000000"
-            android:id="@+id/pAddress"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:background="@drawable/square2"
+        android:layout_marginTop="10dp"
+        android:layout_height="80dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mobile "
+            android:paddingStart="10dp"
+            android:textColor="#434141"
+            android:layout_marginTop="10dp"
+            android:textSize="15dp" />
 
-    </LinearLayout>
+        <EditText
+            android:id="@+id/pmobile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Mobile"
+            android:padding="10dp"
+            android:background="@null"
+            android:layout_margin="10dp"
+            android:gravity="bottom"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:background="@drawable/square2"
+        android:layout_marginTop="10dp"
+        android:layout_height="80dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email "
+            android:paddingStart="10dp"
+            android:textColor="#434141"
+            android:layout_marginTop="10dp"
+            android:textSize="15dp"/>
+
+        <EditText
+            android:id="@+id/pEmail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Email"
+            android:padding="10dp"
+            android:background="@null"
+            android:layout_margin="10dp"
+            android:gravity="bottom"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:background="@drawable/square2"
+        android:layout_marginTop="10dp"
+        android:layout_height="80dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Address : "
+            android:paddingStart="10dp"
+            android:textColor="#434141"
+            android:layout_marginTop="10dp"
+            android:textSize="15dp"/>
+
+        <EditText
+            android:id="@+id/pAddress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Address"
+            android:padding="10dp"
+            android:background="@null"
+            android:layout_margin="10dp"
+            android:gravity="bottom"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+    </FrameLayout>
 
     <Button
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center"
-        android:text="@string/edit"
         android:id="@+id/pEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:textSize="20dp"
+        android:layout_gravity="center"
+        android:text="Edit" />
+
 </LinearLayout>

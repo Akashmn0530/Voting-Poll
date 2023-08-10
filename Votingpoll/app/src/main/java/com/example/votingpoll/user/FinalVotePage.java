@@ -1,5 +1,6 @@
 package com.example.votingpoll.user;
 
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -9,11 +10,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,9 +65,37 @@ public class FinalVotePage extends Fragment {
         voteBTN.setOnClickListener(view1 -> {
             updateVote(idAadhaar);
             updateStatus(idValue);
+            showThankYouPopup(view);
         });
     }
 
+
+    private void showThankYouPopup(View rootView) {
+        // Inflate the popup layout
+        LayoutInflater inflater = LayoutInflater.from(getActivity()); // Use the activity's context
+        View popupView = inflater.inflate(R.layout.popup_thank_you, null);
+
+        // Create a new PopupWindow
+        int popupWidth = 900; // Replace with your desired width in pixels
+        int popupHeight = 1000; // Replace with your desired height in pixels
+
+        PopupWindow popupWindow = new PopupWindow(
+                popupView,
+                popupWidth,
+                popupHeight,
+                true // Focusable
+        );
+
+
+
+        // Set the popup's position
+        popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        // Set a dismiss listener for the popup
+        popupWindow.setOnDismissListener(() -> {
+            // Handle actions when the popup is dismissed
+        });
+    }
     private void fetchImage(String s) {
         storageReference = FirebaseStorage.getInstance().getReference("images/"+s);
         try {

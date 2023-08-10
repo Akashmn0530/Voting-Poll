@@ -3,7 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-android:background="@drawable/hand"
+android:background="#FFFFFF"
 android:orientation="vertical">
 <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/your_recycler_view_id1"

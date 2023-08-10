@@ -26,9 +26,9 @@
             android:fontFamily="sans-serif-smallcaps"
             android:gravity="center"
             android:padding="15dp"
-            android:text="ADD POLL"
+            android:text="Add Candidate"
             android:textColor="#FFFFFF"
-            android:textSize="50dp"
+            android:textSize="35dp"
             tools:ignore="MissingConstraints" />
 
     </LinearLayout>

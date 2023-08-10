@@ -1,5 +1,8 @@
 package com.example.votingpoll.candidate;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
@@ -22,6 +26,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
+import java.io.IOException;
 
 
 public class CandiFeedbackFragment extends Fragment {
@@ -34,13 +44,19 @@ public class CandiFeedbackFragment extends Fragment {
     EditText description;
     FirebaseFirestore db;
     ViewFeedback viewFeedback;
+    ImageView profile_img;
+    StorageReference storageReference;
+    Uri imageUri;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getRating = getView().findViewById(R.id.getRating);
         ratingBar = getView().findViewById(R.id.rating);
         description = getView().findViewById(R.id.editTextTextMultiLine);
+        profile_img = getView().findViewById(R.id.profile_image);
         db = FirebaseFirestore.getInstance();
+        fetchImage(CandiLogin.cidpass);
         viewFeedback = new ViewFeedback();
         getRating.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,26 +94,6 @@ public class CandiFeedbackFragment extends Fragment {
                             Log.w("Akash", "Error updating document", e);
                         }
                     });
-            //To update Admin's database
-//            DocumentReference update2 = db.collection("FeedbackDB").document(email);
-//            //Update DB
-//            update2
-//                    .update("viewRating", rating,
-//                            "viewDescription",des
-//                    )
-//                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                        @Override
-//                        public void onSuccess(Void aVoid) {
-//                            Toast.makeText(getActivity(), "Successfully updated", Toast.LENGTH_SHORT).show();
-//                            Log.d("Akash", "DocumentSnapshot successfully updated!");
-//                        }
-//                    }).addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//                            Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-//                            Log.w("Akash", "Error updating document", e);
-//                        }
-//                    });
         }
 
     }
@@ -127,5 +123,30 @@ public class CandiFeedbackFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_candi_feedback, container, false);
+    }
+
+    private void fetchImage(String s) {
+        storageReference = FirebaseStorage.getInstance().getReference("images/"+s);
+        try {
+            File localfile = File.createTempFile("tempfile", ".jpg");
+            storageReference.getFile(localfile)
+                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            Bitmap bitmap = BitmapFactory.decodeFile(localfile.getAbsolutePath());
+                            profile_img.setImageBitmap(bitmap);
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getActivity(), "Failed to retrieve", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

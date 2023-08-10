@@ -28,6 +28,11 @@ public class CandiData implements Serializable {
         this.partyName = pname;
         this.aucAadhaar = aucAadhaar;
     }
+    public CandiData(String name, int votes, String party){
+        this.aucFullname = name;
+        this.voteCountCandi = votes;
+        this.partyName = party;
+    }
 
     public int getImage() {
         return image;
