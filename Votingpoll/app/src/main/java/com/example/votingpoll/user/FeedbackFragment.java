@@ -1,5 +1,7 @@
 package com.example.votingpoll.user;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
@@ -16,8 +19,16 @@ import androidx.fragment.app.Fragment;
 
 import com.example.votingadmin.ViewFeedback;
 import com.example.votingpoll.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
+import java.io.IOException;
 
 public class FeedbackFragment extends Fragment {
 
@@ -27,12 +38,16 @@ public class FeedbackFragment extends Fragment {
     EditText description;
     FirebaseFirestore db;
     ViewFeedback viewFeedback;
+    ImageView profile_img;
+    StorageReference storageReference;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getRating = getView().findViewById(R.id.getRating);
         ratingBar = getView().findViewById(R.id.rating);
         description = getView().findViewById(R.id.editTextTextMultiLine);
+        profile_img = view.findViewById(R.id.profile_image);
+        fetchImage(Login.uidpass);
         db = FirebaseFirestore.getInstance();
         viewFeedback = new ViewFeedback();
         getRating.setOnClickListener(v -> {
@@ -43,6 +58,32 @@ public class FeedbackFragment extends Fragment {
 
         });
     }
+
+    private void fetchImage(String s) {
+        storageReference = FirebaseStorage.getInstance().getReference("images/" + s);
+        try {
+            File localfile = File.createTempFile("tempfile", ".jpg");
+            storageReference.getFile(localfile)
+                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            Bitmap bitmap = BitmapFactory.decodeFile(localfile.getAbsolutePath());
+                            profile_img.setImageBitmap(bitmap);
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getActivity(), "Failed to retrieve", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

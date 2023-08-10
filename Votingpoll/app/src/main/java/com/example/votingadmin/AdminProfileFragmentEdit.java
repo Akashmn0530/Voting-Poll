@@ -1,5 +1,7 @@
 package com.example.votingadmin;
 
+import android.os.Bundle;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -31,8 +33,8 @@ import java.io.File;
 import java.io.IOException;
 
 
-public class AdminProfileFragment extends Fragment {
-    TextView proName,proEmail,proMobile,proAddress;
+public class AdminProfileFragmentEdit extends Fragment {
+    EditText proName,proEmail,proMobile,proAddress;
     TextView proAadhar;
     Button proEdit;
     FirebaseFirestore db;
@@ -40,6 +42,33 @@ public class AdminProfileFragment extends Fragment {
     ImageView profile_img;
     StorageReference storageReference;
     String uID;
+
+
+    public AdminProfileFragmentEdit() {
+        // Required empty public constructor
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_admin_profile_edit, container, false);
+        // Initialization of variables
+        proAadhar = view.findViewById(R.id.pAadhar1);
+        proAddress = view.findViewById(R.id.pAddress);
+        proEmail = view.findViewById(R.id.pEmail);
+        proMobile = view.findViewById(R.id.pmobile);
+        proName = view.findViewById(R.id.pname);
+        proEdit = view.findViewById(R.id.pEdit);
+        db = FirebaseFirestore.getInstance();
+        profile_img = view.findViewById(R.id.profile_image);
+        uID = AdminLogin.logID;
+        fetchTheData(uID);
+        fetchImage(uID);
+        proEdit.setOnClickListener(view1 -> updateData());
+        return view;
+    }
 
     private void fetchImage(String s) {
         storageReference = FirebaseStorage.getInstance().getReference("images/"+s);
@@ -89,32 +118,29 @@ public class AdminProfileFragment extends Fragment {
         });
     }
 
-
-    public AdminProfileFragment() { }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_admin_profile, container, false);
-        // Initialization of variables
-        proAadhar = view.findViewById(R.id.pAadhar1);
-        proAddress = view.findViewById(R.id.pAddress);
-        proEmail = view.findViewById(R.id.pEmail);
-        proMobile = view.findViewById(R.id.pmobile);
-        proName = view.findViewById(R.id.pname);
-        proEdit = view.findViewById(R.id.pEdit);
-        db = FirebaseFirestore.getInstance();
-        profile_img = view.findViewById(R.id.profile_image);
-        uID = AdminLogin.logID;
-        fetchTheData(uID);
-        fetchImage(uID);
-        AdminProfileFragmentEdit adminProfileFragmentEdit=new AdminProfileFragmentEdit();
-
-        proEdit.setOnClickListener(view1 -> {
-            getChildFragmentManager().beginTransaction()
-                    .replace(R.id.framelayoutContainer23, adminProfileFragmentEdit)
-                    .commit();
-        });
-        return view;
+    void updateData(){
+        // Get the updated data from the edit text fields
+        String fullName = (proName).getText().toString();
+        String email = (proEmail).getText().toString();
+        long mobile = Long.parseLong((proMobile).getText().toString());
+        String address = (proAddress).getText().toString();
+        String aadhar = (proAadhar).getText().toString();
+        // Get other fields as needed
+        // Use the userId to update the Firestore data
+        DocumentReference update1 = db.collection("AdminData").document(aadhar);
+        //Update DB
+        update1
+                .update("aFullname", fullName,
+                        "aEmail",email,
+                        "aAddress",address,
+                        "aMobile",mobile
+                )
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(getActivity(), "Successfully updated", Toast.LENGTH_SHORT).show();
+                    Log.d("Akash", "DocumentSnapshot successfully updated!");
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+                    Log.w("Akash", "Error updating document", e);
+                });
     }
 }

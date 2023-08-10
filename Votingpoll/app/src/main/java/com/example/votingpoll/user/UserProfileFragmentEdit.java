@@ -1,9 +1,13 @@
 package com.example.votingpoll.user;
 
-import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,17 +15,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import com.example.votingpoll.R;
+import com.example.votingpoll.user.Login;
+import com.example.votingpoll.user.ServerData;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -32,18 +35,23 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.io.IOException;
 
+public class UserProfileFragmentEdit extends Fragment {
 
-public class ProfileFragment extends Fragment {
-    TextView proName,proEmail,proMobile,proAddress;
+
+    EditText proName,proEmail,proMobile,proAddress;
     TextView proAadhar;
     Button proEdit;
     FirebaseFirestore db;
 
     ImageView profile_img;
     StorageReference storageReference;
-    public ProfileFragment() {
+
+
+    public UserProfileFragmentEdit() {
         // Required empty public constructor
     }
+
+
 
 
 
@@ -51,7 +59,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view=inflater.inflate(R.layout.fragment_profile, container, false);
+        View view=inflater.inflate(R.layout.fragment_user_profile_edit, container, false);
         proAadhar = view.findViewById(R.id.pAadhar1);
         proAddress = view.findViewById(R.id.pAddress);
         proEmail = view.findViewById(R.id.pEmail);
@@ -65,15 +73,34 @@ public class ProfileFragment extends Fragment {
         //Calling fetchData method...
         fetchTheData(id);
         fetchImage(id);
-        UserProfileFragmentEdit userProfileFragmentEdit=new UserProfileFragmentEdit();
-        proEdit.setOnClickListener(view1 -> {
-            getChildFragmentManager().beginTransaction()
-                    .replace(R.id.framelayoutContainer2, userProfileFragmentEdit)
-                    .commit();
-        });
+        proEdit.setOnClickListener(view1 -> updateData());
         return view;
     }
-
+    void updateData(){
+        // Get the updated data from the edit text fields
+        String fullName = (proName).getText().toString();
+        String email = (proEmail).getText().toString();
+        long mobile = Long.parseLong((proMobile).getText().toString());
+        String address = (proAddress).getText().toString();
+        String aadhar = (proAadhar).getText().toString();
+        // Get other fields as needed
+        // Use the userId to update the Firestore data
+        DocumentReference update1 = db.collection("UserData").document(aadhar);
+        //Update DB
+        update1
+                .update("auFullname", fullName,
+                        "auEmail",email,
+                        "auAddress",address,
+                        "auMobile",mobile
+                )
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(getActivity(), "Successfully updated", Toast.LENGTH_SHORT).show();
+                    Log.d("Akash", "DocumentSnapshot successfully updated!");
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+                    Log.w("Akash", "Error updating document", e);
+                });
+    }
 
     void fetchTheData(String id){
         Log.d("Akash","profile 70"+id);

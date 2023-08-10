@@ -5,7 +5,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -19,8 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.votingpoll.R;
-import com.example.votingpoll.user.Login;
-import com.example.votingpoll.user.ServerData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,22 +33,25 @@ import java.io.File;
 import java.io.IOException;
 
 
-public class CandiProfile extends Fragment {
-    TextView proName,proEmail,proMobile,proAddress;
+public class CandiProfileFragmentEdit extends Fragment {
+    EditText proName, proEmail, proMobile, proAddress;
     TextView proAadhar;
     Button proEdit;
     FirebaseFirestore db;
     ImageView profile_img;
     StorageReference storageReference;
-    public CandiProfile() {
+
+
+    public CandiProfileFragmentEdit() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_candi_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_candi_frofile_edit, container, false);
         proAadhar = view.findViewById(R.id.pAadhar1);
         proAddress = view.findViewById(R.id.pAddress);
         proEmail = view.findViewById(R.id.pEmail);
@@ -61,21 +61,31 @@ public class CandiProfile extends Fragment {
         db = FirebaseFirestore.getInstance();
         profile_img = view.findViewById(R.id.profile_image);
         // Getting Intent...
-        String cidpass =  CandiLogin.cidpass;
+        String cidpass = CandiLogin.cidpass;
+        // This callback will only be called when MyFragment is at least Started.
+//        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+//            @Override
+//            public void handleOnBackPressed() {
+//                Intent intent = new Intent(getContext(), HomeActivity.class);
+//                startActivity(intent);
+//            }
+//        };
+//        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);
+        //Calling fetchData method...
         fetchTheData(cidpass);
         fetchImage(cidpass);
-        CandiProfileFragmentEdit candiProfileFragmentEdit=new CandiProfileFragmentEdit();
-        proEdit.setOnClickListener(view1 -> {
-            getChildFragmentManager().beginTransaction()
-                    .replace(R.id.framelayoutContainer3, candiProfileFragmentEdit)
-                    .commit();
+        proEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateData();
+            }
         });
-
         return view;
     }
 
+
     private void fetchImage(String s) {
-        storageReference = FirebaseStorage.getInstance().getReference("images/"+s);
+        storageReference = FirebaseStorage.getInstance().getReference("images/" + s);
         try {
             File localfile = File.createTempFile("tempfile", ".jpg");
             storageReference.getFile(localfile)
@@ -99,9 +109,42 @@ public class CandiProfile extends Fragment {
 
     }
 
+    void updateData() {
+        // Get the updated data from the edit text fields
+        String fullName = (proName).getText().toString();
+        String email = (proEmail).getText().toString();
+        long mobile = Long.parseLong((proMobile).getText().toString());
+        String address = (proAddress).getText().toString();
+        //String aadhar = (proAddress).getText().toString();
+        // Get other fields as needed
+        String aadhar = CandiLogin.cidpass;
+        if (aadhar != null) {
+            // Use the userId to update the Firestore data
+            DocumentReference update1 = db.collection("CandiData").document(aadhar);
+            //Update DB
+            update1
+                    .update("aucFullname", fullName,
+                            "aucEmail", email,
+                            "aucAddress", address,
+                            "aucMobile", mobile
+                    )
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(getActivity(), "Successfully updated", Toast.LENGTH_SHORT).show();
+                            Log.d("Akash", "DocumentSnapshot successfully updated!");
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+                            Log.w("Akash", "Error updating document", e);
+                        }
+                    });
+        }
+    }
 
-
-    void fetchTheData(String cid){
+    void fetchTheData(String cid) {
         DocumentReference docRef = db.collection("CandiData").document(cid);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -112,7 +155,7 @@ public class CandiProfile extends Fragment {
                         Toast.makeText(getActivity(), "Successfully getting the data...", Toast.LENGTH_SHORT).show();
                         Log.d("Akash", "DocumentSnapshot data: " + document.getData());
                         CandiData c = document.toObject(CandiData.class);
-                        Log.d("Akash","setting data...");
+                        Log.d("Akash", "setting data...");
                         proName.setText(c.getAucFullname());
                         proMobile.setText(String.valueOf(c.getAucMobile()));
                         proEmail.setText(c.getAucEmail());
