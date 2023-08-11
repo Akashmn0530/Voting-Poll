@@ -67,7 +67,6 @@ public class CandiLogin extends AppCompatActivity {
         buttonsignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
                 Intent inte = new Intent(getApplicationContext(), CandiRegistration.class);
                 startActivity(inte);
             }
@@ -159,10 +158,6 @@ public class CandiLogin extends AppCompatActivity {
                             counter = 3;
                             // hide the progress bar
                             progressbar.setVisibility(View.GONE);
-                            Toast.makeText(CandiLogin.this, "Successfully logged in", Toast.LENGTH_SHORT).show();
-                            // if sign-in is successful
-                            // intent to home activity
-                           // ----
                             uname.setText("");
                             pword.setText("");
                             Intent intent

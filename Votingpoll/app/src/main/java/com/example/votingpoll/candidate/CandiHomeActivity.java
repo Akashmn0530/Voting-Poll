@@ -63,7 +63,6 @@ public class CandiHomeActivity extends AppCompatActivity {
                 t1.replace(R.id.fragmentContainer1, candiProfile);
                 t1.addToBackStack(null);
                 t1.commit();
-                Log.d("Akash","HomeActivity button clicked");
                 textView.setText("");
                 layDL.closeDrawer(GravityCompat.START);
             } else if (id==R.id.plan) {
@@ -74,7 +73,6 @@ public class CandiHomeActivity extends AppCompatActivity {
                 t1.replace(R.id.fragmentContainer1, addPlansFragment);
                 t1.addToBackStack(null);
                 t1.commit();
-                Log.d("Akash","HomeActivity button clicked");
                 textView.setText("");
                 layDL.closeDrawer(GravityCompat.START);
 
@@ -87,7 +85,6 @@ public class CandiHomeActivity extends AppCompatActivity {
                 t1.replace(R.id.fragmentContainer1, candiFeedbackFragment);
                 t1.addToBackStack(null);
                 t1.commit();
-                Log.d("Akash","HomeActivity button clicked");
                 textView.setText("");
                 layDL.closeDrawer(GravityCompat.START);
             }

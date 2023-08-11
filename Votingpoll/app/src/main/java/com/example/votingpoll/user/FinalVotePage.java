@@ -153,8 +153,6 @@ public class FinalVotePage extends Fragment {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Toast.makeText(getActivity(), "Successfully getting the data...", Toast.LENGTH_SHORT).show();
-                        Log.d("Akash", "DocumentSnapshot data: " + document.getData());
                         CandiData c = document.toObject(CandiData.class);
                         Log.d("Akash","setting data...");
                         name.setText(c.getAucFullname());
@@ -198,7 +196,6 @@ public class FinalVotePage extends Fragment {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
                                         Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-                                        Log.w("Akash", "Error updating document", e);
                                     }
                                 });
                     } else {
@@ -222,7 +219,6 @@ public class FinalVotePage extends Fragment {
                     voteBTN.setEnabled(false);
                 }).addOnFailureListener(e -> {
                     Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-                    Log.w("Akash", "Error updating document", e);
                 });
     }
     public FinalVotePage() { }

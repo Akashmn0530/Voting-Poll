@@ -68,7 +68,6 @@ public class CandiRegistration extends AppCompatActivity {
                                        @Override
                                        public void onClick(View view) {
                                            registerNewUser();
-                                           uploadIamage();
                                        }
                                    }
 
@@ -153,11 +152,13 @@ public class CandiRegistration extends AppCompatActivity {
                                 .addOnSuccessListener(queryDocumentSnapshots -> {
                                     if (!queryDocumentSnapshots.isEmpty()) {
                                         addDatatoFireStore(fullname, email, address, mobile, aadhar,password);
+                                        uploadIamage();
                                         Intent intent = new Intent(CandiRegistration.this, CandiLogin.class);
                                         startActivity(intent);
                                     }
                                     else {
                                         Toast.makeText(CandiRegistration.this, "Poll not exist...", Toast.LENGTH_SHORT).show();
+                                        finish();
                                     }
                                 })
                                 .addOnFailureListener(e -> {
@@ -196,8 +197,9 @@ public class CandiRegistration extends AppCompatActivity {
                         }
                     }
                 }
-                if (aadharExists) Toast.makeText(this, "Success...", Toast.LENGTH_SHORT).show();
-                else Toast.makeText(this, "Aadhar no. is not exists in the database", Toast.LENGTH_SHORT).show();
+                if (aadharExists) {
+                }
+                else Toast.makeText(this, "ID no. is not exists in the database", Toast.LENGTH_SHORT).show();
                 callback.onAadharExists(aadharExists);
             }
         });
@@ -244,7 +246,7 @@ public class CandiRegistration extends AppCompatActivity {
                 .set(userData1).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Toast.makeText(CandiRegistration.this, "Success...", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(CandiRegistration.this, "Success...", Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -264,7 +266,7 @@ public class CandiRegistration extends AppCompatActivity {
         storageReference.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
 
             imageView.setImageURI(null);
-            Toast.makeText(CandiRegistration.this, "Successfully uploaded", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CandiRegistration.this, "Successfully registered", Toast.LENGTH_SHORT).show();
 
             if (progressDialog.isShowing()){
                 progressDialog.dismiss();

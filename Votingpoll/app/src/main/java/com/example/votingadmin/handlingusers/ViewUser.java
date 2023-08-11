@@ -39,7 +39,6 @@ public class ViewUser extends Fragment {
 
         // Initializing our variable for Firestore and getting its instance
         db = FirebaseFirestore.getInstance();
-        Log.d("Aka","getting view");
         // Creating our new array list
         myListData = new ArrayList<>();
 
@@ -70,19 +69,16 @@ public class ViewUser extends Fragment {
                             assert c != null;
                             c.setauAadhaar(d.getId());
                             myListData.add(c);
-                            Log.d("Aka","getting data..");
                         }
                         myListAdapter.notifyDataSetChanged();
                     } else {
                         loadingPB.setVisibility(View.GONE);
                         Toast.makeText(getActivity(), "No data found in Database", Toast.LENGTH_SHORT).show();
-                        Log.d("Aka","no data found");
                     }
                 })
                 .addOnFailureListener(e -> {
                     loadingPB.setVisibility(View.GONE);
                     Toast.makeText(getActivity(), "Fail to get the data.", Toast.LENGTH_SHORT).show();
-                    Log.d("Aka","failure to get");
                 });
     }
 }

@@ -52,7 +52,7 @@
                 android:id="@+id/userfullname"
                 android:drawableStart="@drawable/baseline_user"
                 android:layout_height="60dp"
-                android:hint=" Candidate name"
+                android:hint=" User name"
                 android:textColor="@color/black"
                 />
         </com.google.android.material.textfield.TextInputLayout>
@@ -68,7 +68,7 @@
                 android:id="@+id/useraadhar"
                 android:drawableStart="@drawable/baseline_identity"
                 android:layout_height="60dp"
-                android:hint=" Candidate name"
+                android:hint=" Identity number"
                 android:textColor="@color/black"
                 />
         </com.google.android.material.textfield.TextInputLayout>

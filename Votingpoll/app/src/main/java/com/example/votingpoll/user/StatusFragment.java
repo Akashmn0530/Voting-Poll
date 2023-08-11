@@ -56,16 +56,12 @@ public class StatusFragment extends Fragment {
 
     void fetchData(){
         String id = Login.uidpass;
-        Log.d("Akash","profile 70"+id);
         DocumentReference docRef = db.collection("UserData").document(id);
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
-                    Toast.makeText(getActivity(), "Successfully getting the data...", Toast.LENGTH_SHORT).show();
-                    Log.d("Akash", "DocumentSnapshot data: " + document.getData());
                     ServerData c = document.toObject(ServerData.class);
-                    Log.d("Akash","setting data...");
                     assert c != null;
                     name.setText(c.getAuFullname());
                     status.setText(c.getVote());

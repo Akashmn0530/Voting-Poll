@@ -71,7 +71,6 @@ public class AdminHomeActivity extends AppCompatActivity implements BottomNaviga
 
         // Initializing our variable for Firestore and getting its instance
         db = FirebaseFirestore.getInstance();
-        Log.d("Aka", "getting view");
         // Creating our new array list
         myListData = new ArrayList<>();
 
@@ -102,17 +101,14 @@ public class AdminHomeActivity extends AppCompatActivity implements BottomNaviga
                             assert c != null;
                             c.setConId(d.getId());
                             myListData.add(c);
-                            Log.d("Aka", "getting data..");
                         }
                         myListAdapter.notifyDataSetChanged();
                     } else {
                         Toast.makeText(AdminHomeActivity.this, "No data found in Database", Toast.LENGTH_SHORT).show();
-                        Log.d("Aka", "no data found");
                     }
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(AdminHomeActivity.this, "Fail to get the data.", Toast.LENGTH_SHORT).show();
-                    Log.d("Aka", "failure to get");
                 });
     }
 

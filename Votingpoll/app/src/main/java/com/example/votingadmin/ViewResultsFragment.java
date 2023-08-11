@@ -57,7 +57,6 @@ public class ViewResultsFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             candidates.clear();
-                            Log.d("Aka","Fetching...");
                             candidates.addAll(task.getResult().getDocuments());
                             // Sort candidates based on votes (Descending order)
                             Collections.sort(candidates, new Comparator<DocumentSnapshot>() {

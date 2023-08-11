@@ -99,7 +99,6 @@ public class Register extends AppCompatActivity {
         storageReference.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
 
             imageView.setImageURI(null);
-            Toast.makeText(Register.this, "Successfully uploaded", Toast.LENGTH_SHORT).show();
 
             if (progressDialog.isShowing()){
                 progressDialog.dismiss();
@@ -197,7 +196,8 @@ public class Register extends AppCompatActivity {
                         }
                     }
                 }
-                if (aadharExists) Toast.makeText(this, "Addhar no. Exists", Toast.LENGTH_SHORT).show();
+                if (aadharExists){
+                }
                 else Toast.makeText(this, "Aadhar no. is not exists in the database", Toast.LENGTH_SHORT).show();
                 callback.onAadharExists(aadharExists);
             }

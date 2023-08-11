@@ -72,19 +72,16 @@ public class ViewCandidates extends Fragment {
                             assert c != null;
                             c.setaAadhaar(d.getId());
                             addPollClasses.add(c);
-                            Log.d("Aka","getting data..");
                         }
                         myListAdapter1.notifyDataSetChanged();
                     } else {
                         loadingPB.setVisibility(View.GONE);
                         Toast.makeText(getActivity(), "No data found in Database", Toast.LENGTH_SHORT).show();
-                        Log.d("Aka","no data found");
                     }
                 })
                 .addOnFailureListener(e -> {
                     loadingPB.setVisibility(View.GONE);
                     Toast.makeText(getActivity(), "Fail to get the data.", Toast.LENGTH_SHORT).show();
-                    Log.d("Aka","failure to get");
                 });
     }
 }

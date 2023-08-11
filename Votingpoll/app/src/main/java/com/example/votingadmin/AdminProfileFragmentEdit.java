@@ -100,9 +100,7 @@ public class AdminProfileFragmentEdit extends Fragment {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
-                    Toast.makeText(getActivity(), "Successfully getting the data...", Toast.LENGTH_SHORT).show();
                     AdminAddedData c = document.toObject(AdminAddedData.class);
-                    Log.d("Akash","setting data...");
                     assert c != null;
                     proName.setText(c.getaFullname());
                     proMobile.setText(String.valueOf(c.getaMobile()));

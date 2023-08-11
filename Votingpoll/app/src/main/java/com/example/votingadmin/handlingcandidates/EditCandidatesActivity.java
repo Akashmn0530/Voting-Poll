@@ -82,9 +82,6 @@ public class EditCandidatesActivity extends AppCompatActivity {
 // Get the updated data from the edit text fields
         String fullName = ((EditText)findViewById(R.id.editFullName)).getText().toString();
         String aadhar = ((TextView)findViewById(R.id.editAadhar)).getText().toString();
-
-// Get other fields as needed
-
         if (userId != null) {
             updateFirestoreData(userId, fullName,aadhar); // Call the updateFirestoreData method to update data
         }

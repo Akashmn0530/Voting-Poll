@@ -50,7 +50,6 @@ public class HomeActivity extends AppCompatActivity {
             t1.replace(R.id.fragmentContainer1, termsAndConditionsFragment);
             t1.addToBackStack(null);
             t1.commit();
-            Log.d("Akash","HomeActivity button clicked");
         });
         layDL.addDrawerListener(toggle);
         toggle.syncState();
@@ -72,7 +71,6 @@ public class HomeActivity extends AppCompatActivity {
                 t1.replace(R.id.fragmentContainer1, profileFragment);
                 t1.addToBackStack(null);
                 t1.commit();
-                Log.d("Akash","HomeActivity button clicked");
                 textView.setText("");
                 layDL.closeDrawer(GravityCompat.START);
             }
@@ -85,7 +83,6 @@ public class HomeActivity extends AppCompatActivity {
                 t1.replace(R.id.fragmentContainer1, statusFragment);
                 t1.addToBackStack(null);
                 t1.commit();
-                Log.d("Akash","HomeActivity button clicked");
                 textView.setText("");
                 layDL.closeDrawer(GravityCompat.START);
 
@@ -99,7 +96,6 @@ public class HomeActivity extends AppCompatActivity {
                 t1.replace(R.id.fragmentContainer1, feedbackFragment);
                 t1.addToBackStack(null);
                 t1.commit();
-                Log.d("Akash","HomeActivity button clicked");
                 textView.setText("");
                 layDL.closeDrawer(GravityCompat.START);
             }

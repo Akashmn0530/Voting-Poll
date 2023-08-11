@@ -9,7 +9,7 @@
             android:title="Profile"/>
 
         <item
-            android:title="Plans"
+            android:title="Plans &amp; Party"
             android:icon="@drawable/baseline_checklist"
             android:id="@+id/plan"/>
 

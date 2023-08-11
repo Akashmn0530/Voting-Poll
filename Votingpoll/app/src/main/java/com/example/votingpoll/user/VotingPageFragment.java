@@ -40,7 +40,6 @@ public class VotingPageFragment extends Fragment implements SelectListener {
         Toast.makeText(getActivity(), item.getAucFullname(), Toast.LENGTH_SHORT).show();
         FinalVotePage finalVotePage = new FinalVotePage();
         toGetId = item.getAucAadhaar();
-        Log.d("Aka","Voting page ->"+toGetId);
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.votefinalfragmentContainer1, finalVotePage)
                 .commit();
@@ -64,8 +63,6 @@ public class VotingPageFragment extends Fragment implements SelectListener {
                             CandiData c = d.toObject(CandiData.class);
                             assert c != null;
                             c.setaucAadhaar(d.getId());
-                            //items.add(c);
-                            Log.d("Aka","getting data..");
                             try {
 
                                 storageReference = FirebaseStorage.getInstance().getReference("images/"+c.getAucAadhaar());

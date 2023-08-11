@@ -102,12 +102,9 @@ public class FeedbackFragment extends Fragment {
                             "auFeedbackDescription", des
                     )
                     .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(getActivity(), "Successfully updated", Toast.LENGTH_SHORT).show();
-                        Log.d("Akash", "DocumentSnapshot successfully updated!");
                         addDatatoFireStore(rating,des,uidpass);
                     }).addOnFailureListener(e -> {
                         Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-                        Log.w("Akash", "Error updating document", e);
                     });
             //To update Admin's database
         }

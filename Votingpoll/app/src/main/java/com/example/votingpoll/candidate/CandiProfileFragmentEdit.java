@@ -62,15 +62,6 @@ public class CandiProfileFragmentEdit extends Fragment {
         profile_img = view.findViewById(R.id.profile_image);
         // Getting Intent...
         String cidpass = CandiLogin.cidpass;
-        // This callback will only be called when MyFragment is at least Started.
-//        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
-//            @Override
-//            public void handleOnBackPressed() {
-//                Intent intent = new Intent(getContext(), HomeActivity.class);
-//                startActivity(intent);
-//            }
-//        };
-//        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);
         //Calling fetchData method...
         fetchTheData(cidpass);
         fetchImage(cidpass);
@@ -132,13 +123,11 @@ public class CandiProfileFragmentEdit extends Fragment {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(getActivity(), "Successfully updated", Toast.LENGTH_SHORT).show();
-                            Log.d("Akash", "DocumentSnapshot successfully updated!");
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-                            Log.w("Akash", "Error updating document", e);
                         }
                     });
         }
@@ -152,10 +141,7 @@ public class CandiProfileFragmentEdit extends Fragment {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Toast.makeText(getActivity(), "Successfully getting the data...", Toast.LENGTH_SHORT).show();
-                        Log.d("Akash", "DocumentSnapshot data: " + document.getData());
                         CandiData c = document.toObject(CandiData.class);
-                        Log.d("Akash", "setting data...");
                         proName.setText(c.getAucFullname());
                         proMobile.setText(String.valueOf(c.getAucMobile()));
                         proEmail.setText(c.getAucEmail());

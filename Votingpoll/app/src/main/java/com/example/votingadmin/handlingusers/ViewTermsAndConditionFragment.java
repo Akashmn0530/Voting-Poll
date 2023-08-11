@@ -43,9 +43,7 @@ public class ViewTermsAndConditionFragment extends Fragment {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
-                    Toast.makeText(getActivity(), "Successfully getting the data...", Toast.LENGTH_SHORT).show();
                     TermsAndConditions c = document.toObject(TermsAndConditions.class);
-                    Log.d("Akash","setting data...");
                     TextView textView = new TextView(getContext());
                     assert c != null;
                     textView.setText(c.getTcData());

@@ -39,7 +39,6 @@ public class ViewFeedbackFragment extends Fragment {
 
         // Initializing our variable for Firestore and getting its instance
         db = FirebaseFirestore.getInstance();
-        Log.d("Aka","getting view");
         // Creating our new array list
         viewFeedbacks = new ArrayList<>();
 
@@ -69,7 +68,6 @@ public class ViewFeedbackFragment extends Fragment {
                             ViewFeedback c = d.toObject(ViewFeedback.class);
                            // c.setViewDescription(d.getId());
                             viewFeedbacks.add(c);
-                            Log.d("Aka","getting data..");
                         }
                         feedbackAdaptor.notifyDataSetChanged();
                     } else {

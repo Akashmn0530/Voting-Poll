@@ -30,10 +30,10 @@ public class AddContest extends Fragment {
         db.collection("contestData").document(idData)
                 .set(contestClass).addOnSuccessListener(unused -> {
                     Toast.makeText(getActivity(), "Success...", Toast.LENGTH_SHORT).show();
-                    contestID.setText("");
                     contestName.setText("");
-                    Intent intent = new Intent(getContext(), AdminHomeActivity.class);
-                    startActivity(intent);
+                    contestID.setText("");
+                    Intent in = new Intent(getContext(), AdminHomeActivity.class);
+                    startActivity(in);
                 }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed...", Toast.LENGTH_SHORT).show());
     }
 

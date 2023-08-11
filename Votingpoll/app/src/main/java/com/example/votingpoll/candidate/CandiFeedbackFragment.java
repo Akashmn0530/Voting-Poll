@@ -84,14 +84,12 @@ public class CandiFeedbackFragment extends Fragment {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(getActivity(), "Successfully updated", Toast.LENGTH_SHORT).show();
-                            Log.d("Akash", "DocumentSnapshot successfully updated!");
                             addDatatoFireStore(rating,des,id);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-                            Log.w("Akash", "Error updating document", e);
                         }
                     });
         }

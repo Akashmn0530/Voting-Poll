@@ -28,7 +28,6 @@ public class EditUserActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         userId = (AddUserData) getIntent().getSerializableExtra("userId1");
-        Log.d("Akash","EditUserClass"+userId);
         if (userId != null) {
             // Use the user ID to fetch the user data from Firestore and display it in the activity
             fetchUserData(userId);
@@ -46,7 +45,6 @@ public class EditUserActivity extends AppCompatActivity {
 
     private void fetchUserData(AddUserData userId) {
         String id = userId.getAuAadhaar();
-        Log.d("Akash",id+"line 59");
         db.collection("AddUser")
                 .whereEqualTo("auAadhaar", id)
                 .get()
