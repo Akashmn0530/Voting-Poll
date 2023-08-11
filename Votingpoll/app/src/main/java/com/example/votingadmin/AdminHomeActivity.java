@@ -5,11 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,7 +20,12 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.votingadmin.firestore.FirestoreDeleteData;
+import com.example.votingadmin.firestore.FirestoreUpdateData;
 import com.example.votingpoll.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -221,7 +222,32 @@ public class AdminHomeActivity extends AppCompatActivity implements BottomNaviga
                 // Handle delete action here
                 myListData.remove(contest);
                 myListAdapter.notifyDataSetChanged();
-                Toast.makeText(AdminHomeActivity.this, "Contest deleted: " + contest.getConId(), Toast.LENGTH_SHORT).show();
+                // Specify the path to the document you want to delete
+                //String documentPath = "contestData/documentId";
+
+                // Delete the document in contestData and update the fields
+                db.collection("contestData").document(contest.getConId()).delete()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(AdminHomeActivity.this, "Contest deleted: " + contest.getConId(), Toast.LENGTH_SHORT).show();
+                                    FirestoreDeleteData firestoreDeleteData = new FirestoreDeleteData();
+                                    firestoreDeleteData.deleteAllDocumentsInCollection("CandiData");
+                                    FirestoreUpdateData firestoreUpdateData = new FirestoreUpdateData();
+                                    firestoreUpdateData.updateFieldForAllDocuments("UserData","vote", "Not voted");
+
+                                } else {
+                                    Toast.makeText(AdminHomeActivity.this, "Contest not deleted", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Handle the exception
+                            }
+                        });
             }
         });
         builder.setNegativeButton("Cancel", null);
