@@ -22,6 +22,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.votingadmin.firestore.FirestoreDeleteData;
 import com.example.votingadmin.firestore.FirestoreUpdateData;
+import com.example.votingadmin.handlingcandidates.AddCandidates;
+import com.example.votingadmin.handlingpoll.AdapterContest;
+import com.example.votingadmin.handlingpoll.AddContest;
+import com.example.votingadmin.handlingpoll.ContestClass;
+import com.example.votingadmin.handlingusers.AddUser;
+import com.example.votingadmin.handlingusers.ViewTermsAndConditionFragment;
 import com.example.votingpoll.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;

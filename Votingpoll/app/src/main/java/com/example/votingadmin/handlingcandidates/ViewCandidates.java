@@ -1,4 +1,4 @@
-package com.example.votingadmin;
+package com.example.votingadmin.handlingcandidates;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -13,41 +13,45 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.votingadmin.handlingcandidates.AddCandidatesClass;
+import com.example.votingadmin.handlingcandidates.MyListAdapter1;
 import com.example.votingpoll.R;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
-public class ViewUser extends Fragment {
-    private ArrayList myListData;
-    private MyListAdapter myListAdapter;
-    private FirebaseFirestore db;
-    private ProgressBar loadingPB;
+public class ViewCandidates extends Fragment {
 
-    public ViewUser() {
+
+    private ArrayList<AddCandidatesClass> addPollClasses;
+    private MyListAdapter1 myListAdapter1;
+    private FirebaseFirestore db;
+    ProgressBar loadingPB;
+    public ViewCandidates() {
         // Required empty public constructor
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_view_user, container, false);
-        RecyclerView voteRV = view.findViewById(R.id.your_recycler_view_id1);
+        View view = inflater.inflate(R.layout.fragment_view_candidates, container, false);
+        RecyclerView voteRV = view.findViewById(R.id.your_recycler_view_id2);
         loadingPB = view.findViewById(R.id.idProgressBar);
 
         // Initializing our variable for Firestore and getting its instance
         db = FirebaseFirestore.getInstance();
         Log.d("Aka","getting view");
         // Creating our new array list
-        myListData = new ArrayList<>();
+        addPollClasses = new ArrayList<>();
 
         voteRV.setHasFixedSize(true);
         voteRV.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         // Adding our array list
-        myListAdapter = new MyListAdapter(getContext(), myListData);
+        myListAdapter1 = new MyListAdapter1(getContext(), addPollClasses);
 
-        voteRV.setAdapter(myListAdapter); // Setting the adapter to the RecyclerView
+        voteRV.setAdapter(myListAdapter1); // Setting the adapter to the RecyclerView
 
         fetchUserDataFromFirestore();
 
@@ -58,19 +62,19 @@ public class ViewUser extends Fragment {
     private void fetchUserDataFromFirestore() {
         loadingPB.setVisibility(View.VISIBLE);
 
-        db.collection("AddUser").get()
+        db.collection("PollData").get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
                         loadingPB.setVisibility(View.GONE);
                         List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                         for (DocumentSnapshot d : list) {
-                            AddUserData c = d.toObject(AddUserData.class);
+                            AddCandidatesClass c = d.toObject(AddCandidatesClass.class);
                             assert c != null;
-                            c.setauAadhaar(d.getId());
-                            myListData.add(c);
+                            c.setaAadhaar(d.getId());
+                            addPollClasses.add(c);
                             Log.d("Aka","getting data..");
                         }
-                        myListAdapter.notifyDataSetChanged();
+                        myListAdapter1.notifyDataSetChanged();
                     } else {
                         loadingPB.setVisibility(View.GONE);
                         Toast.makeText(getActivity(), "No data found in Database", Toast.LENGTH_SHORT).show();
@@ -84,3 +88,4 @@ public class ViewUser extends Fragment {
                 });
     }
 }
+

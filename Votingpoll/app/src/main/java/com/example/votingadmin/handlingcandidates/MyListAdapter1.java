@@ -1,4 +1,4 @@
-package com.example.votingadmin;
+package com.example.votingadmin.handlingcandidates;
 
 
 import android.annotation.SuppressLint;
@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+
 import com.example.votingpoll.R;
 public class MyListAdapter1 extends RecyclerView.Adapter<MyListAdapter1.ViewHolder>{
     private final List<AddCandidatesClass> listdata;

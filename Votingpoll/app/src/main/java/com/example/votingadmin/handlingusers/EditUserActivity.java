@@ -1,5 +1,6 @@
-package com.example.votingadmin;
+package com.example.votingadmin.handlingusers;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.votingadmin.AdminHomeActivity;
 import com.example.votingpoll.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -74,7 +76,11 @@ public class EditUserActivity extends AppCompatActivity {
         userData.setauFullname(fullName);
         db.collection("AddUser").document(userId.getAuAadhaar()).
                 set(userData)
-                .addOnSuccessListener(unused -> Toast.makeText(EditUserActivity.this, "Successfully updated...", Toast.LENGTH_SHORT).show()).addOnFailureListener(e -> Toast.makeText(EditUserActivity.this, "Failed to update...", Toast.LENGTH_SHORT).show());
+                .addOnSuccessListener(unused -> {
+                    Toast.makeText(EditUserActivity.this, "Successfully updated...", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), AdminHomeActivity.class);
+                    startActivity(intent);
+                }).addOnFailureListener(e -> Toast.makeText(EditUserActivity.this, "Failed to update...", Toast.LENGTH_SHORT).show());
     }
 
     // Implement the method to handle the Save button click to update the Firestore data

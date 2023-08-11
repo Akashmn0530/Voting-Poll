@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="10dp"
     android:background="@drawable/bg3"
-    tools:context="com.example.votingadmin.EditUserActivity">
+    tools:context="com.example.votingadmin.handlingusers.EditUserActivity">
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-package com.example.votingadmin;
+package com.example.votingadmin.handlingcandidates;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -72,7 +72,10 @@ public class AddCandidates extends Fragment {
 
         db.collection(COLLECTION_NAME).document(aadhar)
                 .set(addCandidatesClass)
-                .addOnSuccessListener(unused -> Toast.makeText(getActivity(), "Success...", Toast.LENGTH_SHORT).show())
+                .addOnSuccessListener(unused -> {
+                    clearFields();
+                    Toast.makeText(getActivity(), "Success...", Toast.LENGTH_SHORT).show();
+                })
                 .addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed...", Toast.LENGTH_SHORT).show());
     }
 

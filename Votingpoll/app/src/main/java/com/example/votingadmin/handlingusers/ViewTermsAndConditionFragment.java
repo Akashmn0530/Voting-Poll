@@ -1,4 +1,4 @@
-package com.example.votingadmin;
+package com.example.votingadmin.handlingusers;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.votingadmin.TermsAndConditions;
 import com.example.votingpoll.R;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;

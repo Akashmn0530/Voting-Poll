@@ -27,10 +27,10 @@
             android:name="com.example.main.Welcome"
             android:exported="false" />
         <activity
-            android:name="com.example.votingadmin.EditUserActivity"
+            android:name="com.example.votingadmin.handlingusers.EditUserActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.votingadmin.EditCandidatesActivity"
+            android:name="com.example.votingadmin.handlingcandidates.EditCandidatesActivity"
             android:exported="false" />
         <activity
             android:name="com.example.votingadmin.AdminHomeActivity"

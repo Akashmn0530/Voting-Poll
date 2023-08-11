@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.votingadmin.handlingcandidates.EditCandidatesActivity;
 import com.example.votingpoll.R;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.votingadmin;
+package com.example.votingadmin.handlingusers;
 
 import java.io.Serializable;
 

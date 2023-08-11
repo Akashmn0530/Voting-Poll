@@ -1,13 +1,12 @@
-package com.example.votingadmin;
+package com.example.votingadmin.handlingpoll;
 
-import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.votingadmin.AdminHomeActivity;
 import com.example.votingpoll.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -28,7 +28,13 @@ public class AddContest extends Fragment {
         contestClass.setConName(name);
         contestClass.setConId(idData);
         db.collection("contestData").document(idData)
-                .set(contestClass).addOnSuccessListener(unused -> Toast.makeText(getActivity(), "Success...", Toast.LENGTH_SHORT).show()).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed...", Toast.LENGTH_SHORT).show());
+                .set(contestClass).addOnSuccessListener(unused -> {
+                    Toast.makeText(getActivity(), "Success...", Toast.LENGTH_SHORT).show();
+                    contestID.setText("");
+                    contestName.setText("");
+                    Intent intent = new Intent(getContext(), AdminHomeActivity.class);
+                    startActivity(intent);
+                }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed...", Toast.LENGTH_SHORT).show());
     }
 
     @Override
