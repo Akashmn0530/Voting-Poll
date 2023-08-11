@@ -17,7 +17,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:gravity="center"
-            android:text="Voting"
+            android:text="Admin"
             android:textColor="#fff" />
         <TextView
             android:layout_width="wrap_content"
@@ -41,32 +41,37 @@
         android:layout_marginTop="100dp"
         android:padding="40dp">
 
-        <EditText
-            android:id="@+id/pollname"
-            android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/custombutton"
-            android:backgroundTint="#D0353333"
-            android:padding="10dp"
-            android:drawableStart="@drawable/baseline_user"
-            android:gravity="left"
-            android:hint="Candidate name"
-            android:textColorHint="#000000" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="300dp"
+            android:layout_marginTop="40dp"
+            android:layout_height="wrap_content">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:id="@+id/pollname"
+                android:drawableStart="@drawable/baseline_user"
+                android:layout_height="wrap_content"
+                android:hint=" Candidate name"
+                android:textColor="@color/black"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/pollaadhar"
-            android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/custombutton"
-            android:backgroundTint="#D0353333"
-            android:padding="10dp"
-            android:drawableStart="@drawable/baseline_identity"
-            android:gravity="left"
-            android:hint="Identity Number"
-            android:textColorHint="#000000" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="300dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:id="@+id/pollaadhar"
+                android:drawableStart="@drawable/baseline_identity"
+                android:layout_height="wrap_content"
+                android:hint=" Identity number"
+                android:textColor="@color/black"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
             android:layout_width="328dp"

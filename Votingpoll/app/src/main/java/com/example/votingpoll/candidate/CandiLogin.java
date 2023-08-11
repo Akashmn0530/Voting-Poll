@@ -163,6 +163,8 @@ public class CandiLogin extends AppCompatActivity {
                             // if sign-in is successful
                             // intent to home activity
                            // ----
+                            uname.setText("");
+                            pword.setText("");
                             Intent intent
                                     = new Intent(CandiLogin.this,
                                     CandiHomeActivity.class);

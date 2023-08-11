@@ -137,6 +137,8 @@ public class AdminLogin extends AppCompatActivity {
                         Intent intent
                                 = new Intent(AdminLogin.this,
                                 AdminHomeActivity.class);
+                        uname.setText("");
+                        pword.setText("");
                         startActivity(intent);
                     } else {
 

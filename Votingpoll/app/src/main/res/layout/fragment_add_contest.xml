@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/bg2"
+    android:background="@drawable/bg3"
     tools:context="com.example.votingadmin.AddContest">
     <LinearLayout
         android:layout_width="wrap_content"
@@ -18,7 +18,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:gravity="center"
-            android:text="Voting"
+            android:text="Admin"
             android:textColor="#fff" />
         <TextView
             android:layout_width="wrap_content"
@@ -41,39 +41,45 @@
         android:layout_marginTop="100dp"
         android:padding="10dp">
 
-        <EditText
-            android:id="@+id/contestName1"
-            android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:background="@drawable/custombutton"
-            android:backgroundTint="#D0353333"
-            android:padding="10dp"
-            android:drawableStart="@drawable/baseline_user"
-            android:gravity="left"
-            android:textColorHint="#F3393636"
-            android:hint="  Contest name" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="300dp"
+            android:layout_marginTop="40dp"
+            android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/ContestID1"
-            android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/custombutton"
-            android:backgroundTint="#D0353333"
-            android:padding="10dp"
-            android:drawableStart="@drawable/baseline_email"
-            android:gravity="left"
-            android:textColorHint="#F3393636"
-            android:hint="  Contest ID"
-            />
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:id="@+id/contestName1"
+                android:drawableStart="@drawable/baseline_user"
+                android:layout_height="wrap_content"
+                android:hint=" Contest Name"
+                android:textColor="@color/black"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="300dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:id="@+id/ContestID1"
+                android:drawableStart="@drawable/baseline_identity"
+                android:layout_height="wrap_content"
+                android:hint=" Contest ID"
+                android:textColor="@color/black"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/addContest"
             android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
             android:backgroundTint="#0E0E0E"
-            android:text="Add contest"
+            android:text="Add Contest"
             android:textAllCaps="false"
             android:textColor="#FFFBF6"
             tools:ignore="TextSizeCheck" />

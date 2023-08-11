@@ -1,15 +1,20 @@
 package com.example.votingadmin;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -188,6 +193,7 @@ public class AdminHomeActivity extends AppCompatActivity implements BottomNaviga
                 Intent intent = new Intent(getApplicationContext(),AdminLogin.class);
                 startActivity(intent);
                 layDL.closeDrawer(GravityCompat.START);
+                finish();
             }
             layDL.closeDrawer(GravityCompat.START);
             return true;
@@ -203,6 +209,25 @@ public class AdminHomeActivity extends AppCompatActivity implements BottomNaviga
         else {
             super.onBackPressed();
         }
+    }
+
+    public void showDeletePopup(final ContestClass contest) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete Confirmation");
+        builder.setMessage("Are you sure you want to delete the contest with ID: " + contest.getConId() + "?");
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Handle delete action here
+                myListData.remove(contest);
+                myListAdapter.notifyDataSetChanged();
+                Toast.makeText(AdminHomeActivity.this, "Contest deleted: " + contest.getConId(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 }

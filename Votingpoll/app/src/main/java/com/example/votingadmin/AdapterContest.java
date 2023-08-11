@@ -56,11 +56,10 @@ public class AdapterContest extends RecyclerView.Adapter<AdapterContest.ViewHold
             aadhar = itemView.findViewById(R.id.rv_aadhar);
             itemView.setOnClickListener(view -> {
                 ContestClass serverData = listdata.get(getAdapterPosition());
-                Intent intent = new Intent(context, EditUserActivity.class);
-                Log.d("Akash",serverData.getConId());
-                intent.putExtra("userId1",serverData);
-                context.startActivity(intent);
+                AdminHomeActivity adminHomeActivity = (AdminHomeActivity) context;
+                adminHomeActivity.showDeletePopup(serverData);
             });
         }
     }
+
 }

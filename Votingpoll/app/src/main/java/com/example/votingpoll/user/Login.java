@@ -136,6 +136,8 @@ public class Login extends AppCompatActivity {
                         Toast.makeText(Login.this, "Successfully logged in", Toast.LENGTH_SHORT).show();
                         // if sign-in is successful
                         // intent to home activity
+                        uname.setText("");
+                        pword.setText("");
                         Intent intent
                                 = new Intent(Login.this,
                                 HomeActivity.class);
