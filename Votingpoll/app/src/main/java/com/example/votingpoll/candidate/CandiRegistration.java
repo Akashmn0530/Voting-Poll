@@ -1,9 +1,5 @@
 package com.example.votingpoll.candidate;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -19,10 +15,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.votingpoll.R;
 import com.example.votingpoll.user.AadharCheckCallback;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -50,36 +47,26 @@ public class CandiRegistration extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_candi_registration);
-        fulln = (EditText)findViewById(R.id.fullname);
-        usern = (EditText)findViewById(R.id.username);
-        passw = (EditText)findViewById(R.id.password);
-        eMobile = (EditText)findViewById(R.id.mobile);
-        eAadharno = (EditText)findViewById(R.id.aadhar);
-        eAddress = (EditText)findViewById(R.id.address);
-        cpassword = (EditText)findViewById(R.id.confirmpassword);
+        fulln = findViewById(R.id.fullname);
+        usern = findViewById(R.id.username);
+        passw = findViewById(R.id.password);
+        eMobile = findViewById(R.id.mobile);
+        eAadharno = findViewById(R.id.aadhar);
+        eAddress = findViewById(R.id.address);
+        cpassword = findViewById(R.id.confirmpassword);
         progressBar = findViewById(R.id.progressBar);
         imageView = findViewById(R.id.imageView);
-        Button signbtn = (Button)findViewById(R.id.signbtn);
+        Button signbtn = findViewById(R.id.signbtn);
 
         //for firestore
         db = FirebaseFirestore.getInstance();
         userData = new CandiData();
-        signbtn.setOnClickListener(new View.OnClickListener(){
-                                       @Override
-                                       public void onClick(View view) {
-                                           registerNewUser();
-                                       }
-                                   }
+        signbtn.setOnClickListener(view -> registerNewUser()
 
         );
         //for login text in reg page
         TextView logintxtbtn = findViewById(R.id.logintxtbtn);
-        logintxtbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(CandiRegistration.this, CandiLogin.class));
-            }
-        });
+        logintxtbtn.setOnClickListener(v -> startActivity(new Intent(CandiRegistration.this, CandiLogin.class)));
         imageView.setOnClickListener(v -> selectImage());
         //getSupportActionBar().setTitle("Akash");
     }
@@ -122,62 +109,55 @@ public class CandiRegistration extends AppCompatActivity {
         // Validations for input
         if (TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             usern.setError("Invalid mail!!!");
-            return;
         }
         else if (!validatePassword(password,conpassword,passw)) {
-            return;
+            passw.setError("Invalid password!!!");
+            cpassword.setError("Invalid password!!!");
         }
         else if (TextUtils.isEmpty(fullname) || fullname.length()<3) {
             fulln.setError("Invalid name!!!");
-            return;
         }
         else if (!(String.valueOf(mobile).length() == 10)) {
             eMobile.setError("Invalid mobile no!!!");
-            return;
         }
         else if (TextUtils.isEmpty(address)) {
             eAddress.setError("Invalid address!!!");
-            return;
         }
         else if (TextUtils.isEmpty(aadhar)) {
             eAadharno.setError("Invalid aadhaar no.!!!");
-            return;
         }
         else {
-            checkAadharNumberInFireStore(aadhar, new com.example.votingpoll.user.AadharCheckCallback() {
-                @Override
-                public void onAadharExists(boolean exists) {
-                    if (exists) {
-                        db.collection("contestData").get()
-                                .addOnSuccessListener(queryDocumentSnapshots -> {
-                                    if (!queryDocumentSnapshots.isEmpty()) {
-                                        addDatatoFireStore(fullname, email, address, mobile, aadhar,password);
-                                        uploadIamage();
-                                        Intent intent = new Intent(CandiRegistration.this, CandiLogin.class);
-                                        startActivity(intent);
-                                    }
-                                    else {
-                                        Toast.makeText(CandiRegistration.this, "Poll not exist...", Toast.LENGTH_SHORT).show();
-                                        finish();
-                                    }
-                                })
-                                .addOnFailureListener(e -> {
-                                });
-                    }
-                    else {
-                        usern.setText("");
-                        passw.setText("");
-                        eAadharno.setText("");
-                        eAddress.setText("");
-                        eMobile.setText("");
-                        fulln.setText("");
-                        cpassword.setText("");
-                        Toast.makeText(CandiRegistration.this, "Your not eligible...", Toast.LENGTH_SHORT).show();
-                        // hide the progress bar
-                        progressBar.setVisibility(View.GONE);
-                    }
-
+            checkAadharNumberInFireStore(aadhar, exists -> {
+                if (exists) {
+                    db.collection("contestData").get()
+                            .addOnSuccessListener(queryDocumentSnapshots -> {
+                                if (!queryDocumentSnapshots.isEmpty()) {
+                                    addDatatoFireStore(fullname, email, address, mobile, aadhar,password);
+                                    uploadIamage();
+                                    Intent intent = new Intent(CandiRegistration.this, CandiLogin.class);
+                                    startActivity(intent);
+                                }
+                                else {
+                                    Toast.makeText(CandiRegistration.this, "Poll not exist...", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                }
+                            })
+                            .addOnFailureListener(e -> {
+                            });
                 }
+                else {
+                    usern.setText("");
+                    passw.setText("");
+                    eAadharno.setText("");
+                    eAddress.setText("");
+                    eMobile.setText("");
+                    fulln.setText("");
+                    cpassword.setText("");
+                    Toast.makeText(CandiRegistration.this, "Your not eligible...", Toast.LENGTH_SHORT).show();
+                    // hide the progress bar
+                    progressBar.setVisibility(View.GONE);
+                }
+
             });
         }
     }
@@ -197,9 +177,9 @@ public class CandiRegistration extends AppCompatActivity {
                         }
                     }
                 }
-                if (aadharExists) {
+                if (!aadharExists) {
+                    Toast.makeText(this, "ID no. is not exists in the database", Toast.LENGTH_SHORT).show();
                 }
-                else Toast.makeText(this, "ID no. is not exists in the database", Toast.LENGTH_SHORT).show();
                 callback.onAadharExists(aadharExists);
             }
         });
@@ -243,17 +223,9 @@ public class CandiRegistration extends AppCompatActivity {
         userData1.setAucPass(pass);
         // Add a new document with a generated ID
         db.collection("CandiData").document(aadhar)
-                .set(userData1).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                       // Toast.makeText(CandiRegistration.this, "Success...", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(CandiRegistration.this, "Failed...", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                .set(userData1).addOnSuccessListener(unused -> {
+                   // Toast.makeText(CandiRegistration.this, "Success...", Toast.LENGTH_SHORT).show();
+                }).addOnFailureListener(e -> Toast.makeText(CandiRegistration.this, "Failed...", Toast.LENGTH_SHORT).show());
     }
 
     private void uploadIamage() {

@@ -2,7 +2,6 @@ package com.example.votingpoll.user;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,19 +30,13 @@ public class VotingPageMyAdapter extends RecyclerView.Adapter<VotingPageMyViewHo
     }
 
     @SuppressLint("RecyclerView")
-    @NonNull
     @Override
     public void onBindViewHolder(VotingPageMyViewHolder holder, int position) {
         holder.textView.setText(items.get(position).getAucFullname());
         holder.imageView.setImageBitmap(items.get(position).getPartySymbol());
         holder.imageView1.setImageBitmap(items.get(position).getPartyCandidateImage());
         holder.textView1.setText(items.get(position).getPartyName());
-        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onIemClicked(items.get(position));
-            }
-        });
+        holder.linearLayout.setOnClickListener(v -> listener.onIemClicked(items.get(position)));
 
     }
 

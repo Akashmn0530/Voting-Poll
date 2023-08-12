@@ -8,11 +8,9 @@ public class ServerData implements Serializable {
     private  long auMobile;
     private String auAddress;
     private String auAadhaar;
-    private float auRating = 0;
-    private String auId;
     private String vote = "Not voted";
     private  String password;
-    private String auFeedbackDescription;
+
     private int voteCount = 0;
 
     public void setauAadhaar(String uAadhaar) {
@@ -59,33 +57,12 @@ public class ServerData implements Serializable {
         return vote;
     }
 
-    public void setVote(String vote) {
-        this.vote = vote;
-    }
 
     public int getVoteCount() {
         return voteCount;
     }
 
-    public void setVoteCount(int voteCount) {
-        this.voteCount = voteCount;
-    }
 
-    public float getAuRating() {
-        return auRating;
-    }
-
-    public void setAuRating(float auRating) {
-        this.auRating = auRating;
-    }
-
-    public String getAuId() {
-        return auId;
-    }
-
-    public void setAuId(String auId) {
-        this.auId = auId;
-    }
 
     public String getPassword() {
         return password;
@@ -95,13 +72,7 @@ public class ServerData implements Serializable {
         this.password = password;
     }
 
-    public String getAuFeedbackDescription() {
-        return auFeedbackDescription;
-    }
 
-    public void setAuFeedbackDescription(String auFeedbackDescription) {
-        this.auFeedbackDescription = auFeedbackDescription;
-    }
 }
 
 

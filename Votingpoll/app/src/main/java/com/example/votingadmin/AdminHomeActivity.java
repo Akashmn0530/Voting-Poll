@@ -1,10 +1,7 @@
 package com.example.votingadmin;
-
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -40,67 +37,68 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminHomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
+public class AdminHomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     BottomNavigationView bottomNavigationView;
-    // Your existing button declarations
     DrawerLayout layDL;
     NavigationView vNV;
-    Toolbar toolbar;
     FragmentManager fm = getSupportFragmentManager();
 
-    private ArrayList myListData;
+    private ArrayList<ContestClass> myListData;
     private AdapterContest myListAdapter;
     private FirebaseFirestore db;
-    @SuppressLint("MissingInflatedId")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_home);
-        //Bottom layout
+
+        // Bottom layout
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
+
+        // Initialize other views and setup the navigation drawer
         layDL = findViewById(R.id.layDL);
         vNV = findViewById(R.id.vNV);
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, layDL, toolbar, R.string.open_drawer, R.string.close_drawer);
         layDL.addDrawerListener(toggle);
         toggle.syncState();
 
+        // Setup RecyclerView for contests
         RecyclerView voteRV = findViewById(R.id.your_recycler_view_id11);
+        voteRV.setHasFixedSize(true);
+        voteRV.setLayoutManager(new LinearLayoutManager(this));
 
         // Initializing our variable for Firestore and getting its instance
         db = FirebaseFirestore.getInstance();
-        // Creating our new array list
+
+        // Creating our new array list for contests
         myListData = new ArrayList<>();
+        myListAdapter = new AdapterContest(this, myListData);
+        voteRV.setAdapter(myListAdapter);
 
-        voteRV.setHasFixedSize(true);
-        voteRV.setLayoutManager(new LinearLayoutManager(AdminHomeActivity.this));
+        // Fetch contest data from Firestore
+        fetchContestDataFromFirestore();
 
-        // Adding our array list
-        myListAdapter = new AdapterContest(AdminHomeActivity.this, myListData);
-
-        voteRV.setAdapter(myListAdapter); // Setting the adapter to the RecyclerView
-
-        fetchUserDataFromFirestore();
         if (savedInstanceState == null) {
             vNV.setCheckedItem(R.id.adduser1);
         }
-        NavClick();
+
+        setupNavigationClickListeners();
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private void fetchUserDataFromFirestore() {
-
+    private void fetchContestDataFromFirestore() {
         db.collection("contestData").get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
                         List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                         for (DocumentSnapshot d : list) {
                             ContestClass c = d.toObject(ContestClass.class);
-                            assert c != null;
-                            c.setConId(d.getId());
-                            myListData.add(c);
+                            if (c != null) {
+                                c.setConId(d.getId());
+                                myListData.add(c);
+                            }
                         }
                         myListAdapter.notifyDataSetChanged();
                     } else {
@@ -112,104 +110,64 @@ public class AdminHomeActivity extends AppCompatActivity implements BottomNaviga
                 });
     }
 
-    AdminProfileFragment adminProfileFragment = new AdminProfileFragment();
-    ViewFeedbackFragment viewFeedbackFragment = new ViewFeedbackFragment();
-    ViewTermsAndConditionFragment viewTermsAndConditionFragment = new ViewTermsAndConditionFragment();
-
-
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item)
-    {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int idd = item.getItemId();
-            if(idd == R.id.adminprofile) {
-                Toast.makeText(this, "Admin Profile", Toast.LENGTH_SHORT).show();
-                fm.beginTransaction()
-                        .replace(R.id.fragmentContainer1, adminProfileFragment)
-                        .addToBackStack(null)
-                        .commit();
-                return true;
-            }
-            if(idd== R.id.viewfeedback) {
-                Toast.makeText(this, "view feedback", Toast.LENGTH_SHORT).show();
-                fm.beginTransaction()
-                        .replace(R.id.fragmentContainer1, viewFeedbackFragment)
-                        .addToBackStack(null)
-                        .commit();
-                return true;
-            }
-            if(idd== R.id.viewTC){
-                Toast.makeText(this, "view terms and conditions", Toast.LENGTH_SHORT).show();
-                fm.beginTransaction()
-                        .replace(R.id.fragmentContainer1, viewTermsAndConditionFragment)
-                        .addToBackStack(null)
-                        .commit();
-                return true;
+        if (idd == R.id.adminprofile) {
+            loadFragment(new AdminProfileFragment());
+            return true;
+        } else if (idd == R.id.viewfeedback) {
+            loadFragment(new ViewFeedbackFragment());
+            return true;
+        } else if (idd == R.id.viewTC) {
+            loadFragment(new ViewTermsAndConditionFragment());
+            return true;
         }
         return false;
     }
 
-    private void NavClick() {
+    private void loadFragment(androidx.fragment.app.Fragment fragment) {
+        fm.beginTransaction()
+                .replace(R.id.fragmentContainer1, fragment)
+                .addToBackStack(null)
+                .commit();
+        layDL.closeDrawer(GravityCompat.START);
+    }
+
+    private void setupNavigationClickListeners() {
         vNV.setNavigationItemSelectedListener(item -> {
-            int id=item.getItemId();
-            if(id==R.id.addpoll) {
-                FragmentTransaction t1 = fm.beginTransaction();
-                AddCandidates addCandidates = new AddCandidates();
-                t1.replace(R.id.fragmentContainer1, addCandidates);
-                t1.addToBackStack(null);
-                t1.commit();
-                layDL.closeDrawer(GravityCompat.START);
-            }
-            else if(id==R.id.results) {
-                FragmentTransaction t1 = fm.beginTransaction();
-                ViewResultsFragment viewResultsFragment = new ViewResultsFragment();
-                t1.replace(R.id.fragmentContainer1, viewResultsFragment);
-                t1.addToBackStack(null);
-                t1.commit();
-                layDL.closeDrawer(GravityCompat.START);
-            }
-            else if(id==R.id.adduser1) {
-                FragmentTransaction t1 = fm.beginTransaction();
-                AddUser aUser = new AddUser();
-                t1.replace(R.id.fragmentContainer1, aUser);
-                t1.addToBackStack(null);
-                t1.commit();
-                layDL.closeDrawer(GravityCompat.START);
-            }
-            else if(id==R.id.addInfo) {
-                FragmentTransaction t1 = fm.beginTransaction();
-                AddTermsAndConditionsFragment addTermsAndConditionsFragment = new AddTermsAndConditionsFragment();
-                t1.replace(R.id.fragmentContainer1, addTermsAndConditionsFragment);
-                t1.addToBackStack(null);
-                t1.commit();
-                layDL.closeDrawer(GravityCompat.START);
-            }
-            else if(id==R.id.addContest) {
-                FragmentTransaction t1 = fm.beginTransaction();
-                AddContest addContest = new AddContest();
-                t1.replace(R.id.fragmentContainer1, addContest);
-                t1.addToBackStack(null);
-                t1.commit();
-                layDL.closeDrawer(GravityCompat.START);
-            }
-            else {
-                Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(),AdminLogin.class);
-                startActivity(intent);
-                layDL.closeDrawer(GravityCompat.START);
-                finish();
+            int id = item.getItemId();
+            if (id == R.id.addpoll) {
+                loadFragment(new AddCandidates());
+            } else if (id == R.id.results) {
+                loadFragment(new ViewResultsFragment());
+            } else if (id == R.id.adduser1) {
+                loadFragment(new AddUser());
+            } else if (id == R.id.addInfo) {
+                loadFragment(new AddTermsAndConditionsFragment());
+            } else if (id == R.id.addContest) {
+                loadFragment(new AddContest());
+            } else if (id == R.id.logout) {
+                handleLogout();
             }
             layDL.closeDrawer(GravityCompat.START);
             return true;
         });
     }
 
+    private void handleLogout() {
+        Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getApplicationContext(), AdminLogin.class);
+        startActivity(intent);
+        layDL.closeDrawer(GravityCompat.START);
+        finish();
+    }
 
     @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStack();
-        }
-        else {
+        } else {
             super.onBackPressed();
         }
     }
@@ -224,8 +182,6 @@ public class AdminHomeActivity extends AppCompatActivity implements BottomNaviga
                 // Handle delete action here
                 myListData.remove(contest);
                 myListAdapter.notifyDataSetChanged();
-                // Specify the path to the document you want to delete
-                //String documentPath = "contestData/documentId";
 
                 // Delete the document in contestData and update the fields
                 db.collection("contestData").document(contest.getConId()).delete()
@@ -237,8 +193,7 @@ public class AdminHomeActivity extends AppCompatActivity implements BottomNaviga
                                     FirestoreDeleteData firestoreDeleteData = new FirestoreDeleteData();
                                     firestoreDeleteData.deleteAllDocumentsInCollection("CandiData");
                                     FirestoreUpdateData firestoreUpdateData = new FirestoreUpdateData();
-                                    firestoreUpdateData.updateFieldForAllDocuments("UserData","vote", "Not voted");
-
+                                    firestoreUpdateData.updateFieldForAllDocuments("UserData", "vote", "Not voted");
                                 } else {
                                     Toast.makeText(AdminHomeActivity.this, "Contest not deleted", Toast.LENGTH_SHORT).show();
                                 }
@@ -257,6 +212,4 @@ public class AdminHomeActivity extends AppCompatActivity implements BottomNaviga
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
 }
-

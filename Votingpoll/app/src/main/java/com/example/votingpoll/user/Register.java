@@ -37,7 +37,7 @@ public class Register extends AppCompatActivity {
     private ProgressBar progressBar;
     private FirebaseFirestore db;
     ServerData userData;
-    long mobile = 0l;
+    long mobile = 0L;
     EditText fulln,usern,passw,cpassword,eMobile,eAddress,eAadharno;
 
     @SuppressLint("MissingInflatedId")
@@ -135,6 +135,8 @@ public class Register extends AppCompatActivity {
             usern.setError("Invalid mail!!!");
         }
         else if (!validatePassword(password,conpassword,passw)) {
+            passw.setError("Invalid password!!!");
+            cpassword.setError("Invalid password!!!");
         }
         else if (TextUtils.isEmpty(fullname) || fullname.length()<3) {
             fulln.setError("Invalid name!!!");
@@ -196,9 +198,9 @@ public class Register extends AppCompatActivity {
                         }
                     }
                 }
-                if (aadharExists){
+                if (!aadharExists){
+                    Toast.makeText(this, "Aadhar no. is not exists in the database", Toast.LENGTH_SHORT).show();
                 }
-                else Toast.makeText(this, "Aadhar no. is not exists in the database", Toast.LENGTH_SHORT).show();
                 callback.onAadharExists(aadharExists);
             }
         });

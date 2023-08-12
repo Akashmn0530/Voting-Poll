@@ -3,7 +3,6 @@ package com.example.votingpoll.user;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +18,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.votingadmin.ViewFeedback;
 import com.example.votingpoll.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -43,9 +39,9 @@ public class FeedbackFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getRating = getView().findViewById(R.id.getRating);
-        ratingBar = getView().findViewById(R.id.rating);
-        description = getView().findViewById(R.id.editTextTextMultiLine);
+        getRating = view.findViewById(R.id.getRating);
+        ratingBar = view.findViewById(R.id.rating);
+        description = view.findViewById(R.id.editTextTextMultiLine);
         profile_img = view.findViewById(R.id.profile_image);
         fetchImage(Login.uidpass);
         db = FirebaseFirestore.getInstance();
@@ -64,19 +60,11 @@ public class FeedbackFragment extends Fragment {
         try {
             File localfile = File.createTempFile("tempfile", ".jpg");
             storageReference.getFile(localfile)
-                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            Bitmap bitmap = BitmapFactory.decodeFile(localfile.getAbsolutePath());
-                            profile_img.setImageBitmap(bitmap);
+                    .addOnSuccessListener(taskSnapshot -> {
+                        Bitmap bitmap = BitmapFactory.decodeFile(localfile.getAbsolutePath());
+                        profile_img.setImageBitmap(bitmap);
 
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getActivity(), "Failed to retrieve", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to retrieve", Toast.LENGTH_SHORT).show());
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -101,11 +89,7 @@ public class FeedbackFragment extends Fragment {
                     .update("auRating", rating,
                             "auFeedbackDescription", des
                     )
-                    .addOnSuccessListener(aVoid -> {
-                        addDatatoFireStore(rating,des,uidpass);
-                    }).addOnFailureListener(e -> {
-                        Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-                    });
+                    .addOnSuccessListener(aVoid -> addDatatoFireStore(rating,des,uidpass)).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show());
             //To update Admin's database
         }
 

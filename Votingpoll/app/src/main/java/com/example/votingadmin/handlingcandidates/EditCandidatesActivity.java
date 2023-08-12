@@ -19,27 +19,28 @@ import java.util.Map;
 public class EditCandidatesActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
-    AddCandidatesClass userId;
+    private AddCandidatesClass userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_candidates);
         db = FirebaseFirestore.getInstance();
         userId = (AddCandidatesClass) getIntent().getSerializableExtra("userId");
+
+        // Check if userId is available
         if (userId != null) {
-            // Use the user ID to fetch the user data from Firestore and display it in the activity
+            // Fetch user data and set up Save button click listener
             fetchUserData(userId);
-            Button btnSave = findViewById(R.id.btnSave);
-            btnSave.setOnClickListener(view -> {
-                // Handle the Save button click to update the Firestore data
-                onSaveButtonClick();
-            });
+            setUpSaveButton();
         } else {
             // Handle case when user ID is not available
             Toast.makeText(this, "User ID not found.", Toast.LENGTH_SHORT).show();
             finish();
         }
     }
+
+    // Fetch user data based on the provided user ID
     private void fetchUserData(AddCandidatesClass userId) {
         String id = userId.getaAadhaar();
         db.collection("PollData")
@@ -48,10 +49,11 @@ public class EditCandidatesActivity extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            Map<String,Object> addPollClass1 = document.getData();
+                            // Extract user data from Firestore document
+                            Map<String, Object> addPollClass1 = document.getData();
+                            // Set retrieved data in EditText and TextView fields
                             EditText fullNameEditText = findViewById(R.id.editFullName);
                             TextView aadharEditText = findViewById(R.id.editAadhar);
-
                             fullNameEditText.setText(String.valueOf(addPollClass1.get("aFullname")));
                             aadharEditText.setText(String.valueOf(addPollClass1.get("aAadhaar")));
                         }
@@ -59,31 +61,44 @@ public class EditCandidatesActivity extends AppCompatActivity {
                         Toast.makeText(EditCandidatesActivity.this, "Error", Toast.LENGTH_SHORT).show();
                     }
                 });
-
     }
 
-    // Implement the updateFirestoreData method to update the Firestore data with edited user data
+    // Set up the Save button click listener
+    private void setUpSaveButton() {
+        Button btnSave = findViewById(R.id.btnSave);
+        btnSave.setOnClickListener(view -> {
+            // Handle the Save button click to update the Firestore data
+            onSaveButtonClick();
+        });
+    }
+
+    // Update Firestore data with edited user data
     private void updateFirestoreData(AddCandidatesClass userId, String fullName, String aadhar) {
         // Use the userId to update the Firestore data
         AddCandidatesClass updatePoll = new AddCandidatesClass();
         updatePoll.setaAadhaar(aadhar);
         updatePoll.setaFullname(fullName);
-        db.collection("PollData").document(userId.getaAadhaar()).
-                set(updatePoll)
+        db.collection("PollData").document(userId.getaAadhaar())
+                .set(updatePoll)
                 .addOnSuccessListener(unused -> {
+                    // On successful update, show a success message and navigate back to AdminHomeActivity
                     Toast.makeText(EditCandidatesActivity.this, "Successfully updated...", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), AdminHomeActivity.class);
                     startActivity(intent);
-                }).addOnFailureListener(e -> Toast.makeText(EditCandidatesActivity.this, "Failed to update...", Toast.LENGTH_SHORT).show());
+                })
+                .addOnFailureListener(e -> {
+                    // On update failure, show an error message
+                    Toast.makeText(EditCandidatesActivity.this, "Failed to update...", Toast.LENGTH_SHORT).show();
+                });
     }
 
-    // Implement the method to handle the Save button click to update the Firestore data
+    // Handle the Save button click to update the Firestore data
     public void onSaveButtonClick() {
-// Get the updated data from the edit text fields
+        // Get the updated data from the EditText and TextView fields
         String fullName = ((EditText)findViewById(R.id.editFullName)).getText().toString();
         String aadhar = ((TextView)findViewById(R.id.editAadhar)).getText().toString();
         if (userId != null) {
-            updateFirestoreData(userId, fullName,aadhar); // Call the updateFirestoreData method to update data
+            updateFirestoreData(userId, fullName, aadhar); // Call the updateFirestoreData method to update data
         }
     }
 }

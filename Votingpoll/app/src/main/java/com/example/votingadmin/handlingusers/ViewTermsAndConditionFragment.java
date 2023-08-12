@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -17,45 +16,61 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-
 public class ViewTermsAndConditionFragment extends Fragment {
 
     private FirebaseFirestore db;
-    ScrollView scrollView;
-
+    private ScrollView scrollView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_view_terms_and_condition, container, false);
         scrollView = view.findViewById(R.id.TextTextMultiLine);
 
-        // Initializing our variable for Firestore and getting its instance
+        // Initialize Firestore
         db = FirebaseFirestore.getInstance();
-        fetchTheData();
+
+        // Fetch and display terms and conditions data
+        fetchAndDisplayTerms();
 
         return view;
     }
-    void fetchTheData(){
+
+    private void fetchAndDisplayTerms() {
+        // Reference to the "termsData" document in Firestore
         DocumentReference docRef = db.collection("termsData").document("terms");
+
+        // Fetch the document data
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
-                    TermsAndConditions c = document.toObject(TermsAndConditions.class);
-                    TextView textView = new TextView(getContext());
-                    assert c != null;
-                    textView.setText(c.getTcData());
-                    scrollView.addView(textView);
+                    // Convert the document data to the TermsAndConditions object
+                    TermsAndConditions terms = document.toObject(TermsAndConditions.class);
+                    // Display the terms and conditions data
+                    displayTerms(terms);
                 } else {
-                    Log.d("Akash", "No such document");
+                    // Document does not exist
+                    Log.d("ViewTerms", "No such document");
                 }
             } else {
-                Log.d("Akash", "get failed with ", task.getException());
+                // Fetching data failed
+                Log.d("ViewTerms", "get failed with ", task.getException());
             }
         });
     }
 
-    public ViewTermsAndConditionFragment() { }
+    private void displayTerms(TermsAndConditions terms) {
+        if (terms != null) {
+            // Create a TextView to display terms and conditions data
+            TextView textView = new TextView(getContext());
+            textView.setText(terms.getTcData());
+
+            // Add the TextView containing terms and conditions data to the ScrollView
+            scrollView.addView(textView);
+        } else {
+            // TermsAndConditions object is null
+            Log.d("ViewTerms", "TermsAndConditions object is null");
+        }
+    }
 }

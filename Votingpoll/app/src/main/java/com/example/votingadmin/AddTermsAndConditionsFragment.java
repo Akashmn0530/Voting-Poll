@@ -16,10 +16,10 @@ import com.example.votingpoll.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class AddTermsAndConditionsFragment extends Fragment {
-    EditText editText;
-    Button b;
-    FirebaseFirestore db;
-    TermsAndConditions termsAndConditions;
+    private EditText editText;
+    private Button addButton;
+    private FirebaseFirestore db;
+    private TermsAndConditions termsAndConditions;
 
     public AddTermsAndConditionsFragment() {
         // Required empty public constructor
@@ -28,27 +28,36 @@ public class AddTermsAndConditionsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        editText=getView().findViewById(R.id.editTextTextMultiLine);
-        b=getView().findViewById(R.id.termsandconditionsbutton);
-        // Initializing our variable for Firestore and getting its instance
+        initializeViews(view);
+        setupButton();
+
+        // Initializing Firestore
         db = FirebaseFirestore.getInstance();
         termsAndConditions = new TermsAndConditions();
-        b.setOnClickListener(v -> {
+    }
+
+    private void initializeViews(View view) {
+        editText = view.findViewById(R.id.editTextTextMultiLine);
+        addButton = view.findViewById(R.id.termsandconditionsbutton);
+    }
+
+    private void setupButton() {
+        addButton.setOnClickListener(v -> {
             String terms = editText.getText().toString();
             editText.setText("");
-            addDatatoFireStore(terms);
+            addDataToFirestore(terms);
         });
     }
 
-    private void addDatatoFireStore(String terms) {
-        // below 3 lines of code is used to set
-        // data in our object class.
+    private void addDataToFirestore(String terms) {
+        // Set data in the TermsAndConditions object
         termsAndConditions.setTcData(terms);
-        //DocumentReference newDB = db.collection("PollData").document();
-        // Add a new document with a generated ID
 
+        // Add or update the terms and conditions document in Firestore
         db.collection("termsData").document("terms")
-                .set(termsAndConditions).addOnSuccessListener(unused -> Toast.makeText(getActivity(), "Success...", Toast.LENGTH_SHORT).show()).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed...", Toast.LENGTH_SHORT).show());
+                .set(termsAndConditions)
+                .addOnSuccessListener(unused -> Toast.makeText(getActivity(), "Success...", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed...", Toast.LENGTH_SHORT).show());
     }
 
     @Override
@@ -57,5 +66,4 @@ public class AddTermsAndConditionsFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_terms_and_conditions, container, false);
     }
-
 }

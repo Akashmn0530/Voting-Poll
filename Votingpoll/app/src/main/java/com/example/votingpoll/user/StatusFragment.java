@@ -16,12 +16,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.votingpoll.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -38,10 +35,10 @@ public class StatusFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        name = getView().findViewById(R.id.statusName);
-        status = getView().findViewById(R.id.statusStatus);
-        count = getView().findViewById(R.id.statusCount);
-        profile_img = getView().findViewById(R.id.profile_image);
+        name = view.findViewById(R.id.statusName);
+        status = view.findViewById(R.id.statusStatus);
+        count = view.findViewById(R.id.statusCount);
+        profile_img = view.findViewById(R.id.profile_image);
         db = FirebaseFirestore.getInstance();
         fetchImage(Login.uidpass);
         fetchData();
@@ -82,19 +79,11 @@ public class StatusFragment extends Fragment {
         try {
             File localfile = File.createTempFile("tempfile", ".jpg");
             storageReference.getFile(localfile)
-                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            Bitmap bitmap = BitmapFactory.decodeFile(localfile.getAbsolutePath());
-                            profile_img.setImageBitmap(bitmap);
+                    .addOnSuccessListener(taskSnapshot -> {
+                        Bitmap bitmap = BitmapFactory.decodeFile(localfile.getAbsolutePath());
+                        profile_img.setImageBitmap(bitmap);
 
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getActivity(), "Failed to retrieve", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to retrieve", Toast.LENGTH_SHORT).show());
 
         } catch (IOException e) {
             throw new RuntimeException(e);

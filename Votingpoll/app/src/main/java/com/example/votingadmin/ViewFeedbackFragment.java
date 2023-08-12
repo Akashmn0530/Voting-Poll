@@ -23,7 +23,7 @@ import java.util.List;
 public class ViewFeedbackFragment extends Fragment {
 
     private ArrayList<ViewFeedback> viewFeedbacks;
-    private FeedbackAdaptor feedbackAdaptor;
+    private FeedbackAdapter feedbackAdaptor;
     private FirebaseFirestore db;
     ProgressBar loadingPB;
     public ViewFeedbackFragment() {
@@ -46,7 +46,7 @@ public class ViewFeedbackFragment extends Fragment {
         voteRV.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         // Adding our array list
-        feedbackAdaptor = new FeedbackAdaptor(getContext(), viewFeedbacks);
+        feedbackAdaptor = new FeedbackAdapter(getContext(), viewFeedbacks);
 
         voteRV.setAdapter(feedbackAdaptor); // Setting the adapter to the RecyclerView
 

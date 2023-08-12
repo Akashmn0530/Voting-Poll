@@ -2,104 +2,93 @@ package com.example.votingpoll.candidate;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.votingpoll.R;
-import com.example.votingpoll.user.FeedbackFragment;
-import com.example.votingpoll.user.Login;
-import com.example.votingpoll.user.ProfileFragment;
-import com.example.votingpoll.user.StatusFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class CandiHomeActivity extends AppCompatActivity {
 
-    DrawerLayout layDL;
-    NavigationView vNV;
-    Toolbar toolbar;
-    TextView textView;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private TextView welcomeTextView;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_candi_home);
-        layDL = findViewById(R.id.layDL);
-        vNV = findViewById(R.id.vNV);
-        toolbar = findViewById(R.id.toolbar);
-        textView = findViewById(R.id.welcomeTxt);
-        setSupportActionBar(toolbar);
-        Bundle bundle = getIntent().getExtras();
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, layDL, toolbar, R.string.open_drawer, R.string.close_drawer);
 
-        layDL.addDrawerListener(toggle);
-        toggle.syncState();
+        // Initialize views
+        drawerLayout = findViewById(R.id.layDL);
+        navigationView = findViewById(R.id.vNV);
+        welcomeTextView = findViewById(R.id.welcomeTxt);
 
+        // Set up the navigation drawer and toolbar
+        setupNavigationDrawer();
+
+        // Set the initial fragment
         if (savedInstanceState == null) {
-            vNV.setCheckedItem(R.id.profile);
+            navigationView.setCheckedItem(R.id.profile);
+            replaceFragment(new CandiProfile());
         }
-        NavClick();
+
+        // Handle navigation item clicks
+        setNavigationItemClick();
     }
 
-    private void NavClick() {
-        vNV.setNavigationItemSelectedListener(item -> {
-            Fragment frag = null;
-            int id=item.getItemId();
-            if(id==R.id.profile) {
-                FragmentManager fm = getSupportFragmentManager();
-                FragmentTransaction t1 = fm.beginTransaction();
-                CandiProfile candiProfile = new CandiProfile();
-                t1.replace(R.id.fragmentContainer1, candiProfile);
-                t1.addToBackStack(null);
-                t1.commit();
-                textView.setText("");
-                layDL.closeDrawer(GravityCompat.START);
-            } else if (id==R.id.plan) {
-                Toast.makeText(this, "Plans", Toast.LENGTH_SHORT).show();
-                FragmentManager fm = getSupportFragmentManager();
-                FragmentTransaction t1 = fm.beginTransaction();
-                AddPlansFragment addPlansFragment = new AddPlansFragment();
-                t1.replace(R.id.fragmentContainer1, addPlansFragment);
-                t1.addToBackStack(null);
-                t1.commit();
-                textView.setText("");
-                layDL.closeDrawer(GravityCompat.START);
+    private void setupNavigationDrawer() {
+        setSupportActionBar(findViewById(R.id.toolbar));
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, findViewById(R.id.toolbar), R.string.open_drawer, R.string.close_drawer);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+    }
 
-            } else if (id==R.id.feedback) {
-
-                Toast.makeText(this, "Feedback", Toast.LENGTH_SHORT).show();
-                FragmentManager fm = getSupportFragmentManager();
-                FragmentTransaction t1 = fm.beginTransaction();
-                CandiFeedbackFragment candiFeedbackFragment = new CandiFeedbackFragment();
-                t1.replace(R.id.fragmentContainer1, candiFeedbackFragment);
-                t1.addToBackStack(null);
-                t1.commit();
-                textView.setText("");
-                layDL.closeDrawer(GravityCompat.START);
+    private void setNavigationItemClick() {
+        navigationView.setNavigationItemSelectedListener(item -> {
+            Fragment fragment = null;
+            int itemId = item.getItemId();
+            if (itemId == R.id.profile) {
+                fragment = new CandiProfile();
+            } else if (itemId == R.id.plan) {
+                fragment = new AddPlansFragment();
+            } else if (itemId == R.id.feedback) {
+                fragment = new CandiFeedbackFragment();
+            } else if (itemId == R.id.logout) {
+                logout();
             }
 
-
-            else {
-                Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), CandiLogin.class);
-                startActivity(intent);
-                layDL.closeDrawer(GravityCompat.START);
-                finish();
+            if (fragment != null) {
+                replaceFragment(fragment);
+                welcomeTextView.setText(""); // Clear welcome text
             }
-            layDL.closeDrawer(GravityCompat.START);
+
+            drawerLayout.closeDrawer(GravityCompat.START);
             return true;
         });
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.fragmentContainer1, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    private void logout() {
+        Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getApplicationContext(), CandiLogin.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.example.votingpoll.user;
 
-import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -9,23 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.votingpoll.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -66,11 +58,9 @@ public class ProfileFragment extends Fragment {
         fetchTheData(id);
         fetchImage(id);
         UserProfileFragmentEdit userProfileFragmentEdit=new UserProfileFragmentEdit();
-        proEdit.setOnClickListener(view1 -> {
-            getChildFragmentManager().beginTransaction()
-                    .replace(R.id.framelayoutContainer2, userProfileFragmentEdit)
-                    .commit();
-        });
+        proEdit.setOnClickListener(view1 -> getChildFragmentManager().beginTransaction()
+                .replace(R.id.framelayoutContainer2, userProfileFragmentEdit)
+                .commit());
         return view;
     }
 
@@ -102,19 +92,11 @@ public class ProfileFragment extends Fragment {
         try {
             File localfile = File.createTempFile("tempfile", ".jpg");
             storageReference.getFile(localfile)
-                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            Bitmap bitmap = BitmapFactory.decodeFile(localfile.getAbsolutePath());
-                            profile_img.setImageBitmap(bitmap);
+                    .addOnSuccessListener(taskSnapshot -> {
+                        Bitmap bitmap = BitmapFactory.decodeFile(localfile.getAbsolutePath());
+                        profile_img.setImageBitmap(bitmap);
 
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getActivity(), "Failed to retrieve", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to retrieve", Toast.LENGTH_SHORT).show());
 
         } catch (IOException e) {
             throw new RuntimeException(e);

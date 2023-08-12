@@ -28,21 +28,42 @@ import com.google.firebase.storage.StorageReference;
 import java.util.regex.Pattern;
 
 public class AdminRegister extends AppCompatActivity {
-    ImageView imageView;
-    ProgressDialog progressDialog;
-    Uri imageUri;
-    StorageReference storageReference;
+    private ImageView imageView;
     private ProgressBar progressBar;
+    private Uri imageUri;
+    private StorageReference storageReference;
     private FirebaseFirestore db;
-    ServerData userData;
-    EditText fulln,usern,passw,cpassword,eMobile,eAddress,eAadharno;
+    private EditText fulln, usern, passw, cpassword, eMobile, eAddress, eAadharno;
+    private ProgressDialog progressDialog;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_register);
+
+        // Initialize UI elements
+        initUI();
+
+        // Firestore instance
+        db = FirebaseFirestore.getInstance();
+
+        // Image selection
+        imageView.setOnClickListener(v -> selectImage());
+
+        // Registration button
+        Button signbtn = findViewById(R.id.signbtn);
+        signbtn.setOnClickListener(v -> {
+            uploadImage();
+            registerNewUser();
+        });
+
+        // Login text in registration page
+        TextView logintxtbtn = findViewById(R.id.logintxtbtn);
+        logintxtbtn.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), AdminLogin.class)));
+    }
+
+    // Initialize UI elements
+    private void initUI() {
         fulln = findViewById(R.id.fullname);
         usern = findViewById(R.id.username);
         passw = findViewById(R.id.password);
@@ -52,119 +73,122 @@ public class AdminRegister extends AppCompatActivity {
         cpassword = findViewById(R.id.confirmpassword);
         progressBar = findViewById(R.id.progressBar);
         imageView = findViewById(R.id.imageView);
-        Button signbtn = findViewById(R.id.signbtn);
-
-        //for firestore
-        db = FirebaseFirestore.getInstance();
-
-        userData = new ServerData();
-        signbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                uploadIamage();
-                registerNewUser();
-            }
-        });
-        //for login text in reg page
-        TextView logintxtbtn = findViewById(R.id.logintxtbtn);
-        logintxtbtn.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(),AdminLogin.class)));
-        imageView.setOnClickListener(v -> selectImage());
-        //getSupportActionBar().setTitle("Akash");
     }
 
+    // Image selection from gallery
     private void selectImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, 100);
     }
+
+    // Handle image selection result
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == 100) {
-            assert data != null;
-            if (data.getData() != null) {
-                imageUri = data.getData();
-                imageView.setImageURI(imageUri);
-            }
+        if (requestCode == 100 && data != null && data.getData() != null) {
+            imageUri = data.getData();
+            imageView.setImageURI(imageUri);
         }
     }
-    private void uploadIamage() {
+
+    // Upload selected image to Firebase Storage
+    private void uploadImage() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Uploading File...");
         progressDialog.show();
+
         String fileName = eAadharno.getText().toString();
-        storageReference = FirebaseStorage.getInstance().getReference("images/"+fileName);
+        storageReference = FirebaseStorage.getInstance().getReference("images/" + fileName);
 
-        storageReference.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
-
-            imageView.setImageURI(null);
-            Toast.makeText(AdminRegister.this, "Successfully uploaded", Toast.LENGTH_SHORT).show();
-
-            if (progressDialog.isShowing()){
-                progressDialog.dismiss();
-            }
-        }).addOnFailureListener(e -> {
-
-            if (progressDialog.isShowing()){
-                progressDialog.dismiss();
-            }
-            Toast.makeText(AdminRegister.this, "Failed to upload", Toast.LENGTH_SHORT).show();
-        });
-
+        storageReference.putFile(imageUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    imageView.setImageURI(null);
+                    Toast.makeText(AdminRegister.this, "Successfully uploaded", Toast.LENGTH_SHORT).show();
+                    if (progressDialog.isShowing()) {
+                        progressDialog.dismiss();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    if (progressDialog.isShowing()) {
+                        progressDialog.dismiss();
+                    }
+                    Toast.makeText(AdminRegister.this, "Failed to upload", Toast.LENGTH_SHORT).show();
+                });
     }
-    private void registerNewUser() {
 
-        // show the visibility of progress bar to show loading
+    // Register a new user
+    private void registerNewUser() {
+        // Show progress bar
         progressBar.setVisibility(View.VISIBLE);
 
-        // Take the value of two edit texts in Strings
+        // Retrieve user input
         String email, password, aadhar, fullname, address, conpassword;
         long mobile = 0;
+
         email = usern.getText().toString();
         password = passw.getText().toString();
         fullname = fulln.getText().toString();
         try {
             mobile = Long.parseLong(eMobile.getText().toString());
-        }catch (Exception ignored){}
+        } catch (Exception ignored) {}
+
         address = eAddress.getText().toString();
         aadhar = eAadharno.getText().toString();
         conpassword = cpassword.getText().toString();
 
-        // Validations for input
-        if(TextUtils.isEmpty(email) && TextUtils.isEmpty(fullname)&&TextUtils.isEmpty(address)&&TextUtils.isEmpty(aadhar)){
+        // Validate input fields
+        if (!isValidInput(email, password, aadhar, fullname, address, mobile, conpassword)) {
             progressBar.setVisibility(View.GONE);
-            usern.setError("Invalid mail!!!");
-            fulln.setError("Invalid name!!!");
-            eMobile.setError("Invalid mobile no!!!");
-            eAddress.setError("Invalid address!!!");
-            eAadharno.setError("Invalid aadhaar!!!");
-            cpassword.setError("Invalid Confirm password!!!");
+            return;
         }
-        else if (TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            usern.setError("Invalid mail!!!");progressBar.setVisibility(View.GONE);
-        } else if (!validatePassword(password, conpassword, passw)) {
-            progressBar.setVisibility(View.GONE);
-        } else if (TextUtils.isEmpty(fullname) || fullname.length() < 3) {
-            fulln.setError("Invalid name!!!");progressBar.setVisibility(View.GONE);
-        } else if (!(String.valueOf(mobile).length() == 10)) {
-            eMobile.setError("Invalid mobile no!!!");progressBar.setVisibility(View.GONE);
-        } else if (TextUtils.isEmpty(address)) {
-            eAddress.setError("Invalid address!!!");progressBar.setVisibility(View.GONE);
-        }
-        else if (TextUtils.isEmpty(aadhar)) {
-            eAadharno.setError("Invalid address!!!");progressBar.setVisibility(View.GONE);
-        }
-        else {
-            // hide the progress bar
-            progressBar.setVisibility(View.GONE);
-            //firestore
-            addDatatoFireStore(fullname, email, address, mobile, aadhar, password);
-        }
+
+        // Hide the progress bar before adding data to Firestore
+        progressBar.setVisibility(View.GONE);
+
+        // Add user data to Firestore
+        addDataToFirestore(fullname, email, address, mobile, aadhar, password);
     }
-    public boolean validatePassword(String passwordInput,String cpass, EditText password) {
-        // defining our own password pattern
+
+    // Validate input fields
+    private boolean isValidInput(String email, String password, String aadhar, String fullname,
+                                 String address, long mobile, String conpassword) {
+        if (TextUtils.isEmpty(email) || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            usern.setError("Invalid email!");
+            return false;
+        }
+
+        if (!validatePassword(password, conpassword, passw)) {
+            return false;
+        }
+
+        if (TextUtils.isEmpty(fullname) || fullname.length() < 3) {
+            fulln.setError("Invalid name!");
+            return false;
+        }
+
+        if (String.valueOf(mobile).length() != 10) {
+            eMobile.setError("Invalid mobile number!");
+            return false;
+        }
+
+        if (TextUtils.isEmpty(address)) {
+            eAddress.setError("Invalid address!");
+            return false;
+        }
+
+        if (TextUtils.isEmpty(aadhar)) {
+            eAadharno.setError("Invalid Aadhaar number!");
+            return false;
+        }
+
+        return true;
+    }
+
+    // Validate password
+    public boolean validatePassword(String passwordInput, String cpass, EditText password) {
+        // Password pattern
         final Pattern PASSWORD_PATTERN =
                 Pattern.compile("^" +
                         "(?=.*[@#$%^&+=])" +     // at least 1 special character
@@ -172,16 +196,13 @@ public class AdminRegister extends AppCompatActivity {
                         ".{4,}" +                // at least 4 characters
                         "$");
         if (passwordInput.isEmpty()) {
-            password.setError("Field can not be empty");
+            password.setError("Field cannot be empty");
             return false;
         }
-        if(!passwordInput.equals(cpass)){
-            password.setError("password and confirm password both should be same");
+        if (!passwordInput.equals(cpass)) {
+            password.setError("Password and confirm password must match");
             return false;
-        }
-        // if password does not matches to the pattern
-        // it will display an error message "Password is too weak"
-        else if (!PASSWORD_PATTERN.matcher(passwordInput).matches()) {
+        } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches()) {
             password.setError("Password is too weak");
             return false;
         } else {
@@ -189,8 +210,10 @@ public class AdminRegister extends AppCompatActivity {
             return true;
         }
     }
-    private void addDatatoFireStore(String fname, String email, String address, long mobile,String aadhar,String passwd) {
 
+    // Add user data to Firestore
+    private void addDataToFirestore(String fname, String email, String address, long mobile,
+                                    String aadhar, String passwd) {
         AdminAddedData adminAddedData = new AdminAddedData();
         adminAddedData.setaAadhaar(aadhar);
         adminAddedData.setaAddress(address);
@@ -198,18 +221,23 @@ public class AdminRegister extends AppCompatActivity {
         adminAddedData.setaMobile(mobile);
         adminAddedData.setaFullname(fname);
         adminAddedData.setaPassword(passwd);
-        // Add a new document with a generated ID
+
+        // Add a new document with the Aadhaar number as the document ID
         db.collection("AdminData").document(aadhar)
-                .set(adminAddedData).addOnSuccessListener(unused -> {
-                    // if the user created intent to login activity
+                .set(adminAddedData)
+                .addOnSuccessListener(unused -> {
+                    // Redirect to the login activity after successful registration
                     Intent intent = new Intent(AdminRegister.this, AdminLogin.class);
                     startActivity(intent);
                     Toast.makeText(AdminRegister.this, "Signed up Successfully...", Toast.LENGTH_SHORT).show();
-                }).addOnFailureListener(e -> Toast.makeText(AdminRegister.this, "Failed please try again...", Toast.LENGTH_SHORT).show());
+                })
+                .addOnFailureListener(e -> Toast.makeText(AdminRegister.this, "Failed, please try again...", Toast.LENGTH_SHORT).show());
     }
+
     @Override
     protected void onResume() {
         super.onResume();
+        // Hide progress bar when resuming the activity
         progressBar.setVisibility(View.GONE);
     }
 }

@@ -13,25 +13,23 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.votingadmin.handlingcandidates.AddCandidatesClass;
-import com.example.votingadmin.handlingcandidates.MyListAdapter1;
 import com.example.votingpoll.R;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
-public class ViewCandidates extends Fragment {
 
+public class ViewCandidates extends Fragment {
 
     private ArrayList<AddCandidatesClass> addPollClasses;
     private MyListAdapter1 myListAdapter1;
     private FirebaseFirestore db;
-    ProgressBar loadingPB;
+    private ProgressBar loadingPB;
+
     public ViewCandidates() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,7 +39,8 @@ public class ViewCandidates extends Fragment {
 
         // Initializing our variable for Firestore and getting its instance
         db = FirebaseFirestore.getInstance();
-        Log.d("Aka","getting view");
+        Log.d("Aka", "getting view");
+
         // Creating our new array list
         addPollClasses = new ArrayList<>();
 
@@ -50,9 +49,9 @@ public class ViewCandidates extends Fragment {
 
         // Adding our array list
         myListAdapter1 = new MyListAdapter1(getContext(), addPollClasses);
-
         voteRV.setAdapter(myListAdapter1); // Setting the adapter to the RecyclerView
 
+        // Fetch and display user data from Firestore
         fetchUserDataFromFirestore();
 
         return view;
@@ -69,9 +68,11 @@ public class ViewCandidates extends Fragment {
                         List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                         for (DocumentSnapshot d : list) {
                             AddCandidatesClass c = d.toObject(AddCandidatesClass.class);
-                            assert c != null;
-                            c.setaAadhaar(d.getId());
-                            addPollClasses.add(c);
+                            if (c != null) {
+                                // Set the Firestore document ID (Aadhaar number) as a unique identifier
+                                c.setaAadhaar(d.getId());
+                                addPollClasses.add(c);
+                            }
                         }
                         myListAdapter1.notifyDataSetChanged();
                     } else {
@@ -81,8 +82,7 @@ public class ViewCandidates extends Fragment {
                 })
                 .addOnFailureListener(e -> {
                     loadingPB.setVisibility(View.GONE);
-                    Toast.makeText(getActivity(), "Fail to get the data.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Failed to get the data.", Toast.LENGTH_SHORT).show();
                 });
     }
 }
-

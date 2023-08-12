@@ -1,65 +1,20 @@
 package com.example.votingadmin;
 
 import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.TextView;
-        import androidx.annotation.NonNull;
-        import androidx.recyclerview.widget.RecyclerView;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.votingpoll.R;
 import com.example.votingpoll.candidate.CandiData;
-import com.google.firebase.firestore.DocumentSnapshot;
-        import java.util.List;
 
-//public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.CandidateViewHolder> {
-//    private List<DocumentSnapshot> candidates;
-//
-//    public ResultsAdapter(List<DocumentSnapshot> candidates) {
-//        this.candidates = candidates;
-//    }
-//
-//    @NonNull
-//    @Override
-//    public CandidateViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_candidate, parent, false);
-//        return new CandidateViewHolder(view);
-//    }
-//
-//    @Override
-//    public void onBindViewHolder(@NonNull CandidateViewHolder holder, int position) {
-//        DocumentSnapshot candidate = candidates.get(position);
-//        String candidateName = candidate.getString("aucFullname");
-//        holder.candidateNameTextView.setText(candidateName);
-//    }
-//
-//    @Override
-//    public int getItemCount() {
-//        return candidates.size();
-//    }
-//
-//    static class CandidateViewHolder extends RecyclerView.ViewHolder {
-//        TextView candidateNameTextView;
-//
-//        CandidateViewHolder(View itemView) {
-//            super(itemView);
-//            candidateNameTextView = itemView.findViewById(R.id.candidateNameTextView);
-//        }
-//    }
-//}
-//
-//
-
-import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.TextView;
-        import androidx.annotation.NonNull;
-        import androidx.recyclerview.widget.RecyclerView;
-        import java.util.List;
+import java.util.List;
 
 public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.WinnerViewHolder> {
-    private List<CandiData> winners;
+    private final List<CandiData> winners;
 
     public ResultsAdapter(List<CandiData> winners) {
         this.winners = winners;

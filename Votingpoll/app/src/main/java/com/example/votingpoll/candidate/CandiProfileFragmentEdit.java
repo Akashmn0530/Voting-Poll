@@ -3,10 +3,6 @@ package com.example.votingpoll.candidate;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,15 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.example.votingpoll.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -65,12 +58,7 @@ public class CandiProfileFragmentEdit extends Fragment {
         //Calling fetchData method...
         fetchTheData(cidpass);
         fetchImage(cidpass);
-        proEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateData();
-            }
-        });
+        proEdit.setOnClickListener(view1 -> updateData());
         return view;
     }
 
@@ -80,19 +68,11 @@ public class CandiProfileFragmentEdit extends Fragment {
         try {
             File localfile = File.createTempFile("tempfile", ".jpg");
             storageReference.getFile(localfile)
-                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            Bitmap bitmap = BitmapFactory.decodeFile(localfile.getAbsolutePath());
-                            profile_img.setImageBitmap(bitmap);
+                    .addOnSuccessListener(taskSnapshot -> {
+                        Bitmap bitmap = BitmapFactory.decodeFile(localfile.getAbsolutePath());
+                        profile_img.setImageBitmap(bitmap);
 
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getActivity(), "Failed to retrieve", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to retrieve", Toast.LENGTH_SHORT).show());
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -119,40 +99,28 @@ public class CandiProfileFragmentEdit extends Fragment {
                             "aucAddress", address,
                             "aucMobile", mobile
                     )
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(getActivity(), "Successfully updated", Toast.LENGTH_SHORT).show();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    .addOnSuccessListener(aVoid -> Toast.makeText(getActivity(), "Successfully updated", Toast.LENGTH_SHORT).show()).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show());
         }
     }
 
     void fetchTheData(String cid) {
         DocumentReference docRef = db.collection("CandiData").document(cid);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        CandiData c = document.toObject(CandiData.class);
-                        proName.setText(c.getAucFullname());
-                        proMobile.setText(String.valueOf(c.getAucMobile()));
-                        proEmail.setText(c.getAucEmail());
-                        proAadhar.setText(String.valueOf(c.getAucAadhaar()));
-                        proAddress.setText(c.getAucAddress());
-                    } else {
-                        Log.d("Akash", "No such document");
-                    }
+        docRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    CandiData c = document.toObject(CandiData.class);
+                    assert c != null;
+                    proName.setText(c.getAucFullname());
+                    proMobile.setText(String.valueOf(c.getAucMobile()));
+                    proEmail.setText(c.getAucEmail());
+                    proAadhar.setText(String.valueOf(c.getAucAadhaar()));
+                    proAddress.setText(c.getAucAddress());
                 } else {
-                    Log.d("Akash", "get failed with ", task.getException());
+                    Log.d("Akash", "No such document");
                 }
+            } else {
+                Log.d("Akash", "get failed with ", task.getException());
             }
         });
     }
